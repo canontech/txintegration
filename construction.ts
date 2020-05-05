@@ -85,7 +85,7 @@ async function getChainData(sidecarHost: string): Promise<ChainData> {
 
 // Get information about the sending address.
 async function getSenderData(sidecarHost: string, address: string): Promise<AddressData> {
-	const endpoint = `${sidecarHost}/balance/${address}`;
+	const endpoint = `${sidecarHost}balance/${address}`;
 	const addressData: AddressResponse = await sidecarGet(endpoint);
 	const spendable = parseInt(addressData.free) - Math.max(
 		parseInt(addressData.feeFrozen),
@@ -105,8 +105,8 @@ async function main(): Promise<void> {
 
 	if (senderData.balance < transferValue) {
 		console.log(
-			`Error: Sender only has ${senderData.balance/DECIMALS} tokens available. \
-			Cannot make transfer of ${transferValue/DECIMALS} tokens.`
+			`Error: Sender only has ${senderData.balance/DECIMALS} tokens available. `
+			+ `Cannot make transfer of ${transferValue/DECIMALS} tokens.`
 		);
 		process.exit(1);
 	}
@@ -114,12 +114,12 @@ async function main(): Promise<void> {
 	const unsigned = methods.balances.transferKeepAlive(
     {
       value: transferValue,
-      dest: recipientAddress, // Key2
+      dest: recipientAddress,
     },
     {
       address: senderAddress,
       blockHash: chainData.blockHash,
-      blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toNumber(),
+      blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toBn().toNumber(),
       genesisHash: chainData.genesisHash,
       metadataRpc: chainData.metadataRpc,
       nonce: senderData.nonce,
