@@ -4,16 +4,7 @@ import {
   getRegistry,
   methods,
 } from '@substrate/txwrapper';
-
-// User Inputs
-const senderAddress = '15wAmQvSSiAK6Z53MT2cQVHXC8Z2et9GojXeVKnGZdRpwPvp';
-const recipientAddress = '13iSQm7iyDjoTo3HndhCzpQztAxkNpB1SyRkEuucmAShcApQ';
-const transferValue = 1_000_000_000_000;
-const tip = 0;
-const validityPeriod = 240;
-const sidecarHost = 'https://cb-runtime-wk8yx7pds0ag.paritytech.net/';
-
-const DECIMALS = 1_000_000_000_000;
+import { TxConstruction, UserInputs, DECIMALS } from './util';
 
 // Information about the chain that we need to construct a transaction.
 interface ChainData {
@@ -97,35 +88,39 @@ async function getSenderData(sidecarHost: string, address: string): Promise<Addr
 	};
 }
 
-async function main(): Promise<void> {
-	const chainData = await getChainData(sidecarHost);	
-	const senderData = await getSenderData(sidecarHost, senderAddress);
-
-	const registry = getRegistry('Polkadot', 'polkadot', chainData.specVersion);
-
-	if (senderData.balance < transferValue) {
+function checkAvailableBalance(balance: number, transfer: number, decimals: number) {
+	if (balance < transfer) {
 		console.log(
-			`Error: Sender only has ${senderData.balance/DECIMALS} tokens available. `
-			+ `Cannot make transfer of ${transferValue/DECIMALS} tokens.`
+			`Error: Sender only has ${balance/decimals} tokens available. `
+			+ `Cannot make transfer of ${transfer/decimals} tokens.`
 		);
 		process.exit(1);
 	}
+}
+
+export async function constructTransaction(userInputs: UserInputs): Promise<TxConstruction> {
+	const chainData = await getChainData(userInputs.sidecarHost);	
+	const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
+
+	const registry = getRegistry('Polkadot', 'polkadot', chainData.specVersion);
+
+	checkAvailableBalance(senderData.balance, userInputs.transferValue, DECIMALS);
 
 	const unsigned = methods.balances.transferKeepAlive(
     {
-      value: transferValue,
-      dest: recipientAddress,
+      value: userInputs.transferValue,
+      dest: userInputs.recipientAddress,
     },
     {
-      address: senderAddress,
+      address: userInputs.senderAddress,
       blockHash: chainData.blockHash,
       blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toBn().toNumber(),
       genesisHash: chainData.genesisHash,
       metadataRpc: chainData.metadataRpc,
       nonce: senderData.nonce,
       specVersion: chainData.specVersion,
-      tip,
-      validityPeriod,
+      tip: userInputs.tip,
+      validityPeriod: userInputs.validityPeriod,
     },
     {
       metadata: chainData.metadataRpc,
@@ -134,11 +129,12 @@ async function main(): Promise<void> {
 	);
 	
 	// Construct the signing payload from an unsigned transaction.
-  const signingPayload = createSigningPayload(unsigned, { registry });
-  console.log(`\nPayload to Sign: ${signingPayload}`);
+	const signingPayload: string = createSigningPayload(unsigned, { registry });
+	// console.log(`\nSigning Payload: ${signingPayload}`);
+	
+	return {
+		unsigned: unsigned,
+		payload: signingPayload,
+		registry: registry
+	};
 }
-
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
