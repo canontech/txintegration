@@ -12,7 +12,7 @@ const inputs: UserInputs = {
 }
 
 async function main(): Promise<void> {
-	const construction: TxConstruction = constructTransaction(inputs);
+	const construction: TxConstruction = await constructTransaction(inputs);
 	console.log(construction.payload);
 }
 
