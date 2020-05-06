@@ -4,6 +4,12 @@ import { TRANSACTION_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
 
 import { KeyringPair } from '@substrate/txwrapper';
 
+export interface RegistryInfo {
+	chainName: string;
+	specName: string;
+	specVersion: number;
+}
+
 // Signing function. Implement this on the OFFLINE signing device.
 export function signWith(
   registry: TypeRegistry,

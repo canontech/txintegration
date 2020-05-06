@@ -10,7 +10,7 @@ import {
   POLKADOT_SS58_FORMAT,
 	KeyringPair,
 } from '@substrate/txwrapper';
-import { signWith } from './util';
+import { RegistryInfo, signWith } from './util';
 
 const signingPayload = '0x...';
 const secretKey = 'secret key';
@@ -19,12 +19,6 @@ const registryInputs: RegistryInfo = {
 	chainName: 'Polkadot',
 	specName: 'polkadot',
 	specVersion: 1007,
-}
-
-interface RegistryInfo {
-	chainName: string;
-	specName: string;
-	specVersion: number;
 }
 
 function createKeyring(uri: string): KeyringPair {
