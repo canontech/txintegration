@@ -8,12 +8,12 @@ async function sidecarPost(url: string, tx: string): Promise<any> {
     },
   })
     .then(({ data }) => data)
-    .then(({ error, result }) => {
-      if (error) {
-        throw new Error(error);
+    .then(({ cause, data, error, hash }) => {
+      if (cause || error) {
+        throw new Error(`${cause}: ${error} (${data})`);
       }
 
-      return result;
+      return hash;
     });
 }
 
