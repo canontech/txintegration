@@ -1,6 +1,7 @@
 //
 import { createSignedTx, getTxHash, decode } from '@substrate/txwrapper';
 import { constructTransaction } from './construction';
+import { submitTransaction } from './submit';
 import { UserInputs, TxConstruction, DECIMALS } from './util';
 import * as readline from 'readline';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
@@ -51,16 +52,22 @@ async function main(): Promise<void> {
 	logUnsignedInfo(decodedUnsigned);
 
 	// Log the signing payload to sign offline.
-
 	console.log(`\nSigning Payload: ${construction.payload}`);
 
+	// Wait for the signature.
 	const signature = await promptSignature();
 
+	// Construct a signed transaction.
 	const tx = createSignedTx(construction.unsigned, signature, { registry });
 	console.log(`\nEncoded Transaction: ${tx}`);
 
-	const exptectedTxHash = getTxHash(tx);
-	console.log(`\nExpected Tx Hash: ${exptectedTxHash}`);
+	// Log the expected hash.
+	const expectedTxHash = getTxHash(tx);
+	console.log(`\nExpected Tx Hash: ${expectedTxHash}`);
+
+	// Submit the transaction.
+	const submission = await submitTransaction(inputs.sidecarHost, tx);
+	console.log(`\nNode Response: ${submission}`);
 }
 
 main().catch((error) => {
