@@ -51,6 +51,7 @@ async function main(): Promise<void> {
 	logUnsignedInfo(decodedUnsigned);
 
 	// Log the signing payload to sign offline.
+
 	console.log(`\nSigning Payload: ${construction.payload}`);
 
 	const signature = await promptSignature();
