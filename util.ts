@@ -25,6 +25,7 @@ export interface TxConstruction {
   unsigned: UnsignedTransaction;
   payload: string;
   registry: TypeRegistry;
+  metadata: string;
 }
 
 export interface RegistryInfo {

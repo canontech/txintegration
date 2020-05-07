@@ -135,6 +135,7 @@ export async function constructTransaction(userInputs: UserInputs): Promise<TxCo
 	return {
 		unsigned: unsigned,
 		payload: signingPayload,
-		registry: registry
+		registry: registry,
+		metadata: chainData.metadataRpc
 	};
 }
