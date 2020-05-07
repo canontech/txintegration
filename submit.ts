@@ -20,6 +20,7 @@ async function sidecarPost(url: string, tx: string): Promise<any> {
 }
 
 export async function submitTransaction(sidecarHost: string, encodedTx: string): Promise<any> {
-	const submission = await sidecarPost(sidecarHost, encodedTx);
+	const endpoint = `${sidecarHost}tx/`;
+	const submission = await sidecarPost(endpoint, encodedTx);
 	return submission;
 }
