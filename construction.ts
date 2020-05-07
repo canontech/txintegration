@@ -130,7 +130,6 @@ export async function constructTransaction(userInputs: UserInputs): Promise<TxCo
 	
 	// Construct the signing payload from an unsigned transaction.
 	const signingPayload: string = createSigningPayload(unsigned, { registry });
-	// console.log(`\nSigning Payload: ${signingPayload}`);
 	
 	return {
 		unsigned: unsigned,
