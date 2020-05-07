@@ -1,18 +1,16 @@
+import axios from 'axios'
+
 // Submit a signed tx using sidecar.
 async function sidecarPost(url: string, tx: string): Promise<any> {
-  return fetch(url, {
-    body: JSON.stringify({
-      data: `{"tx": "${tx}"}`
-    }),
+  return axios.post(url, { tx }, {
     headers: {
       'Content-Type': 'application/json',
     },
-    method: 'POST',
   })
-    .then((response) => response.json())
+    .then(({ data }) => data)
     .then(({ error, result }) => {
       if (error) {
-        throw new Error(error.message);
+        throw new Error(error);
       }
 
       return result;
@@ -20,7 +18,7 @@ async function sidecarPost(url: string, tx: string): Promise<any> {
 }
 
 export async function submitTransaction(sidecarHost: string, encodedTx: string): Promise<any> {
-	const endpoint = `${sidecarHost}tx/`;
-	const submission = await sidecarPost(endpoint, encodedTx);
-	return submission;
+  const endpoint = `${sidecarHost}tx/`;
+  const submission = await sidecarPost(endpoint, encodedTx);
+  return submission;
 }
