@@ -9,7 +9,7 @@ import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsigne
 const inputs: UserInputs = {
 	senderAddress: '15wAmQvSSiAK6Z53MT2cQVHXC8Z2et9GojXeVKnGZdRpwPvp',
 	recipientAddress: '13iSQm7iyDjoTo3HndhCzpQztAxkNpB1SyRkEuucmAShcApQ',
-	transferValue: 1,
+	transferValue: 1 * DECIMALS,
 	tip: 0,
 	validityPeriod: 240,
 	sidecarHost: 'https://cb-runtime-wk8yx7pds0ag.paritytech.net/'
