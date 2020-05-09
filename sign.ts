@@ -11,16 +11,16 @@ import {
 	KeyringPair,
 } from '@substrate/txwrapper';
 import { RegistryInfo, signWith } from './util';
+import * as readline from 'readline';
 // Import a secret key URI from `key.ts`, which should be a string. Obviously you will need to
 // create your own.
 import { signingKey } from './key';
 
-const signingPayload = '0x...';
-const senderAddress = '15wAmQvSSiAK6Z53MT2cQVHXC8Z2et9GojXeVKnGZdRpwPvp';
+const senderAddress = '15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5'; // Alice
 const registryInputs: RegistryInfo = {
 	chainName: 'Polkadot',
 	specName: 'polkadot',
-	specVersion: 1007,
+	specVersion: 1008,
 }
 
 function createKeyring(uri: string): KeyringPair {
@@ -29,9 +29,23 @@ function createKeyring(uri: string): KeyringPair {
 	const signingPair = keyring.addFromUri(
 		uri,
 		{ name: 'Alice' },
-		'ed25519' // TODO make input param
+		'sr25519' // TODO make input param
 	);
 	return signingPair;
+}
+
+function promptPayload(): Promise<string> {
+	let rl = readline.createInterface({
+		input: process.stdin,
+		output: process.stdout
+	});
+
+	return (new Promise((resolve) => {
+		rl.question('\nPayload: ', (answer) => {
+			resolve(answer);
+			rl.close();
+		})
+	}));
 }
 
 async function main(): Promise<void> {
@@ -55,6 +69,8 @@ async function main(): Promise<void> {
 		)
 		process.exit(1);
 	}
+
+	const signingPayload = await promptPayload();
 
 	const signature = signWith(registry, signingPair, signingPayload);
 	console.log(`\nSignature: ${signature}\n`);

@@ -7,12 +7,12 @@ import * as readline from 'readline';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 
 const inputs: UserInputs = {
-	senderAddress: '15wAmQvSSiAK6Z53MT2cQVHXC8Z2et9GojXeVKnGZdRpwPvp',
-	recipientAddress: '13iSQm7iyDjoTo3HndhCzpQztAxkNpB1SyRkEuucmAShcApQ',
+	senderAddress: '15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5', //Alice
+	recipientAddress: '14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3', //Bob
 	transferValue: 1 * DECIMALS,
 	tip: 0,
 	validityPeriod: 240,
-	sidecarHost: 'https://cb-runtime-wk8yx7pds0ag.paritytech.net/'
+	sidecarHost: 'http://127.0.0.1:8080/'
 }
 
 function promptSignature(): Promise<string> {

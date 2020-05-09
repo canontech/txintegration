@@ -103,6 +103,7 @@ export async function constructTransaction(userInputs: UserInputs): Promise<TxCo
 	const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
 
 	const registry = getRegistry('Polkadot', 'polkadot', chainData.specVersion);
+	console.log(`\nNetwork Version: ${chainData.specVersion}`);
 
 	checkAvailableBalance(senderData.balance, userInputs.transferValue, DECIMALS);
 

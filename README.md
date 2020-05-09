@@ -75,12 +75,11 @@ This will wait for you to sign the payload.
 You can sign the payload in any way you like. Ideally, you should do this on a secure, offline
 device. A signing script is provided to use for testing.
 
-In `sign.ts`, enter the signing payload, sending account, and network version from the last step:
+In `sign.ts`, enter the sending account and network version from the last step:
 
 ```ts
-const signingPayload =
-  "0xa005038eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48070010a5d4e895030000f00300003a5dacb3a8725d578ab4b1457764e960a86b17720c3d39086c3b0872122b7a41f837b149dcb20f92540a027e58aab0554d2d42f36887f33a5e6a85ebdd0f13d8"; // Signing Payload from previous step
-const senderAddress = "15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5"; // Address that corresponds to the signing key
+// Address that corresponds to the signing key
+const senderAddress = "15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5";
 const registryInputs: RegistryInfo = {
   chainName: "Polkadot",
   specName: "polkadot",
@@ -88,18 +87,20 @@ const registryInputs: RegistryInfo = {
 };
 ```
 
-Create a new file (not tracked in the repo for obvious reasons) called `key.ts`. In here you can put
-your signing key. It can be a 12 word phrase or secret seed. Or, in the case of a dev chain, just
-`//Alice`:
+Create a new file (not tracked in the repo for obvious reasons) called `key.ts` that exports a
+`const signingKey: string`. In here you can put your signing key. It can be a 12 word phrase or
+secret seed. Or, in the case of a dev chain, just `//Alice`:
 
 ```ts
 export const signingKey = '//Alice';
 ```
 
-Execute `sign.js` to get a signature:
+Run `yarn sign` and enter the signing payload from the last step to get a signature:
 
 ```bash
-$ ./node_modules/ts-node/dist/bin.js sign.ts
+$ yarn sign
+
+Payload: <enter the signing payload here>
 
 Signature: 0x014679aaf0589f456f57875837c3c3f9747dee901304e05fe9511eece5bfd68c1e7443ff6d476f170d80cbbabae5f6bd3cf3d486663fe8f68d48e8ea7c70edc18d
 ```
