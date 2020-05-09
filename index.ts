@@ -12,6 +12,8 @@ const inputs: UserInputs = {
 	transferValue: 1 * DECIMALS,
 	tip: 0,
 	validityPeriod: 240,
+	chainName: 'Polkadot',
+	specName: 'polkadot',
 	sidecarHost: 'http://127.0.0.1:8080/'
 }
 

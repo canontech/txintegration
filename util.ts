@@ -15,11 +15,18 @@ export interface UserInputs {
   tip: number;
   // Number of blocks for which this transaction is valid.
   validityPeriod: number;
+  // Chain name.
+  chainName: ChainName;
+  // Chain spec.
+  specName: SpecName;
   // Host that is running sidecar.
   sidecarHost: string;
 }
 
 export const DECIMALS = 1_000_000_000_000;
+
+type ChainName = 'Polkadot' | 'Kusama';
+type SpecName = 'polkadot' | 'kusama';
 
 export interface TxConstruction {
   unsigned: UnsignedTransaction;
@@ -29,8 +36,8 @@ export interface TxConstruction {
 }
 
 export interface RegistryInfo {
-	chainName: string;
-	specName: string;
+	chainName: ChainName;
+	specName: SpecName;
 	specVersion: number;
 }
 

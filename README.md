@@ -48,6 +48,8 @@ const inputs: UserInputs = {
   transferValue: 1 * DECIMALS, // DOTs
   tip: 0 * DECIMALS,           // DOTs
   validityPeriod: 240,         // Seconds
+  chainName: 'Polkadot',       // 'Polkadot', 'Kusama', or 'Westend'
+  specName: 'polkadot',        // 'polkadot', 'kusama', or 'westend'
   sidecarHost: "http://127.0.0.1:8080/", // Sidecar
 };
 ```
@@ -87,11 +89,16 @@ const registryInputs: RegistryInfo = {
 };
 ```
 
-Create a new file (not tracked in the repo for obvious reasons) called `key.ts` that exports a
-`const signingKey: string`. In here you can put your signing key. It can be a 12 word phrase or
+Create a new file called `key.ts` that exports a
+signing key and type. An example for 'Alice' is provided. In here you can put your signing key. It can be a 12 word phrase or
 secret seed. Or, in the case of a dev chain, just `//Alice`:
 
 ```ts
+// Type of signing curve. Do not change.
+type Curve = 'sr25519' | 'ed25519' | 'ecdsa';
+// Key type. Must be one of `Curve`.
+export const curve = 'sr25519';
+// The actual signing key. Can include `//hard-derivation`, `/soft-derivation`, or `///password`.
 export const signingKey = '//Alice';
 ```
 
