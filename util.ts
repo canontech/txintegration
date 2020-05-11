@@ -13,7 +13,7 @@ export interface UserInputs {
   transferValue: number;
   // Tip for block producer.
   tip: number;
-  // Number of blocks for which this transaction is valid.
+  // Number of seconds for which this transaction is valid. Assumes six second block time.
   validityPeriod: number;
   // Chain name.
   chainName: ChainName;
