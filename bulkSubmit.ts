@@ -12,7 +12,7 @@ const inputs: UserInputs = {
 	recipientAddress: '14inmGQGBE1ptjTcFaDBjewnGKfNanGEYKv1szbguZ1xsk9n', // Test 2
 	transferValue: 1 * DECIMALS,
 	tip: 0,
-	validityPeriod: 1500,
+	eraPeriod: 64,
 	chainName: 'Polkadot',
 	specName: 'polkadot',
 	sidecarHost: 'http://127.0.0.1:8080/',
@@ -43,7 +43,7 @@ async function main(): Promise<void> {
 	// Wait for the signature.
 	const keyPair = createKeyring(signingKey);
 
-	const limit = 10;
+	const limit = 4;
 	var txs = [];
 	for (var ii=0; ii < limit; ii++){
 		inputs.recipientAddress = recipients[ii % recipients.length];

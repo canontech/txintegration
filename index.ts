@@ -7,11 +7,11 @@ import * as readline from 'readline';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 
 const inputs: UserInputs = {
-	senderAddress: '15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5', //Alice
-	recipientAddress: '14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3', //Bob
-	transferValue: 1 * DECIMALS,
+	senderAddress: '16ucAqksrCNxBUbVtzGWNju9KRCBkmyAtxoLsHUtaNUjBxe', // Test 1
+	recipientAddress: '14inmGQGBE1ptjTcFaDBjewnGKfNanGEYKv1szbguZ1xsk9n', // Test 2
+	transferValue: 10 * DECIMALS,
 	tip: 0,
-	validityPeriod: 240,
+	eraPeriod: 64,
 	chainName: 'Polkadot',
 	specName: 'polkadot',
 	sidecarHost: 'http://127.0.0.1:8080/'
@@ -37,7 +37,8 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
 		`\n  Sending Account:   ${decoded.address}` +
 		`\n  Receiving Account: ${decoded.method.args.dest}` +
 		`\n  Amount: ${decoded.method.args.value}` +
-		`\n  Tip:    ${decoded.tip}`
+		`\n  Tip:    ${decoded.tip}` +
+		`\n  Era Period: ${decoded.eraPeriod}`
 	)
 }
 

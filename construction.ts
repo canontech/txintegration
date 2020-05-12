@@ -120,13 +120,13 @@ export async function constructTransaction(userInputs: UserInputs): Promise<TxCo
     {
       address: userInputs.senderAddress,
       blockHash: chainData.blockHash,
-      blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toBn().toNumber(),
+			blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toBn().toNumber(),
+			eraPeriod: 64,
       genesisHash: chainData.genesisHash,
       metadataRpc: chainData.metadataRpc,
       nonce: userInputs.nonce || senderData.nonce,
       specVersion: chainData.specVersion,
-      tip: userInputs.tip,
-      validityPeriod: userInputs.validityPeriod,
+      tip: userInputs.tip
     },
     {
       metadata: chainData.metadataRpc,
