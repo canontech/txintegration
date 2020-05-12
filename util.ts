@@ -21,6 +21,8 @@ export interface UserInputs {
   specName: SpecName;
   // Host that is running sidecar.
   sidecarHost: string;
+  // Override the chain's nonce.
+  nonce?: number;
 }
 
 export const DECIMALS = 1_000_000_000_000;

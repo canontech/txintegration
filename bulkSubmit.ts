@@ -5,17 +5,26 @@ import { constructTransaction } from './construction';
 import { submitTransaction } from './submit';
 import { UserInputs, TxConstruction, signWith, DECIMALS } from './util';
 import { signingKey, curve } from './key';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 const inputs: UserInputs = {
 	senderAddress: '16ucAqksrCNxBUbVtzGWNju9KRCBkmyAtxoLsHUtaNUjBxe', // Test 1
 	recipientAddress: '14inmGQGBE1ptjTcFaDBjewnGKfNanGEYKv1szbguZ1xsk9n', // Test 2
-	transferValue: 10 * DECIMALS,
+	transferValue: 1 * DECIMALS,
 	tip: 0,
 	validityPeriod: 600,
 	chainName: 'Polkadot',
 	specName: 'polkadot',
-	sidecarHost: 'http://127.0.0.1:8080/'
+	sidecarHost: 'http://127.0.0.1:8080/',
+	nonce: 16
 }
+
+const recipients = [
+	'14inmGQGBE1ptjTcFaDBjewnGKfNanGEYKv1szbguZ1xsk9n', // Test 2
+	'1H5kpTFie7knRsJdGgU2TxTnFGKu1dWaE138NL6JENsPjEt',  // Test 3
+	'15x1zAvsJcBAiqSSsazxpEUyE9TsrWKdmPxd897hwYYLvfoW', // Test 4
+	'16iGere6SnK5NYP8qhpsPkfPzwMn3sFiLpG3ny64RhSxwaGm'  // Test 5
+];
 
 function createKeyring(uri: string): KeyringPair {
 	// Create a new keyring
@@ -29,24 +38,33 @@ function createKeyring(uri: string): KeyringPair {
 }
 
 async function main(): Promise<void> {
-	// Construct a transaction.
-	const construction: TxConstruction = await constructTransaction(inputs);
-	const registry = construction.registry;
-
+	// Wait for the promise to resolve async WASM
+	await cryptoWaitReady();
 	// Wait for the signature.
 	const keyPair = createKeyring(signingKey);
-	const signature = signWith(
-		registry,
-		keyPair,
-		construction.payload
-	);
 
-	// Construct a signed transaction.
-	const tx = createSignedTx(construction.unsigned, signature, { registry });
+	const limit = 8;
+	for (var ii=0; ii < limit; ii++){
+		inputs.recipientAddress = recipients[ii % recipients.length];
 
-	// Submit the transaction.
-	const submission = await submitTransaction(inputs.sidecarHost, tx);
-	console.log(`\nNode Response: ${submission}`);
+		// Construct a transaction.
+		const construction: TxConstruction = await constructTransaction(inputs);
+		const registry = construction.registry;
+
+		const signature = signWith(
+			registry,
+			keyPair,
+			construction.payload
+		);
+
+		// Construct a signed transaction.
+		const tx = createSignedTx(construction.unsigned, signature, { registry });
+
+		// Submit the transaction.
+		const submission = await submitTransaction(inputs.sidecarHost, tx);
+		console.log(`\nNode Response: ${submission}`);
+		inputs.nonce += 1;
+	}
 }
 
 main().catch((error) => {

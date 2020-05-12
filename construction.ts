@@ -123,7 +123,7 @@ export async function constructTransaction(userInputs: UserInputs): Promise<TxCo
       blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toBn().toNumber(),
       genesisHash: chainData.genesisHash,
       metadataRpc: chainData.metadataRpc,
-      nonce: senderData.nonce,
+      nonce: userInputs.nonce || senderData.nonce,
       specVersion: chainData.specVersion,
       tip: userInputs.tip,
       validityPeriod: userInputs.validityPeriod,
