@@ -12,11 +12,11 @@ const inputs: UserInputs = {
 	recipientAddress: '14inmGQGBE1ptjTcFaDBjewnGKfNanGEYKv1szbguZ1xsk9n', // Test 2
 	transferValue: 1 * DECIMALS,
 	tip: 0,
-	validityPeriod: 600,
+	validityPeriod: 1500,
 	chainName: 'Polkadot',
 	specName: 'polkadot',
 	sidecarHost: 'http://127.0.0.1:8080/',
-	nonce: 16
+	nonce: 64
 }
 
 const recipients = [
@@ -43,7 +43,8 @@ async function main(): Promise<void> {
 	// Wait for the signature.
 	const keyPair = createKeyring(signingKey);
 
-	const limit = 8;
+	const limit = 10;
+	var txs = [];
 	for (var ii=0; ii < limit; ii++){
 		inputs.recipientAddress = recipients[ii % recipients.length];
 
@@ -59,12 +60,21 @@ async function main(): Promise<void> {
 
 		// Construct a signed transaction.
 		const tx = createSignedTx(construction.unsigned, signature, { registry });
-
-		// Submit the transaction.
-		const submission = await submitTransaction(inputs.sidecarHost, tx);
-		console.log(`\nNode Response: ${submission}`);
+		txs.push(tx);
 		inputs.nonce += 1;
+		if (ii % 10 == 0){
+			console.log(`Transactions: ${ii}`);
+		}
 	}
+	
+	const startSubmit = Date.now();
+	for (var jj=0; jj < txs.length; jj++){
+		// Submit the transaction.
+		const submission = await submitTransaction(inputs.sidecarHost, txs[jj]);
+		console.log(`\nNode Response: ${submission}`);
+	}
+	const endSubmit = Date.now();
+	console.log(`Average Submission Time: ${(endSubmit - startSubmit) / txs.length} ms`);
 }
 
 main().catch((error) => {
