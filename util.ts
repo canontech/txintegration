@@ -66,7 +66,6 @@ export async function sidecarGet(url: string): Promise<any> {
   // }
   // return response.json();
   return axios.get(url).then(({ data }) => {
-    console.log(data);
     return data;
   });
 }
