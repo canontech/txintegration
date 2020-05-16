@@ -9,6 +9,7 @@
     "start": "ts-node index.ts",
     "sign": "./node_modules/ts-node/dist/bin.js sign.ts",
     "bulk": "./node_modules/ts-node/dist/bin.js bulkSubmit.ts",
+    "sync": "./node_modules/ts-node/dist/bin.js chainSync.ts",
     "build": "rimraf lib/ && tsc -p tsconfig.build.json",
     "lint": "tsc --noEmit && eslint . --ext ts"
   },

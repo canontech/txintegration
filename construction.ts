@@ -4,7 +4,7 @@ import {
   getRegistry,
   methods,
 } from '@substrate/txwrapper';
-import { TxConstruction, UserInputs, DECIMALS } from './util';
+import { TxConstruction, UserInputs, sidecarGet, DECIMALS } from './util';
 
 // Information about the chain that we need to construct a transaction.
 interface ChainData {
@@ -48,17 +48,6 @@ interface AddressResponse {
 	miscFrozen: string;
 	feeFrozen: string;
 	locks: [];
-}
-
-// Get information from the sidecar.
-async function sidecarGet(
-	url: string
-): Promise<any> {
-	const response = await fetch(url);
-	if (!response.ok) {
-		throw new Error(response.statusText);
-	}
-	return response.json();
 }
 
 // Get information about the chain.
