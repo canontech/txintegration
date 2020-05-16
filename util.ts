@@ -1,8 +1,8 @@
 // Useful functions and types.
 import { TypeRegistry } from '@polkadot/types';
 import { TRANSACTION_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
-
 import { KeyringPair, UnsignedTransaction } from '@substrate/txwrapper';
+import axios from 'axios';
 
 export interface UserInputs {
   // Address sending the transaction.
@@ -62,9 +62,14 @@ export function signWith(
 export async function sidecarGet(
 	url: string
 ): Promise<any> {
-	const response = await fetch(url);
-	if (!response.ok) {
-		throw new Error(response.statusText);
-	}
-	return response.json();
+	// const response = await fetch(url);
+	// if (!response.ok) {
+	// 	throw new Error(response.statusText);
+	// }
+  // return response.json();
+  return axios.get(url)
+    .then(({ data }) => {
+      console.log(data);
+      return data;
+    });
 }

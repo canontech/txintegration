@@ -19,13 +19,11 @@ interface BlockResponse {
 	logs: [];
 	onInitialize: [];
 	extrinsics: [];
-	success: boolean;
-	paysFee: boolean;
 	onFinalize: [];
 }
 
 interface Block {
-	number: number;
+	number: string;
 }
 
 // Get a block.
@@ -34,7 +32,7 @@ async function getBlock(sidecarHost: string, blockNumber?: number): Promise<Bloc
 	if (blockNumber) { endpoint = `${endpoint}${blockNumber}` }
 	const blockData: BlockResponse = await sidecarGet(endpoint);
 	return {
-	  number: parseInt(blockData.number),
+	  number: blockData.number,
 	};
 }
 
