@@ -16,7 +16,7 @@ const inputs: UserInputs = {
 	chainName: 'Polkadot',
 	specName: 'polkadot',
 	sidecarHost: 'http://127.0.0.1:8080/',
-	nonce: 64
+	nonce: 1
 }
 
 const recipients = [
@@ -59,7 +59,11 @@ async function main(): Promise<void> {
 		);
 
 		// Construct a signed transaction.
-		const tx = createSignedTx(construction.unsigned, signature, { registry });
+		const tx = createSignedTx(
+			construction.unsigned,
+			signature, 
+			{ metadataRpc: construction.metadata, registry: registry }
+		);
 		txs.push(tx);
 		inputs.nonce += 1;
 		if (ii % 10 == 0){

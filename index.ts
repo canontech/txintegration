@@ -50,7 +50,7 @@ async function main(): Promise<void> {
 	// Verify transaction details.
 	const decodedUnsigned = decode(
 		construction.unsigned,
-		{ metadata: construction.metadata, registry: registry }
+		{ metadataRpc: construction.metadata, registry: registry }
 	);
 	logUnsignedInfo(decodedUnsigned);
 
@@ -61,7 +61,11 @@ async function main(): Promise<void> {
 	const signature = await promptSignature();
 
 	// Construct a signed transaction.
-	const tx = createSignedTx(construction.unsigned, signature, { registry });
+	const tx = createSignedTx(
+		construction.unsigned,
+		signature, 
+		{ metadataRpc: construction.metadata, registry: registry }
+	);
 	console.log(`\nEncoded Transaction: ${tx}`);
 
 	// Log the expected hash.

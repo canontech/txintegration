@@ -118,7 +118,7 @@ export async function constructTransaction(userInputs: UserInputs): Promise<TxCo
       tip: userInputs.tip
     },
     {
-      metadata: chainData.metadataRpc,
+      metadataRpc: chainData.metadataRpc,
       registry,
     }
 	);
