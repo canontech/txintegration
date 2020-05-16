@@ -43,14 +43,14 @@ In `index.ts` you will need to enter the transaction parameters:
 
 ```ts
 const inputs: UserInputs = {
-  senderAddress: "15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5",    //Alice
-  recipientAddress: "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3", //Bob
+  senderAddress: '15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5', //Alice
+  recipientAddress: '14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3', //Bob
   transferValue: 1 * DECIMALS, // DOTs
-  tip: 0 * DECIMALS,           // DOTs
-  validityPeriod: 240,         // Seconds
-  chainName: 'Polkadot',       // 'Polkadot', 'Kusama', or 'Westend'
-  specName: 'polkadot',        // 'polkadot', 'kusama', or 'westend'
-  sidecarHost: "http://127.0.0.1:8080/", // Sidecar
+  tip: 0 * DECIMALS, // DOTs
+  validityPeriod: 240, // Seconds
+  chainName: 'Polkadot', // 'Polkadot', 'Kusama', or 'Westend'
+  specName: 'polkadot', // 'polkadot', 'kusama', or 'westend'
+  sidecarHost: 'http://127.0.0.1:8080/', // Sidecar
 };
 ```
 
@@ -81,17 +81,17 @@ In `sign.ts`, enter the sending account and network version from the last step:
 
 ```ts
 // Address that corresponds to the signing key
-const senderAddress = "15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5";
+const senderAddress = '15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5';
 const registryInputs: RegistryInfo = {
-  chainName: "Polkadot",
-  specName: "polkadot",
+  chainName: 'Polkadot',
+  specName: 'polkadot',
   specVersion: 1008, // Network Version from previous step
 };
 ```
 
-Create a new file called `key.ts` that exports a
-signing key and type. An example for 'Alice' is provided. In here you can put your signing key. It can be a 12 word phrase or
-secret seed. Or, in the case of a dev chain, just `//Alice`:
+Create a new file called `key.ts` that exports a signing key and type. An example for 'Alice' is
+provided. In here you can put your signing key. It can be a 12 word phrase or secret seed. Or, in
+the case of a dev chain, just `//Alice`:
 
 ```ts
 // Type of signing curve. Do not change.

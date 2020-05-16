@@ -38,16 +38,16 @@ export interface TxConstruction {
 }
 
 export interface RegistryInfo {
-	chainName: ChainName;
-	specName: SpecName;
-	specVersion: number;
+  chainName: ChainName;
+  specName: SpecName;
+  specVersion: number;
 }
 
 // Signing function. Implement this on the OFFLINE signing device.
 export function signWith(
   registry: TypeRegistry,
   pair: KeyringPair,
-  signingPayload: string
+  signingPayload: string,
 ): string {
   const { signature } = registry
     .createType('ExtrinsicPayload', signingPayload, {
@@ -59,17 +59,14 @@ export function signWith(
 }
 
 // Get information from the sidecar.
-export async function sidecarGet(
-	url: string
-): Promise<any> {
-	// const response = await fetch(url);
-	// if (!response.ok) {
-	// 	throw new Error(response.statusText);
-	// }
+export async function sidecarGet(url: string): Promise<any> {
+  // const response = await fetch(url);
+  // if (!response.ok) {
+  // 	throw new Error(response.statusText);
+  // }
   // return response.json();
-  return axios.get(url)
-    .then(({ data }) => {
-      console.log(data);
-      return data;
-    });
+  return axios.get(url).then(({ data }) => {
+    console.log(data);
+    return data;
+  });
 }
