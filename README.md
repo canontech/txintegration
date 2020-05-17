@@ -47,7 +47,7 @@ const inputs: UserInputs = {
   recipientAddress: '14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3', //Bob
   transferValue: 1 * DECIMALS, // DOTs
   tip: 0 * DECIMALS, // DOTs
-  validityPeriod: 240, // Seconds
+  eraPeriod: 64, // Blocks
   chainName: 'Polkadot', // 'Polkadot', 'Kusama', or 'Westend'
   specName: 'polkadot', // 'polkadot', 'kusama', or 'westend'
   sidecarHost: 'http://127.0.0.1:8080/', // Sidecar
