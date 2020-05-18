@@ -28,7 +28,7 @@ interface ArtifactsResponse {
   // Chain data
   genesisHash: string;
 	specVersion: string;
-	transactionVersion: string;
+	txVersion: string;
   metadata: string;
 }
 
@@ -57,7 +57,7 @@ async function getChainData(sidecarHost: string): Promise<ChainData> {
     blockHash: artifacts.at.hash,
     genesisHash: artifacts.genesisHash,
 		specVersion: parseInt(artifacts.specVersion),
-		transactionVersion: parseInt(artifacts.transactionVersion),
+		transactionVersion: parseInt(artifacts.txVersion),
     metadataRpc: artifacts.metadata,
   };
 }
@@ -110,7 +110,7 @@ export async function constructTransaction(userInputs: UserInputs): Promise<TxCo
       metadataRpc: chainData.metadataRpc,
       nonce: userInputs.nonce || senderData.nonce,
 			specVersion: chainData.specVersion,
-			transactionVersion: 1,
+			transactionVersion: chainData.transactionVersion,
       tip: userInputs.tip,
     },
     {
