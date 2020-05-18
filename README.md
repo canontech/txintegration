@@ -13,7 +13,7 @@ a Substrate-based chain.
 Tested on:
 
 - Polkadot v0.7.32
-- Sidecar v0.4.1
+- Sidecar v0.5.0
 - Txwrapper v3.0.0
 
 ### Start a Node
