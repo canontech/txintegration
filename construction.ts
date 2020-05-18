@@ -7,7 +7,8 @@ interface ChainData {
   blockNumber: string;
   blockHash: string;
   genesisHash: string;
-  specVersion: number;
+	specVersion: number;
+	transactionVersion: number;
   metadataRpc: string;
 }
 
@@ -26,7 +27,8 @@ interface ArtifactsResponse {
   };
   // Chain data
   genesisHash: string;
-  specVersion: string;
+	specVersion: string;
+	transactionVersion: string;
   metadata: string;
 }
 
@@ -54,7 +56,8 @@ async function getChainData(sidecarHost: string): Promise<ChainData> {
     blockNumber: artifacts.at.height,
     blockHash: artifacts.at.hash,
     genesisHash: artifacts.genesisHash,
-    specVersion: parseInt(artifacts.specVersion),
+		specVersion: parseInt(artifacts.specVersion),
+		transactionVersion: parseInt(artifacts.transactionVersion),
     metadataRpc: artifacts.metadata,
   };
 }
@@ -86,7 +89,8 @@ export async function constructTransaction(userInputs: UserInputs): Promise<TxCo
   const chainData = await getChainData(userInputs.sidecarHost);
   const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
 
-  console.log(`\nNetwork Version: ${chainData.specVersion}`);
+	console.log(`\nNetwork Version: ${chainData.specVersion}`);
+	console.log(`Transaction Version: ${chainData.transactionVersion}`);
 
   checkAvailableBalance(senderData.balance, userInputs.transferValue, DECIMALS);
 
@@ -105,7 +109,8 @@ export async function constructTransaction(userInputs: UserInputs): Promise<TxCo
       genesisHash: chainData.genesisHash,
       metadataRpc: chainData.metadataRpc,
       nonce: userInputs.nonce || senderData.nonce,
-      specVersion: chainData.specVersion,
+			specVersion: chainData.specVersion,
+			transactionVersion: 1,
       tip: userInputs.tip,
     },
     {
