@@ -2,33 +2,24 @@
 //
 // This is the only part of this repo that imports Polkadot JS functions directly. TxWrapper is
 // meant to provide tools to create signing payloads. You can sign the payload however you like.
-import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import {
   deriveAddress,
   getRegistry,
   POLKADOT_SS58_FORMAT,
-  KeyringPair,
 } from '@substrate/txwrapper';
-import { RegistryInfo, signWith } from './util';
+import { RegistryInfo, signWith, createKeyring } from './util';
 import * as readline from 'readline';
 // Import a secret key URI from `key.ts`, which should be a string. Obviously you will need to
 // create your own.
 import { signingKey, curve } from './key';
 
-const senderAddress = '16ucAqksrCNxBUbVtzGWNju9KRCBkmyAtxoLsHUtaNUjBxe'; // Alice
+const senderAddress = '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs';
 const registryInputs: RegistryInfo = {
   chainName: 'Polkadot',
   specName: 'polkadot',
-  specVersion: 1010,
+  specVersion: 0,
 };
-
-function createKeyring(uri: string): KeyringPair {
-  // Create a new keyring
-  const keyring = new Keyring();
-  const signingPair = keyring.addFromUri(uri, { name: 'Alice' }, curve);
-  return signingPair;
-}
 
 function promptPayload(): Promise<string> {
   let rl = readline.createInterface({
@@ -48,7 +39,7 @@ async function main(): Promise<void> {
   // Wait for the promise to resolve async WASM
   await cryptoWaitReady();
 
-  const signingPair = createKeyring(signingKey);
+  const signingPair = createKeyring(signingKey, curve);
   const signingAddress = deriveAddress(signingPair.publicKey, POLKADOT_SS58_FORMAT);
 
   const registry = getRegistry(

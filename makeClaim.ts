@@ -10,7 +10,6 @@ import {
 import { submitTransaction } from './submit';
 import { ClaimInputs, sidecarGet } from './util';
 import * as readline from 'readline';
-import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 
 const inputs: ClaimInputs = {
 	polkadotAddress: '13xGBRvbBR9st4c5CVADqXntUYHbHWCPAyMcEK45P5HFAGEZ',

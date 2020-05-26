@@ -1,15 +1,16 @@
 //
 import { createSignedTx, getTxHash, decode } from '@substrate/txwrapper';
-import { constructTransaction } from './construction';
+import { constructBondTransaction } from './constructBond';
 import { submitTransaction } from './submit';
-import { UserInputs, TxConstruction, DECIMALS } from './util';
+import { TxConstruction, DECIMALS, BondInputs } from './util';
 import * as readline from 'readline';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 
-const inputs: UserInputs = {
-  senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
-  recipientAddress: '14inmGQGBE1ptjTcFaDBjewnGKfNanGEYKv1szbguZ1xsk9n', // Test 2
-  transferValue: 1 * DECIMALS,
+const inputs: BondInputs = {
+	senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
+	controller: '16f9UtR3qEcDtjxnCwW29GRX5FatdBPaXf33HpRDBkVJHm5r',
+	value: 1 * DECIMALS,
+  payee: 'Staked',
   tip: 0,
   eraPeriod: 64,
   chainName: 'Polkadot',
@@ -34,17 +35,18 @@ function promptSignature(): Promise<string> {
 function logUnsignedInfo(decoded: DecodedUnsignedTx) {
   console.log(
     `\nTransaction Details:` +
-      `\n  Sending Account:   ${decoded.address}` +
-      `\n  Receiving Account: ${decoded.method.args.dest}` +
-      `\n  Amount: ${decoded.method.args.value}` +
-      `\n  Tip:    ${decoded.tip}` +
+      `\n  Sending Account: ${decoded.address}` +
+      `\n  Controller:      ${decoded.method.args.controller}` +
+			`\n  Value: ${decoded.method.args.value}` +
+			`\n  Payee: ${decoded.method.args.payee}` +
+      `\n  Tip: ${decoded.tip}` +
       `\n  Era Period: ${decoded.eraPeriod}`,
   );
 }
 
 async function main(): Promise<void> {
   // Construct a transaction.
-  const construction: TxConstruction = await constructTransaction(inputs);
+  const construction: TxConstruction = await constructBondTransaction(inputs);
   const registry = construction.registry;
 
   // Verify transaction details.

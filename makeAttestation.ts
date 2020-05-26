@@ -7,7 +7,7 @@ import * as readline from 'readline';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 
 const inputs: AttestInputs = {
-  senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
+  senderAddress: '15vmRt8TVx6tdy5Qmms4K6eWKqfXF1FNsaYJtQ2pGxex7sU7', // Test 1
   agreement: 'Regular',
   tip: 0,
   eraPeriod: 64,
@@ -60,7 +60,7 @@ async function main(): Promise<void> {
   // Construct a signed transaction.
   const tx = createSignedTx(construction.unsigned, signature, {
     metadataRpc: construction.metadata,
-    registry: registry,
+    registry,
   });
   console.log(`\nEncoded Transaction: ${tx}`);
 

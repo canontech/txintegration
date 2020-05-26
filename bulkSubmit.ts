@@ -1,14 +1,13 @@
 //
-import { Keyring } from '@polkadot/api';
-import { createSignedTx, KeyringPair } from '@substrate/txwrapper';
+import { createSignedTx } from '@substrate/txwrapper';
 import { constructTransaction } from './construction';
 import { submitTransaction } from './submit';
-import { UserInputs, TxConstruction, signWith, DECIMALS } from './util';
+import { createKeyring, UserInputs, TxConstruction, signWith, DECIMALS } from './util';
 import { signingKey, curve } from './key';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 const inputs: UserInputs = {
-  senderAddress: '16ucAqksrCNxBUbVtzGWNju9KRCBkmyAtxoLsHUtaNUjBxe', // Test 1
+  senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
   recipientAddress: '14inmGQGBE1ptjTcFaDBjewnGKfNanGEYKv1szbguZ1xsk9n', // Test 2
   transferValue: 1 * DECIMALS,
   tip: 0,
@@ -26,20 +25,13 @@ const recipients = [
   '16iGere6SnK5NYP8qhpsPkfPzwMn3sFiLpG3ny64RhSxwaGm', // Test 5
 ];
 
-function createKeyring(uri: string): KeyringPair {
-  // Create a new keyring
-  const keyring = new Keyring();
-  const signingPair = keyring.addFromUri(uri, { name: 'Alice' }, curve);
-  return signingPair;
-}
-
 async function main(): Promise<void> {
   // Wait for the promise to resolve async WASM
   await cryptoWaitReady();
   // Wait for the signature.
-  const keyPair = createKeyring(signingKey);
+  const keyPair = createKeyring(signingKey, curve);
 
-  const limit = 4;
+  const limit = 1;
   var txs = [];
   for (var ii = 0; ii < limit; ii++) {
     inputs.recipientAddress = recipients[ii % recipients.length];
