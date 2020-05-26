@@ -1,7 +1,8 @@
 // Useful functions and types.
 import { TypeRegistry } from '@polkadot/types';
 import { Keyring } from '@polkadot/api';
-import { TRANSACTION_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
+import { sign } from '@polkadot/types/extrinsic/util'
+import { hexToU8a, u8aToHex } from '@polkadot/util'
 import { KeyringPair, UnsignedTransaction } from '@substrate/txwrapper';
 import axios from 'axios';
 
@@ -81,24 +82,16 @@ export interface RegistryInfo {
 
 export function createKeyring(uri: string, curve: Curve): KeyringPair {
   const keyring = new Keyring();
-  // const signingPair = keyring.addFromUri(uri, { name: 'Alice' }, curve);
-  const signingPair = keyring.addFromMnemonic('print slim hand lamp security hollow payment lecture jealous edge movie unique', { name: 'Alice' }, 'sr25519')
+  const signingPair = keyring.addFromUri(uri, { name: 'Alice' }, curve);
   return signingPair;
 }
 
 // Signing function. Implement this on the OFFLINE signing device.
 export function signWith(
-  registry: TypeRegistry,
   pair: KeyringPair,
   signingPayload: string,
 ): string {
-  const { signature } = registry
-    .createType('ExtrinsicPayload', signingPayload, {
-      version: TRANSACTION_VERSION,
-    })
-    .sign(pair);
-
-  return signature;
+  return u8aToHex(sign(pair, hexToU8a(signingPayload), { withType: true }));
 }
 
 // Get information from the sidecar.

@@ -59,7 +59,7 @@ async function main(): Promise<void> {
 
   const signingPayload = await promptPayload();
 
-  const signature = signWith(registry, signingPair, signingPayload);
+  const signature = signWith(signingPair, signingPayload);
   console.log(`\nSignature: ${signature}\n`);
 }
 
