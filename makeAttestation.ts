@@ -7,7 +7,7 @@ import * as readline from 'readline';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 
 const inputs: AttestInputs = {
-  senderAddress: '14FtbmoVqnwG6kdC89o9Tab73JC6QKbq49WADC41zLc9Di5a', // Test 1
+  senderAddress: '15vmRt8TVx6tdy5Qmms4K6eWKqfXF1FNsaYJtQ2pGxex7sU7', // Test 1
   agreement: 'Regular',
   tip: 0,
   eraPeriod: 64,
@@ -69,8 +69,8 @@ async function main(): Promise<void> {
   console.log(`\nExpected Tx Hash: ${expectedTxHash}`);
 
   // Submit the transaction.
-  // const submission = await submitTransaction(inputs.sidecarHost, tx);
-  // console.log(`\nNode Response: ${submission}`);
+  const submission = await submitTransaction(inputs.sidecarHost, tx);
+  console.log(`\nNode Response: ${submission}`);
 }
 
 main().catch((error) => {
