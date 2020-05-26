@@ -16,7 +16,7 @@ import * as readline from 'readline';
 import { signingKey, curve } from './key';
 import { polkadotMetadata0 } from './metadata'
 
-const senderAddress = '15vmRt8TVx6tdy5Qmms4K6eWKqfXF1FNsaYJtQ2pGxex7sU7';
+const senderAddress = '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs';
 const registryInputs: RegistryInfo = {
   chainName: 'Polkadot',
   specName: 'polkadot',
