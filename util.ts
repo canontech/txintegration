@@ -35,6 +35,16 @@ export interface AttestInputs {
   sidecarHost: string;
 }
 
+export interface ClaimInputs {
+  polkadotAddress: string;
+  ethereumAddress: string;
+  tip: number;
+  eraPeriod: number;
+  chainName: ChainName;
+  specName: SpecName;
+  sidecarHost: string;
+}
+
 export const DECIMALS = 1_000_000_000_000;
 
 type ChainName = 'Polkadot' | 'Kusama';

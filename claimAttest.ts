@@ -1,6 +1,6 @@
 // import { methods, getPolkadotStatement, getEthereumPayload } from '../txwrapper/src';
 import { createSigningPayload, getRegistry, methods, getPolkadotStatement, getEthereumPayload } from '@substrate/txwrapper';
-import { TxConstruction, AttestInputs, sidecarGet } from './util';
+import { TxConstruction, sidecarGet, ClaimInputs } from './util';
 
 // Information about the chain that we need to construct a transaction.
 interface ChainData {
@@ -75,7 +75,7 @@ async function getSenderData(sidecarHost: string, address: string): Promise<Addr
   };
 }
 
-export async function constructAttestation(userInputs: AttestInputs): Promise<TxConstruction> {
+export async function constructClaimAttest(userInputs: ClaimInputs): Promise<TxConstruction> {
 	const chainData = await getChainData(userInputs.sidecarHost);
 	const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
 	const attestation = getPolkadotStatement(userInputs.agreement);
