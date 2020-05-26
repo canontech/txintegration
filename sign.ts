@@ -8,11 +8,13 @@ import {
   getRegistry,
   POLKADOT_SS58_FORMAT,
 } from '@substrate/txwrapper';
+import { createMetadata } from '@substrate/txwrapper/lib/util/metadata';
 import { RegistryInfo, signWith, createKeyring } from './util';
 import * as readline from 'readline';
 // Import a secret key URI from `key.ts`, which should be a string. Obviously you will need to
 // create your own.
 import { signingKey, curve } from './key';
+import { polkadotMetadata0 } from './metadata'
 
 const senderAddress = '15vmRt8TVx6tdy5Qmms4K6eWKqfXF1FNsaYJtQ2pGxex7sU7';
 const registryInputs: RegistryInfo = {
@@ -47,6 +49,7 @@ async function main(): Promise<void> {
     registryInputs.specName,
     registryInputs.specVersion,
   );
+  registry.setMetadata(createMetadata(registry, polkadotMetadata0));
 
   if (senderAddress != signingAddress) {
     console.log(
@@ -59,7 +62,7 @@ async function main(): Promise<void> {
 
   const signingPayload = await promptPayload();
 
-  const signature = signWith(signingPair, signingPayload);
+  const signature = signWith(registry, signingPair, signingPayload);
   console.log(`\nSignature: ${signature}\n`);
 }
 
