@@ -25,10 +25,21 @@ export interface UserInputs {
   nonce?: number;
 }
 
+export interface AttestInputs {
+  senderAddress: string;
+  agreement: Agreement;
+  tip: number;
+  eraPeriod: number;
+  chainName: ChainName;
+  specName: SpecName;
+  sidecarHost: string;
+}
+
 export const DECIMALS = 1_000_000_000_000;
 
 type ChainName = 'Polkadot' | 'Kusama';
 type SpecName = 'polkadot' | 'kusama';
+type Agreement = 'Regular' | 'Saft';
 
 export interface TxConstruction {
   unsigned: UnsignedTransaction;
