@@ -14,7 +14,7 @@ import * as readline from 'readline';
 // create your own.
 import { signingKey, curve } from './key';
 
-const senderAddress = '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs';
+const senderAddress = '14FtbmoVqnwG6kdC89o9Tab73JC6QKbq49WADC41zLc9Di5a';
 const registryInputs: RegistryInfo = {
   chainName: 'Polkadot',
   specName: 'polkadot',
@@ -51,8 +51,8 @@ async function main(): Promise<void> {
   if (senderAddress != signingAddress) {
     console.log(
       `Sending and signing key mismatch!\n` +
-        `  Keypair Address:     ${signingAddress}\n` +
-        `  Transaction Address: ${senderAddress}`,
+      `  Keypair Address:     ${signingAddress}\n` +
+      `  Transaction Address: ${senderAddress}`,
     );
     process.exit(1);
   }

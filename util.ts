@@ -81,7 +81,8 @@ export interface RegistryInfo {
 
 export function createKeyring(uri: string, curve: Curve): KeyringPair {
   const keyring = new Keyring();
-  const signingPair = keyring.addFromUri(uri, { name: 'Alice' }, curve);
+  // const signingPair = keyring.addFromUri(uri, { name: 'Alice' }, curve);
+  const signingPair = keyring.addFromMnemonic('print slim hand lamp security hollow payment lecture jealous edge movie unique', { name: 'Alice' }, 'sr25519')
   return signingPair;
 }
 
