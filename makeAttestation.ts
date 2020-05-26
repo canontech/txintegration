@@ -33,9 +33,9 @@ function promptSignature(): Promise<string> {
 function logUnsignedInfo(decoded: DecodedUnsignedTx) {
   console.log(
     `\nTransaction Details:` +
-      `\n  Sending Account:   ${decoded.address}` +
-      `\n  Tip:    ${decoded.tip}` +
-      `\n  Era Period: ${decoded.eraPeriod}`,
+    `\n  Sending Account:   ${decoded.address}` +
+    `\n  Tip:    ${decoded.tip}` +
+    `\n  Era Period: ${decoded.eraPeriod}`,
   );
 }
 
