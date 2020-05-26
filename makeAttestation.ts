@@ -34,8 +34,6 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
   console.log(
     `\nTransaction Details:` +
       `\n  Sending Account:   ${decoded.address}` +
-      `\n  Receiving Account: ${decoded.method.args.dest}` +
-      `\n  Amount: ${decoded.method.args.value}` +
       `\n  Tip:    ${decoded.tip}` +
       `\n  Era Period: ${decoded.eraPeriod}`,
   );

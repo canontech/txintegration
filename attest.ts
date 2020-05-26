@@ -1,5 +1,10 @@
-import { methods, getPolkadotStatement } from '../txwrapper/src';
-import { createSigningPayload, getRegistry } from '@substrate/txwrapper';
+// import { methods, getPolkadotStatement } from '../txwrapper/src';
+import {
+	createSigningPayload,
+	getRegistry,
+	methods,
+	getPolkadotStatement
+} from '@substrate/txwrapper';
 import { TxConstruction, AttestInputs, sidecarGet } from './util';
 
 // Information about the chain that we need to construct a transaction.
@@ -79,6 +84,8 @@ export async function constructAttestation(userInputs: AttestInputs): Promise<Tx
 	const chainData = await getChainData(userInputs.sidecarHost);
 	const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
 	const attestation = getPolkadotStatement(userInputs.agreement);
+
+	console.log(`\n${attestation.sentence}`);
 
 	console.log(`\nNetwork Version: ${chainData.specVersion}`);
 	console.log(`Transaction Version: ${chainData.transactionVersion}`);
