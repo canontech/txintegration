@@ -6,8 +6,8 @@ import * as readline from 'readline';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 
 const inputs: AttestInputs = {
-  senderAddress: '16f9UtR3qEcDtjxnCwW29GRX5FatdBPaXf33HpRDBkVJHm5r', // Test 1
-  agreement: 'Saft',
+  senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
+  agreement: 'Regular',
   tip: 0,
   eraPeriod: 64,
   chainName: 'Polkadot',
