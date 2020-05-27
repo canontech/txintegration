@@ -1,8 +1,8 @@
 //
 import { createSignedTx, getTxHash, decode } from '@substrate/txwrapper';
-import { constructBondTransaction } from './constructBond';
-import { submitTransaction } from './submit';
-import { TxConstruction, DECIMALS, BondInputs } from './util';
+import { constructBondTransaction } from './payloadConstructors/stakingBond';
+import { submitTransaction } from './util/submit';
+import { TxConstruction, DECIMALS, BondInputs } from './util/util';
 import * as readline from 'readline';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 

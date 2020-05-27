@@ -1,9 +1,9 @@
 //
 import { createSignedTx } from '@substrate/txwrapper';
-import { constructTransaction } from './construction';
-import { submitTransaction } from './submit';
-import { createKeyring, UserInputs, TxConstruction, signWith, DECIMALS } from './util';
-import { signingKey, curve } from './key';
+import { constructTransaction } from '../payloadConstructors/balancesTransferKeepAlive';
+import { submitTransaction } from '../util/submit';
+import { createKeyring, UserInputs, TxConstruction, signWith, DECIMALS } from '../util/util';
+import { signingKey, curve } from '../key';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 const inputs: UserInputs = {

@@ -7,8 +7,8 @@ import {
 	getEthereumPayload,
 	getPolkadotStatement
 } from '@substrate/txwrapper';
-import { submitTransaction } from './submit';
-import { ClaimInputs, sidecarGet } from './util';
+import { submitTransaction } from './util/submit';
+import { ClaimInputs, sidecarGet } from './util/util';
 import * as readline from 'readline';
 
 const inputs: ClaimInputs = {

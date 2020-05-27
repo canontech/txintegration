@@ -5,7 +5,7 @@ import {
 	methods,
 	getPolkadotStatement
 } from '@substrate/txwrapper';
-import { TxConstruction, AttestInputs, sidecarGet } from './util';
+import { TxConstruction, AttestInputs, sidecarGet } from '../util/util';
 
 // Information about the chain that we need to construct a transaction.
 interface ChainData {

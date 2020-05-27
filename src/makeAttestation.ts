@@ -1,8 +1,8 @@
 //
 import { createSignedTx, getTxHash, decode } from '@substrate/txwrapper';
-import { constructAttestation } from './attest';
-import { submitTransaction } from './submit';
-import { AttestInputs, TxConstruction } from './util';
+import { constructAttestation } from './payloadConstructors/claimsAttest';
+import { submitTransaction } from './util/submit';
+import { AttestInputs, TxConstruction } from './util/util';
 import * as readline from 'readline';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 

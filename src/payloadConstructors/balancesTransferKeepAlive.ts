@@ -1,6 +1,6 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
 import { createSigningPayload, getRegistry, methods } from '@substrate/txwrapper';
-import { TxConstruction, UserInputs, sidecarGet, DECIMALS } from './util';
+import { TxConstruction, UserInputs, sidecarGet, DECIMALS } from '../util/util';
 
 // Information about the chain that we need to construct a transaction.
 interface ChainData {
