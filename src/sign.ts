@@ -9,7 +9,7 @@ import {
   POLKADOT_SS58_FORMAT,
 } from '@substrate/txwrapper';
 import { createMetadata } from '@substrate/txwrapper/lib/util/metadata';
-import { RegistryInfo, signWith, createKeyring } from './util';
+import { RegistryInfo, signWith, createKeyring } from './util/util';
 import * as readline from 'readline';
 // Import a secret key URI from `key.ts`, which should be a string. Obviously you will need to
 // create your own.

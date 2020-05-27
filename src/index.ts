@@ -1,12 +1,11 @@
 //
 import { createSignedTx, getTxHash, decode } from '@substrate/txwrapper';
-import { constructTransaction } from './construction';
-import { submitTransaction } from './submit';
-import { UserInputs, TxConstruction, DECIMALS } from './util';
+import { constructTransfer } from './payloadConstructors/balancesTransferKeepAlive';
+import { TransferInputs, TxConstruction, DECIMALS, submitTransaction } from './util/util';
 import * as readline from 'readline';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 
-const inputs: UserInputs = {
+const inputs: TransferInputs = {
   senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
   recipientAddress: '14inmGQGBE1ptjTcFaDBjewnGKfNanGEYKv1szbguZ1xsk9n', // Test 2
   transferValue: 1 * DECIMALS,
@@ -44,7 +43,7 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
 
 async function main(): Promise<void> {
   // Construct a transaction.
-  const construction: TxConstruction = await constructTransaction(inputs);
+  const construction: TxConstruction = await constructTransfer(inputs);
   const registry = construction.registry;
 
   // Verify transaction details.

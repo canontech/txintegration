@@ -1,12 +1,18 @@
 //
 import { createSignedTx } from '@substrate/txwrapper';
-import { constructTransaction } from './construction';
-import { submitTransaction } from './submit';
-import { createKeyring, UserInputs, TxConstruction, signWith, DECIMALS } from './util';
-import { signingKey, curve } from './key';
+import { constructTransfer } from '../payloadConstructors/balancesTransferKeepAlive';
+import { 
+  createKeyring, 
+  submitTransaction, 
+  TransferInputs, 
+  TxConstruction, 
+  signWith, 
+  DECIMALS 
+} from '../util/util';
+import { signingKey, curve } from '../key';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
-const inputs: UserInputs = {
+const inputs: TransferInputs = {
   senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
   recipientAddress: '14inmGQGBE1ptjTcFaDBjewnGKfNanGEYKv1szbguZ1xsk9n', // Test 2
   transferValue: 1 * DECIMALS,
@@ -37,7 +43,7 @@ async function main(): Promise<void> {
     inputs.recipientAddress = recipients[ii % recipients.length];
 
     // Construct a transaction.
-    const construction: TxConstruction = await constructTransaction(inputs);
+    const construction: TxConstruction = await constructTransfer(inputs);
     const registry = construction.registry;
 
     const signature = signWith(registry, keyPair, construction.payload);
