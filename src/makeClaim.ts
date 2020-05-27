@@ -61,7 +61,7 @@ async function main(): Promise<void> {
       address: inputs.senderAddress,
       blockHash: chainData.blockHash,
       blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toBn().toNumber(),
-      eraPeriod: 64,
+      eraPeriod: inputs.eraPeriod,
       genesisHash: chainData.genesisHash,
       metadataRpc: chainData.metadataRpc,
       nonce: senderData.nonce,

@@ -39,7 +39,7 @@ export async function constructBondTransaction(userInputs: BondInputs): Promise<
       address: userInputs.senderAddress,
       blockHash: chainData.blockHash,
       blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toBn().toNumber(),
-      eraPeriod: 64,
+      eraPeriod: userInputs.eraPeriod,
       genesisHash: chainData.genesisHash,
       metadataRpc: chainData.metadataRpc,
       nonce: senderData.nonce,

@@ -38,7 +38,7 @@ export async function constructTransfer(userInputs: TransferInputs): Promise<TxC
       address: userInputs.senderAddress,
       blockHash: chainData.blockHash,
       blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toBn().toNumber(),
-      eraPeriod: 64,
+      eraPeriod: userInputs.eraPeriod,
       genesisHash: chainData.genesisHash,
       metadataRpc: chainData.metadataRpc,
       nonce: userInputs.nonce || senderData.nonce,
