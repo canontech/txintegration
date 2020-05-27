@@ -14,7 +14,7 @@ Tested on:
 
 - Polkadot v0.8.0
 - Sidecar v0.6.0
-- Txwrapper v3.1.1
+- Txwrapper v3.1.0
 
 ### Start a Node
 
