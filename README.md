@@ -14,7 +14,7 @@ Tested on:
 
 - Polkadot v0.8.0
 - Sidecar v0.6.0
-- Txwrapper v3.1.0
+- Txwrapper v3.1.1
 
 ### Start a Node
 
@@ -42,7 +42,7 @@ The main function will:
 In `index.ts` you will need to enter the transaction parameters:
 
 ```ts
-const inputs: UserInputs = {
+const inputs: TransferInputs = {
   senderAddress: '15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5', //Alice
   recipientAddress: '14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3', //Bob
   transferValue: 1 * DECIMALS, // DOTs
@@ -57,7 +57,7 @@ const inputs: UserInputs = {
 Run `yarn start` and you will get:
 
 ```bash
-Network Version: 1008
+Network Version: 0
 
 Transaction Details:
   Sending Account:   15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5
@@ -85,7 +85,7 @@ const senderAddress = '15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5';
 const registryInputs: RegistryInfo = {
   chainName: 'Polkadot',
   specName: 'polkadot',
-  specVersion: 1008, // Network Version from previous step
+  specVersion: 0, // Network Version from previous step
 };
 ```
 
@@ -94,18 +94,16 @@ provided. In here you can put your signing key. It can be a 12 word phrase or se
 the case of a dev chain, just `//Alice`:
 
 ```ts
-// Type of signing curve. Do not change.
-type Curve = 'sr25519' | 'ed25519' | 'ecdsa';
-// Key type. Must be one of `Curve`.
+// Key type. Must be one of 'sr25519', 'ed25519', or 'ecdsa'.
 export const curve = 'sr25519';
 // The actual signing key. Can include `//hard-derivation`, `/soft-derivation`, or `///password`.
 export const signingKey = '//Alice';
 ```
 
-Run `yarn sign` and enter the signing payload from the last step to get a signature:
+Run `yarn ts-node src/sign.ts` and enter the signing payload from the last step to get a signature:
 
 ```bash
-$ yarn sign
+$ yarn ts-node src/sign.ts
 
 Payload: <enter the signing payload here>
 
@@ -116,3 +114,9 @@ Signature: 0x014679aaf0589f456f57875837c3c3f9747dee901304e05fe9511eece5bfd68c1e7
 
 Paste this signature into the terminal that is waiting, press enter, and it will submit the
 transaction to your node.
+
+### Other Functions
+
+This repo also provides similar setups for making claims attestations and bonding tokens. They
+follow similar patterns like modifying a user inputs section at the top and then waiting for a
+signature.
