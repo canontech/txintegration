@@ -49,8 +49,6 @@ export interface AttestInputs extends BaseUserInputs {
 }
 
 export interface ClaimInputs extends BaseUserInputs {
-  // The Polkadot address the user is claiming to.
-  polkadotAddress: string;
   // The Ethereum address with the claim.
   ethereumAddress: string;
 }

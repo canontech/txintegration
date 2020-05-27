@@ -16,12 +16,11 @@ import {
   submitTransaction
 } from './util/util';
 
-// User Inputs. This is a bit of a hack that `senderAddress` and `polkadotAddress` should be the
-// same. This is a bit of a unique transaction in that it's not signed by the Polkadot key, so
-// this entire script stands out from the common patterns.
+// User Inputs. Will claim indicator DOTs on `ethereumAddress` to `senderAddress`. This is a bit of
+// a unique transaction in that it's not signed by the Polkadot key, so this entire script stands
+// out from the common patterns.
 const inputs: ClaimInputs = {
   senderAddress: '13xGBRvbBR9st4c5CVADqXntUYHbHWCPAyMcEK45P5HFAGEZ',
-	polkadotAddress: '13xGBRvbBR9st4c5CVADqXntUYHbHWCPAyMcEK45P5HFAGEZ',
 	ethereumAddress: '0x79e21d47fffd0db6f3e00d8cc9f241c9a91556d5',
   tip: 0,
   eraPeriod: 64,
@@ -32,7 +31,7 @@ const inputs: ClaimInputs = {
 
 async function main(): Promise<void> {
 	const chainData = await getChainData(inputs.sidecarHost);
-	const senderData = await getSenderData(inputs.sidecarHost, inputs.polkadotAddress);
+	const senderData = await getSenderData(inputs.sidecarHost, inputs.senderAddress);
   const registry = getRegistry(inputs.chainName, inputs.specName, chainData.specVersion);
   
 	// Get the Claims type.
@@ -41,7 +40,7 @@ async function main(): Promise<void> {
   const polkadotStatement = getPolkadotStatement(agreementType);
   // Get the Ethereum payload that will need to be signed with the Ethereum key.
 	const ethPayload = getEthereumPayload(
-		inputs.polkadotAddress,
+		inputs.senderAddress,
 		polkadotStatement,
 		{
 			metadataRpc: chainData.metadataRpc,
@@ -54,12 +53,12 @@ async function main(): Promise<void> {
 
 	const unsigned = methods.claims.claimAttest(
     {
-      dest: inputs.polkadotAddress,
+      dest: inputs.senderAddress,
       ethereumSignature: ethSignature,
       statement: polkadotStatement.sentence,
     },
     {
-      address: inputs.polkadotAddress,
+      address: inputs.senderAddress,
       blockHash: chainData.blockHash,
       blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toBn().toNumber(),
       eraPeriod: 64,
