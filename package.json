@@ -1,6 +1,6 @@
 {
   "name": "txintegration",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Testing integration of RPC Sidecar and TxWrapper.",
   "main": "src/index.ts",
   "author": "joepetrowski <joe@parity.io>",
