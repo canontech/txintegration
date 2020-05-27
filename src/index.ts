@@ -1,8 +1,13 @@
 //
 import { createSignedTx, getTxHash, decode } from '@substrate/txwrapper';
 import { constructTransfer } from './payloadConstructors/balancesTransferKeepAlive';
-import { TransferInputs, TxConstruction, DECIMALS, submitTransaction } from './util/util';
-import * as readline from 'readline';
+import {
+  promptSignature,
+  TransferInputs,
+  TxConstruction,
+  DECIMALS,
+  submitTransaction
+} from './util/util';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 
 const inputs: TransferInputs = {
@@ -16,20 +21,6 @@ const inputs: TransferInputs = {
   sidecarHost: 'http://127.0.0.1:8080/',
 };
 
-function promptSignature(): Promise<string> {
-  let rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-
-  return new Promise((resolve) => {
-    rl.question('\nSignature: ', (answer) => {
-      resolve(answer);
-      rl.close();
-    });
-  });
-}
-
 function logUnsignedInfo(decoded: DecodedUnsignedTx) {
   console.log(
     `\nTransaction Details:` +
@@ -42,14 +33,13 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
 }
 
 async function main(): Promise<void> {
-  // Construct a transaction.
+  // Construct the unsigned transaction.
   const construction: TxConstruction = await constructTransfer(inputs);
-  const registry = construction.registry;
 
   // Verify transaction details.
   const decodedUnsigned = decode(construction.unsigned, {
     metadataRpc: construction.metadata,
-    registry: registry,
+    registry: construction.registry,
   });
   logUnsignedInfo(decodedUnsigned);
 
@@ -62,7 +52,7 @@ async function main(): Promise<void> {
   // Construct a signed transaction.
   const tx = createSignedTx(construction.unsigned, signature, {
     metadataRpc: construction.metadata,
-    registry: registry,
+    registry: construction.registry,
   });
   console.log(`\nEncoded Transaction: ${tx}`);
 
@@ -70,7 +60,7 @@ async function main(): Promise<void> {
   const expectedTxHash = getTxHash(tx);
   console.log(`\nExpected Tx Hash: ${expectedTxHash}`);
 
-  // Submit the transaction.
+  // Submit the transaction. Should return the actual hash if accepted by the node.
   const submission = await submitTransaction(inputs.sidecarHost, tx);
   console.log(`\nNode Response: ${submission}`);
 }

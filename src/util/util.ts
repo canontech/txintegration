@@ -3,7 +3,21 @@ import { TypeRegistry } from '@polkadot/types';
 import { Keyring } from '@polkadot/api';
 import { TRANSACTION_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
 import { KeyringPair, UnsignedTransaction } from '@substrate/txwrapper';
+import * as readline from 'readline';
 import axios from 'axios';
+
+/* Useful types */
+
+type ChainName = 'Polkadot' | 'Kusama';
+type SpecName = 'polkadot' | 'kusama';
+type Agreement = 'Regular' | 'Saft';
+type Payee = 'Staked' | 'Stash' | 'Controller';
+type Curve = 'sr25519' | 'ed25519' | 'ecdsa';
+
+// Chain decimals.
+export const DECIMALS = 1_000_000_000_000;
+
+/* User Interfaces */
 
 interface BaseUserInputs {
   // Address sending the transaction.
@@ -30,28 +44,30 @@ export interface TransferInputs extends BaseUserInputs {
 }
 
 export interface AttestInputs extends BaseUserInputs {
+  // Type of agreement that the attester agreed to in the pre-sale. 'Regular' or 'Saft'.
   agreement: Agreement;
 }
 
 export interface ClaimInputs extends BaseUserInputs {
+  // The Polkadot address the user is claiming to.
   polkadotAddress: string;
+  // The Ethereum address with the claim.
   ethereumAddress: string;
 }
 
 export interface BondInputs extends BaseUserInputs {
+  // The account that will be the staking Controller.
   controller: string;
+  // The number of tokens to stake.
   value: number;
+  // Rewards destination. Can be 'Staked', 'Stash', or 'Controller'.
   payee: Payee;
 }
 
-export const DECIMALS = 1_000_000_000_000;
+/* Interfaces for Sidecar responses */
 
-type ChainName = 'Polkadot' | 'Kusama';
-type SpecName = 'polkadot' | 'kusama';
-type Agreement = 'Regular' | 'Saft';
-type Payee = 'Staked' | 'Stash' | 'Controller';
-type Curve = 'sr25519' | 'ed25519' | 'ecdsa';
-
+// Information to return from unsigned transaction construction. Needed for the signing environment
+// and for decoding.
 export interface TxConstruction {
   unsigned: UnsignedTransaction;
   payload: string;
@@ -59,6 +75,7 @@ export interface TxConstruction {
   metadata: string;
 }
 
+// The type registry is somewhat mysterious to me. We just need this a lot.
 export interface RegistryInfo {
   chainName: ChainName;
   specName: SpecName;
@@ -77,7 +94,8 @@ interface ChainData {
 
 // Information about the sender's address.
 interface AddressData {
-  balance: number;
+  freeBalance: number;
+  spendableBalance: number;
   nonce: number;
 }
 
@@ -111,6 +129,12 @@ interface AddressResponse {
   locks: [];
 }
 
+interface ClaimsResponse{
+	type: Agreement;
+}
+
+/* Sidecar interaction */
+
 // Get information about the chain.
 export async function getChainData(sidecarHost: string): Promise<ChainData> {
   const endpoint = `${sidecarHost}tx/artifacts`;
@@ -133,9 +157,17 @@ export async function getSenderData(sidecarHost: string, address: string): Promi
     parseInt(addressData.free) -
     Math.max(parseInt(addressData.feeFrozen), parseInt(addressData.miscFrozen));
   return {
-    balance: spendable,
+    freeBalance: parseInt(addressData.free),
+    spendableBalance: spendable,
     nonce: parseInt(addressData.nonce),
   };
+}
+
+// Get information about the sending address.
+export async function getClaimType(sidecarHost: string, address: string): Promise<Agreement> {
+  const endpoint = `${sidecarHost}claims/${address}`;
+  const claimsType: ClaimsResponse = await sidecarGet(endpoint);
+  return claimsType.type;
 }
 
 export async function submitTransaction(sidecarHost: string, encodedTx: string): Promise<any> {
@@ -144,13 +176,31 @@ export async function submitTransaction(sidecarHost: string, encodedTx: string):
   return submission;
 }
 
+/* Signing utilities */
+
+// Ask the user to supply a signature and wait for the response.
+export function promptSignature(): Promise<string> {
+  let rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise((resolve) => {
+    rl.question('\nSignature: ', (answer) => {
+      resolve(answer);
+      rl.close();
+    });
+  });
+}
+
+// Create a new keyring to sign with.
 export function createKeyring(uri: string, curve: Curve): KeyringPair {
   const keyring = new Keyring();
   const signingPair = keyring.addFromUri(uri, { name: 'Alice' }, curve);
   return signingPair;
 }
 
-// Signing function. Implement this on the OFFLINE signing device.
+// Signing function. Only use this on an OFFLINE signing device.
 export function signWith(
   registry: TypeRegistry,
   pair: KeyringPair,
@@ -164,6 +214,8 @@ export function signWith(
 
   return signature;
 }
+
+/* Basic GET/POST interaction with Sidecar */
 
 // Get information from the sidecar.
 export async function sidecarGet(url: string): Promise<any> {

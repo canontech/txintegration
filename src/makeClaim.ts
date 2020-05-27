@@ -7,15 +7,18 @@ import {
 	getEthereumPayload,
 	getPolkadotStatement
 } from '@substrate/txwrapper';
-import { 
-  ClaimInputs, 
-  getChainData, 
-  getSenderData, 
-  sidecarGet, 
-  submitTransaction 
+import {
+  ClaimInputs,
+  getChainData,
+  getSenderData,
+  promptSignature,
+  getClaimType,
+  submitTransaction
 } from './util/util';
-import * as readline from 'readline';
 
+// User Inputs. This is a bit of a hack that `senderAddress` and `polkadotAddress` should be the
+// same. This is a bit of a unique transaction in that it's not signed by the Polkadot key, so
+// this entire script stands out from the common patterns.
 const inputs: ClaimInputs = {
   senderAddress: '13xGBRvbBR9st4c5CVADqXntUYHbHWCPAyMcEK45P5HFAGEZ',
 	polkadotAddress: '13xGBRvbBR9st4c5CVADqXntUYHbHWCPAyMcEK45P5HFAGEZ',
@@ -27,38 +30,16 @@ const inputs: ClaimInputs = {
   sidecarHost: 'http://127.0.0.1:8080/',
 };
 
-function promptSignature(): Promise<string> {
-  let rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-
-  return new Promise((resolve) => {
-    rl.question('\nSignature: ', (answer) => {
-      resolve(answer);
-      rl.close();
-    });
-  });
-}
-
-type Agreement = 'Regular' | 'Saft';
-interface ClaimsResponse{
-	type: Agreement;
-}
-// Get information about the sending address.
-async function getClaimType(sidecarHost: string, address: string): Promise<Agreement> {
-  const endpoint = `${sidecarHost}claims/${address}`;
-  const claimsType: ClaimsResponse = await sidecarGet(endpoint);
-  return claimsType.type;
-}
-
 async function main(): Promise<void> {
 	const chainData = await getChainData(inputs.sidecarHost);
 	const senderData = await getSenderData(inputs.sidecarHost, inputs.polkadotAddress);
-	const registry = getRegistry(inputs.chainName, inputs.specName, chainData.specVersion);
-	// Get the Claims type
-	const agreementType = await getClaimType(inputs.sidecarHost, inputs.ethereumAddress);
-	const polkadotStatement = getPolkadotStatement(agreementType);
+  const registry = getRegistry(inputs.chainName, inputs.specName, chainData.specVersion);
+  
+	// Get the Claims type.
+  const agreementType = await getClaimType(inputs.sidecarHost, inputs.ethereumAddress);
+  // Get the correct Polkadot statement to sign.
+  const polkadotStatement = getPolkadotStatement(agreementType);
+  // Get the Ethereum payload that will need to be signed with the Ethereum key.
 	const ethPayload = getEthereumPayload(
 		inputs.polkadotAddress,
 		polkadotStatement,
@@ -102,7 +83,7 @@ async function main(): Promise<void> {
   const expectedTxHash = getTxHash(tx);
   console.log(`\nExpected Tx Hash: ${expectedTxHash}`);
 
-  // Submit the transaction.
+  // Submit the transaction. Should return the actual hash if accepted by the node.
   const submission = await submitTransaction(inputs.sidecarHost, tx);
 	console.log(`\nNode Response: ${submission}`);
 }

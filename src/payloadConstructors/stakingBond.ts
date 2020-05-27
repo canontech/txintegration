@@ -25,7 +25,7 @@ export async function constructBondTransaction(userInputs: BondInputs): Promise<
 	console.log(`\nNetwork Version: ${chainData.specVersion}`);
 	console.log(`Transaction Version: ${chainData.transactionVersion}`);
 
-  checkAvailableBalance(senderData.balance, userInputs.value, DECIMALS);
+  checkAvailableBalance(senderData.freeBalance, userInputs.value, DECIMALS);
 
   const registry = getRegistry(userInputs.chainName, userInputs.specName, chainData.specVersion);
 

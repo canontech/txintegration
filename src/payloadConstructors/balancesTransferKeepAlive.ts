@@ -25,7 +25,7 @@ export async function constructTransfer(userInputs: TransferInputs): Promise<TxC
 	console.log(`\nNetwork Version: ${chainData.specVersion}`);
 	console.log(`Transaction Version: ${chainData.transactionVersion}`);
 
-  checkAvailableBalance(senderData.balance, userInputs.transferValue, DECIMALS);
+  checkAvailableBalance(senderData.spendableBalance, userInputs.transferValue, DECIMALS);
 
   const registry = getRegistry(userInputs.chainName, userInputs.specName, chainData.specVersion);
 
