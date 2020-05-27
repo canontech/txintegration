@@ -1,14 +1,13 @@
 //
 import { createSignedTx, getTxHash, decode } from '@substrate/txwrapper';
 import { constructAttestation } from './payloadConstructors/claimsAttest';
-import { submitTransaction } from './util/submit';
-import { AttestInputs, TxConstruction } from './util/util';
+import { AttestInputs, TxConstruction, submitTransaction } from './util/util';
 import * as readline from 'readline';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 
 const inputs: AttestInputs = {
-  senderAddress: '15vmRt8TVx6tdy5Qmms4K6eWKqfXF1FNsaYJtQ2pGxex7sU7', // Test 1
-  agreement: 'Regular',
+  senderAddress: '16f9UtR3qEcDtjxnCwW29GRX5FatdBPaXf33HpRDBkVJHm5r', // Test 1
+  agreement: 'Saft',
   tip: 0,
   eraPeriod: 64,
   chainName: 'Polkadot',

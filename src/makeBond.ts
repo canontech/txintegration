@@ -1,15 +1,14 @@
 //
 import { createSignedTx, getTxHash, decode } from '@substrate/txwrapper';
 import { constructBondTransaction } from './payloadConstructors/stakingBond';
-import { submitTransaction } from './util/submit';
-import { TxConstruction, DECIMALS, BondInputs } from './util/util';
+import { TxConstruction, DECIMALS, BondInputs, submitTransaction } from './util/util';
 import * as readline from 'readline';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 
 const inputs: BondInputs = {
 	senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
-	controller: '16f9UtR3qEcDtjxnCwW29GRX5FatdBPaXf33HpRDBkVJHm5r',
-	value: 1 * DECIMALS,
+	controller: '13xGBRvbBR9st4c5CVADqXntUYHbHWCPAyMcEK45P5HFAGEZ',
+	value: 7 * DECIMALS,
   payee: 'Staked',
   tip: 0,
   eraPeriod: 64,
