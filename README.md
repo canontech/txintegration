@@ -15,8 +15,6 @@ The current version of Polkadot
 <a href="https://github.com/paritytech/polkadot/blob/v0.8.1/runtime/polkadot/src/lib.rs#L106L131">restricts</a>
 many transactions, including balance transfers, so `yarn start` will fail. Try using `yarn bond`
 instead.
-
-⚠️ ⚠️ ⚠️
 </p>
 
 ## Instructions
