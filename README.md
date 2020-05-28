@@ -9,11 +9,13 @@ a Substrate-based chain.
 > or a development chain using Polkadot's SS58 address encoding.
 
 <p align="center">
-⚠️ ⚠️ ⚠️ 
+⚠️ ⚠️ ⚠️
+
 The current version of Polkadot
-[restricts](https://github.com/paritytech/polkadot/blob/v0.8.1/runtime/polkadot/src/lib.rs#L106L131)
+<a href="https://github.com/paritytech/polkadot/blob/v0.8.1/runtime/polkadot/src/lib.rs#L106L131">restricts</a>
 many transactions, including balance transfers, so `yarn start` will fail. Try using `yarn bond`
 instead.
+
 ⚠️ ⚠️ ⚠️
 </p>
 
