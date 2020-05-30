@@ -168,10 +168,19 @@ export async function getClaimType(sidecarHost: string, address: string): Promis
   return claimsType.type;
 }
 
+// Submit a transaction over Sidecar to the transaction queue.
 export async function submitTransaction(sidecarHost: string, encodedTx: string): Promise<any> {
   const endpoint = `${sidecarHost}tx/`;
   const submission = await sidecarPost(endpoint, encodedTx);
   return submission;
+}
+
+// Submit a transaction and ask for a transaction fee estimate. Do not submit the transaction to the
+// transaction queue.
+export async function getFeeEstimate(sidecarHost: string, encodedTx: string): Promise<any> {
+  const endpoint = `${sidecarHost}tx/fee-estimate/`;
+  const dispatchInfo = await sidecarPost(endpoint, encodedTx);
+  return dispatchInfo;
 }
 
 /* Signing utilities */
@@ -235,11 +244,20 @@ async function sidecarPost(url: string, tx: string): Promise<any> {
       },
     )
     .then(({ data }) => data)
-    .then(({ cause, data, error, hash }) => {
+    .then(({ cause, data, error, hash, weight, partialFee }) => {
       if (cause || error) {
         throw new Error(`${cause}: ${error} (${data})`);
       }
 
-      return hash;
+      if (hash) {
+        return hash;
+      }
+
+      if (partialFee) {
+        return {
+          weight,
+          partialFee
+        };
+      }
     });
 }
