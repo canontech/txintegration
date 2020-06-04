@@ -62,6 +62,11 @@ export interface BondInputs extends BaseUserInputs {
   payee: Payee;
 }
 
+export interface RemarkInputs extends BaseUserInputs {
+  // The remark to put on chain.
+  remark: string;
+}
+
 /* Interfaces for Sidecar responses */
 
 // Information to return from unsigned transaction construction. Needed for the signing environment
