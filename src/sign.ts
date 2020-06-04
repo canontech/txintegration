@@ -13,14 +13,13 @@ import { RegistryInfo, signWith, createKeyring } from './util/util';
 import * as readline from 'readline';
 // Import a secret key URI from `key.ts`, which should be a string. Obviously you will need to
 // create your own.
-import { signingKey, curve } from './key';
-import { polkadotMetadata0 } from './metadata'
+import { signingKey, curve, senderAddress } from './key';
+import { polkadotMetadata1 } from './metadata'
 
-const senderAddress = '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs';
 const registryInputs: RegistryInfo = {
   chainName: 'Polkadot',
   specName: 'polkadot',
-  specVersion: 0,
+  specVersion: 1,
 };
 
 function promptPayload(): Promise<string> {
@@ -49,7 +48,7 @@ async function main(): Promise<void> {
     registryInputs.specName,
     registryInputs.specVersion,
   );
-  registry.setMetadata(createMetadata(registry, polkadotMetadata0));
+  registry.setMetadata(createMetadata(registry, polkadotMetadata1));
 
   if (senderAddress != signingAddress) {
     console.log(
