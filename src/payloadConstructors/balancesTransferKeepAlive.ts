@@ -7,6 +7,7 @@ import {
   TransferInputs,
   DECIMALS 
 } from '../util/util';
+import { createMetadata } from '@substrate/txwrapper/lib/util';
 
 function checkAvailableBalance(balance: number, transfer: number, decimals: number) {
   if (balance < transfer) {
@@ -28,6 +29,7 @@ export async function constructTransfer(userInputs: TransferInputs): Promise<TxC
   checkAvailableBalance(senderData.spendableBalance, userInputs.transferValue, DECIMALS);
 
   const registry = getRegistry(userInputs.chainName, userInputs.specName, chainData.specVersion);
+  registry.setMetadata(createMetadata(registry, chainData.metadataRpc));
 
   const unsigned = methods.balances.transferKeepAlive(
     {

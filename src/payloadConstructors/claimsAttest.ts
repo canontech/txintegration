@@ -1,10 +1,11 @@
-// import { methods, getPolkadotStatement } from '../txwrapper/src';
+// Connect to Sidecar and construct a `claims.attest` transaction.
 import {
 	createSigningPayload,
 	getRegistry,
 	methods,
 	getPolkadotStatement
 } from '@substrate/txwrapper';
+import { createMetadata } from '@substrate/txwrapper/lib/util';
 import {
   getChainData,
   getSenderData,
@@ -23,6 +24,7 @@ export async function constructAttestation(userInputs: AttestInputs): Promise<Tx
 	console.log(`Transaction Version: ${chainData.transactionVersion}`);
 
   const registry = getRegistry(userInputs.chainName, userInputs.specName, chainData.specVersion);
+  registry.setMetadata(createMetadata(registry, chainData.metadataRpc));
 
   const unsigned = methods.claims.attest(
     {

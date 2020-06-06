@@ -1,4 +1,5 @@
-//
+// Make a remark on chain. This is a no-op and only includes a string in the transaction. Good for
+// testing as the transaction fee is quite low (if your message is not too verbose).
 import { createSignedTx, getTxHash, decode } from '@substrate/txwrapper';
 import {
   TxConstruction,

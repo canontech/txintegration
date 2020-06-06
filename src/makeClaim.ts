@@ -1,4 +1,5 @@
-//
+// Make a claim on some DOT indicator tokens on Ethereum. This script is a bit different in that
+// it will submit an unsigned transaction. You will need the Ethereum private key to sign a message.
 import {
 	encodeUnsignedTransaction,
 	getTxHash,
@@ -16,9 +17,7 @@ import {
   submitTransaction
 } from './util/util';
 
-// User Inputs. Will claim indicator DOTs on `ethereumAddress` to `senderAddress`. This is a bit of
-// a unique transaction in that it's not signed by the Polkadot key, so this entire script stands
-// out from the common patterns.
+// User Inputs. Will claim indicator DOTs on `ethereumAddress` to `senderAddress`.
 const inputs: ClaimInputs = {
   senderAddress: '13xGBRvbBR9st4c5CVADqXntUYHbHWCPAyMcEK45P5HFAGEZ',
 	ethereumAddress: '0x79e21d47fffd0db6f3e00d8cc9f241c9a91556d5',
@@ -75,6 +74,7 @@ async function main(): Promise<void> {
     }
 	);
 
+  // This is where things get quite different. No signature needed.
 	const tx = encodeUnsignedTransaction(unsigned, { registry });
 	console.log(`\nEncoded Tx: ${tx}`);
 

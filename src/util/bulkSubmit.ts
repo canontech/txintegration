@@ -1,4 +1,5 @@
-//
+// A script that signs inline (and is therefore not secure) a bunch of transactions. Useful for
+// testing.
 import { createSignedTx } from '@substrate/txwrapper';
 import { constructTransfer } from '../payloadConstructors/balancesTransferKeepAlive';
 import { 
@@ -24,6 +25,9 @@ const inputs: TransferInputs = {
   nonce: 1,
 };
 
+// Number of transactions to send.
+const limit = 1;
+
 const recipients = [
   '14inmGQGBE1ptjTcFaDBjewnGKfNanGEYKv1szbguZ1xsk9n', // Test 2
   '1H5kpTFie7knRsJdGgU2TxTnFGKu1dWaE138NL6JENsPjEt', // Test 3
@@ -37,7 +41,6 @@ async function main(): Promise<void> {
   // Wait for the signature.
   const keyPair = createKeyring(signingKey, curve);
 
-  const limit = 1;
   var txs = [];
   for (var ii = 0; ii < limit; ii++) {
     inputs.recipientAddress = recipients[ii % recipients.length];

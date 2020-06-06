@@ -1,4 +1,4 @@
-//
+// Bond some tokens.
 import { createSignedTx, getTxHash, decode } from '@substrate/txwrapper';
 import { constructBondTransaction } from './payloadConstructors/stakingBond';
 import {

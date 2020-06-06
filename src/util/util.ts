@@ -8,8 +8,8 @@ import axios from 'axios';
 
 /* Useful types */
 
-type ChainName = 'Polkadot' | 'Kusama';
-type SpecName = 'polkadot' | 'kusama';
+type ChainName = 'Polkadot' | 'Kusama' | 'Westend';
+type SpecName = 'polkadot' | 'kusama' | 'westend';
 type Agreement = 'Regular' | 'Saft';
 type Payee = 'Staked' | 'Stash' | 'Controller';
 type Curve = 'sr25519' | 'ed25519' | 'ecdsa';

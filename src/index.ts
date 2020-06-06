@@ -1,4 +1,4 @@
-//
+// Construct and submit a `balance.transferKeepAlive` transaction.
 import { createSignedTx, getTxHash, decode } from '@substrate/txwrapper';
 import { constructTransfer } from './payloadConstructors/balancesTransferKeepAlive';
 import {

@@ -14,6 +14,8 @@ import * as readline from 'readline';
 // Import a secret key URI from `key.ts`, which should be a string. Obviously you will need to
 // create your own.
 import { signingKey, curve, senderAddress } from './key';
+// You will need the metadata in this context. Take it from Sidecar's `tx/artifacts` endpoint.
+// This file contains some metadata for known runtimes.
 import { polkadotMetadata1 } from './metadata'
 
 const registryInputs: RegistryInfo = {

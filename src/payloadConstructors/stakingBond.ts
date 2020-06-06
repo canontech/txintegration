@@ -1,5 +1,6 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
 import { createSigningPayload, getRegistry, methods } from '@substrate/txwrapper';
+import { createMetadata } from '@substrate/txwrapper/lib/util';
 import { 
   getChainData,
   getSenderData,
@@ -28,6 +29,7 @@ export async function constructBondTransaction(userInputs: BondInputs): Promise<
   checkAvailableBalance(senderData.freeBalance, userInputs.value, DECIMALS);
 
   const registry = getRegistry(userInputs.chainName, userInputs.specName, chainData.specVersion);
+  registry.setMetadata(createMetadata(registry, chainData.metadataRpc));
 
   const unsigned = methods.staking.bond(
     {

@@ -1,4 +1,4 @@
-//
+// Make an attestation to claim some pre-claimed DOT tokens.
 import { createSignedTx, getTxHash, decode } from '@substrate/txwrapper';
 import { constructAttestation } from './payloadConstructors/claimsAttest';
 import { AttestInputs, promptSignature, TxConstruction, submitTransaction } from './util/util';

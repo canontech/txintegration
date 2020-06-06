@@ -1,5 +1,6 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
 import { createSigningPayload, getRegistry, methods } from '@substrate/txwrapper';
+import { createMetadata } from '@substrate/txwrapper/lib/util';
 import { 
   getChainData,
   getSenderData,
@@ -15,6 +16,7 @@ export async function constructRemarkTx(userInputs: RemarkInputs): Promise<TxCon
 	console.log(`Transaction Version: ${chainData.transactionVersion}`);
 
   const registry = getRegistry(userInputs.chainName, userInputs.specName, chainData.specVersion);
+  registry.setMetadata(createMetadata(registry, chainData.metadataRpc));
 
   const unsigned = methods.system.remark(
     {
