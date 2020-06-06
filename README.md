@@ -21,9 +21,9 @@ instead.
 
 Tested on:
 
-- Polkadot v0.8.0
-- Sidecar v0.6.0
-- Txwrapper v3.1.1
+- Polkadot v0.8.2
+- Sidecar v0.7.0
+- Txwrapper v3.1.2
 
 ### Start a Node
 
@@ -86,15 +86,20 @@ This will wait for you to sign the payload.
 You can sign the payload in any way you like. Ideally, you should do this on a secure, offline
 device. A signing script is provided to use for testing.
 
-In `sign.ts`, enter the sending account and network version from the last step:
+In `sign.ts`, enter the sending account and network version from the last step. You will also need
+the metadata from the first part, but this only changes on runtime upgrades. This repo contains a
+file with metadata for well known runtimes, like Polkadot, with the name
+`<specName>Metadata<version>`, e.g. `polkadotMetadata1`.
 
 ```ts
-// Address that corresponds to the signing key
-const senderAddress = '15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5';
+// Make sure this matches the chain's metadata from the previous step.
+import { polkadotMetadata1 } from './metadata';
+
+// Make sure these match the chain you are using.
 const registryInputs: RegistryInfo = {
   chainName: 'Polkadot',
   specName: 'polkadot',
-  specVersion: 0, // Network Version from previous step
+  specVersion: 1, // Network Version from previous step
 };
 ```
 
@@ -107,6 +112,8 @@ the case of a dev chain, just `//Alice`:
 export const curve = 'sr25519';
 // The actual signing key. Can include `//hard-derivation`, `/soft-derivation`, or `///password`.
 export const signingKey = '//Alice';
+// Address that corresponds to the signing key.
+export const senderAddress = '15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5';
 ```
 
 Run `yarn ts-node src/sign.ts` and enter the signing payload from the last step to get a signature:
@@ -126,6 +133,6 @@ transaction to your node.
 
 ### Other Functions
 
-This repo also provides similar setups for making claims attestations and bonding tokens. They
-follow similar patterns like modifying a user inputs section at the top and then waiting for a
-signature.
+This repo also provides similar setups for making claims attestations, making remarks, and bonding
+tokens. They follow similar patterns like modifying a user inputs section at the top and then
+waiting for a signature.

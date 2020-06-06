@@ -6,7 +6,9 @@ import { cryptoWaitReady } from '@polkadot/util-crypto';
 import {
   deriveAddress,
   getRegistry,
+  KUSAMA_SS58_FORMAT,
   POLKADOT_SS58_FORMAT,
+  WESTEND_SS58_FORMAT,
 } from '@substrate/txwrapper';
 import { createMetadata } from '@substrate/txwrapper/lib/util/metadata';
 import { RegistryInfo, signWith, createKeyring } from './util/util';
@@ -16,7 +18,7 @@ import * as readline from 'readline';
 import { signingKey, curve, senderAddress } from './key';
 // You will need the metadata in this context. Take it from Sidecar's `tx/artifacts` endpoint.
 // This file contains some metadata for known runtimes.
-import { polkadotMetadata1 } from './metadata'
+import { polkadotMetadata1 } from './metadata';
 
 const registryInputs: RegistryInfo = {
   chainName: 'Polkadot',
@@ -42,8 +44,29 @@ async function main(): Promise<void> {
   // Wait for the promise to resolve async WASM
   await cryptoWaitReady();
 
+  let SS58_FORMAT: number;
+  switch (registryInputs.specName) {
+    case 'kusama': {
+      SS58_FORMAT = KUSAMA_SS58_FORMAT;
+      break;
+    }
+    case 'polkadot': {
+      SS58_FORMAT = POLKADOT_SS58_FORMAT;
+      break;
+    }
+    case 'westend': {
+      SS58_FORMAT = WESTEND_SS58_FORMAT;
+      break;
+    }
+    default: {
+      console.warn(`Unrecognized chain spec! Using dev chain SS580 format of 42.`);
+      SS58_FORMAT = 42;
+      break;
+    }
+  }
+
   const signingPair = createKeyring(signingKey, curve);
-  const signingAddress = deriveAddress(signingPair.publicKey, POLKADOT_SS58_FORMAT);
+  const signingAddress = deriveAddress(signingPair.publicKey, SS58_FORMAT);
 
   const registry = getRegistry(
     registryInputs.chainName,
