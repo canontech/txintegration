@@ -18,7 +18,7 @@ import * as readline from 'readline';
 import { signingKey, curve, senderAddress } from './key';
 // You will need the metadata in this context. Take it from Sidecar's `tx/artifacts` endpoint.
 // This file contains some metadata for known runtimes.
-import { polkadotMetadata1 } from './metadata';
+import { polkadotMetadata1, kusamaMetadata1062 } from './metadata';
 
 const registryInputs: RegistryInfo = {
   chainName: 'Polkadot',
@@ -44,22 +44,31 @@ async function main(): Promise<void> {
   // Wait for the promise to resolve async WASM
   await cryptoWaitReady();
 
+  const registry = getRegistry(
+    registryInputs.chainName,
+    registryInputs.specName,
+    registryInputs.specVersion,
+  );
+
   let SS58_FORMAT: number;
   switch (registryInputs.specName) {
     case 'kusama': {
       SS58_FORMAT = KUSAMA_SS58_FORMAT;
+      registry.setMetadata(createMetadata(registry, kusamaMetadata1062));
       break;
     }
     case 'polkadot': {
       SS58_FORMAT = POLKADOT_SS58_FORMAT;
+      registry.setMetadata(createMetadata(registry, polkadotMetadata1));
       break;
     }
     case 'westend': {
       SS58_FORMAT = WESTEND_SS58_FORMAT;
+      console.warn(`TODO: Need metadata for Westend. Likely to get BadProof error.`)
       break;
     }
     default: {
-      console.warn(`Unrecognized chain spec! Using dev chain SS580 format of 42.`);
+      console.warn(`Unrecognized chain spec! Using dev chain SS58 format of 42.`);
       SS58_FORMAT = 42;
       break;
     }
@@ -67,13 +76,6 @@ async function main(): Promise<void> {
 
   const signingPair = createKeyring(signingKey, curve);
   const signingAddress = deriveAddress(signingPair.publicKey, SS58_FORMAT);
-
-  const registry = getRegistry(
-    registryInputs.chainName,
-    registryInputs.specName,
-    registryInputs.specVersion,
-  );
-  registry.setMetadata(createMetadata(registry, polkadotMetadata1));
 
   if (senderAddress != signingAddress) {
     console.log(

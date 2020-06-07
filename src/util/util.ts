@@ -62,6 +62,11 @@ export interface BondInputs extends BaseUserInputs {
   payee: Payee;
 }
 
+export interface BondExtraInputs extends BaseUserInputs {
+  // The number of tokens to stake.
+  maxAdditional: number;
+}
+
 export interface RemarkInputs extends BaseUserInputs {
   // The remark to put on chain.
   remark: string;
@@ -90,6 +95,8 @@ interface ChainData {
   blockNumber: string;
   blockHash: string;
   genesisHash: string;
+  chainName: string;
+  specName: string;
 	specVersion: number;
 	transactionVersion: number;
   metadataRpc: string;
@@ -111,6 +118,8 @@ interface ArtifactsResponse {
   };
   // Chain data
   genesisHash: string;
+  chainName: string;
+  specName: string;
 	specVersion: string;
 	txVersion: string;
   metadata: string;
@@ -146,6 +155,8 @@ export async function getChainData(sidecarHost: string): Promise<ChainData> {
     blockNumber: artifacts.at.height,
     blockHash: artifacts.at.hash,
     genesisHash: artifacts.genesisHash,
+    chainName: artifacts.chainName,
+    specName: artifacts.specName,
 		specVersion: parseInt(artifacts.specVersion),
 		transactionVersion: parseInt(artifacts.txVersion),
     metadataRpc: artifacts.metadata,
