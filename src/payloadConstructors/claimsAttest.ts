@@ -7,10 +7,11 @@ import {
 } from '@substrate/txwrapper';
 import { createMetadata } from '@substrate/txwrapper/lib/util';
 import {
+  AttestInputs,
   getChainData,
   getSenderData,
-  TxConstruction, 
-  AttestInputs 
+  logChainData,
+  TxConstruction,
 } from '../util/util';
 
 export async function constructAttestation(userInputs: AttestInputs): Promise<TxConstruction> {
@@ -20,8 +21,7 @@ export async function constructAttestation(userInputs: AttestInputs): Promise<Tx
 
 	console.log(`\n${attestation.sentence}`);
 
-	console.log(`\nNetwork Version: ${chainData.specVersion}`);
-	console.log(`Transaction Version: ${chainData.transactionVersion}`);
+	logChainData(chainData);
 
   const registry = getRegistry(userInputs.chainName, userInputs.specName, chainData.specVersion);
   registry.setMetadata(createMetadata(registry, chainData.metadataRpc));

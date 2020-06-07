@@ -2,7 +2,7 @@
 import { TypeRegistry } from '@polkadot/types';
 import { Keyring } from '@polkadot/api';
 import { TRANSACTION_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
-import { KeyringPair, UnsignedTransaction } from '@substrate/txwrapper';
+import { KeyringPair, UnsignedTransaction, createSignedTx, getTxHash } from '@substrate/txwrapper';
 import * as readline from 'readline';
 import axios from 'axios';
 
@@ -163,6 +163,13 @@ export async function getChainData(sidecarHost: string): Promise<ChainData> {
   };
 }
 
+export function logChainData(chainData: ChainData) {
+  console.log(`\nChain Name: ${chainData.chainName}`);
+  console.log(`Spec Name:  ${chainData.specName}`);
+	console.log(`Network Version: ${chainData.specVersion}`);
+	console.log(`Transaction Version: ${chainData.transactionVersion}`);
+}
+
 // Get information about the sending address.
 export async function getSenderData(sidecarHost: string, address: string): Promise<AddressData> {
   const endpoint = `${sidecarHost}balance/${address}`;
@@ -188,6 +195,27 @@ export async function submitTransaction(sidecarHost: string, encodedTx: string):
   const endpoint = `${sidecarHost}tx/`;
   const submission = await sidecarPost(endpoint, encodedTx);
   return submission;
+}
+
+export async function createAndSubmitTransaction(
+  construction: TxConstruction,
+  signature: string,
+  sidecarHost: string,
+) {
+  // Construct a signed transaction.
+  const tx = createSignedTx(construction.unsigned, signature, {
+    metadataRpc: construction.metadata,
+    registry: construction.registry,
+  });
+  console.log(`\nEncoded Transaction: ${tx}`);
+
+  // Log the expected hash.
+  const expectedTxHash = getTxHash(tx);
+  console.log(`\nExpected Tx Hash: ${expectedTxHash}`);
+
+  // Submit the transaction. Should return the actual hash if accepted by the node.
+  const submission = await submitTransaction(sidecarHost, tx);
+  console.log(`\nNode Response: ${submission}`);
 }
 
 /* Signing utilities */

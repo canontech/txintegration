@@ -1,11 +1,11 @@
 // Make a remark on chain. This is a no-op and only includes a string in the transaction. Good for
 // testing as the transaction fee is quite low (if your message is not too verbose).
-import { createSignedTx, getTxHash, decode } from '@substrate/txwrapper';
+import { decode } from '@substrate/txwrapper';
 import {
-  TxConstruction,
-  RemarkInputs,
+  createAndSubmitTransaction,
   promptSignature,
-  submitTransaction
+  RemarkInputs,
+  TxConstruction,
 } from './util/util';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 import { constructRemarkTx } from './payloadConstructors/systemRemark';
@@ -46,20 +46,8 @@ async function main(): Promise<void> {
   // Wait for the signature.
   const signature = await promptSignature();
 
-  // Construct a signed transaction.
-  const tx = createSignedTx(construction.unsigned, signature, {
-    metadataRpc: construction.metadata,
-    registry: construction.registry,
-  });
-  console.log(`\nEncoded Transaction: ${tx}`);
-
-  // Log the expected hash.
-  const expectedTxHash = getTxHash(tx);
-  console.log(`\nExpected Tx Hash: ${expectedTxHash}`);
-
-  // Submit the transaction. Should return the actual hash if accepted by the node.
-  const submission = await submitTransaction(inputs.sidecarHost, tx);
-  console.log(`\nNode Response: ${submission}`);
+  // Construct a signed transaction and broadcast it.
+  await createAndSubmitTransaction(construction, signature, inputs.sidecarHost);
 }
 
 main().catch((error) => {
