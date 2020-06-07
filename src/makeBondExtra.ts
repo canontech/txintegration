@@ -1,12 +1,12 @@
 // Bond some tokens.
-import { createSignedTx, getTxHash, decode } from '@substrate/txwrapper';
+import { decode } from '@substrate/txwrapper';
 import { constructBondExtra } from './payloadConstructors/stakingBondExtra';
 import {
-  TxConstruction,
-  DECIMALS,
   BondExtraInputs,
+  createAndSubmitTransaction,
+  DECIMALS,
   promptSignature,
-  submitTransaction
+  TxConstruction,
 } from './util/util';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 
@@ -47,20 +47,8 @@ async function main(): Promise<void> {
   // Wait for the signature.
   const signature = await promptSignature();
 
-  // Construct a signed transaction.
-  const tx = createSignedTx(construction.unsigned, signature, {
-    metadataRpc: construction.metadata,
-    registry: construction.registry,
-  });
-  console.log(`\nEncoded Transaction: ${tx}`);
-
-  // Log the expected hash.
-  const expectedTxHash = getTxHash(tx);
-  console.log(`\nExpected Tx Hash: ${expectedTxHash}`);
-
-  // Submit the transaction. Should return the actual hash if accepted by the node.
-  const submission = await submitTransaction(inputs.sidecarHost, tx);
-  console.log(`\nNode Response: ${submission}`);
+  // Construct a signed transaction and broadcast it.
+  await createAndSubmitTransaction(construction, signature, inputs.sidecarHost);
 }
 
 main().catch((error) => {

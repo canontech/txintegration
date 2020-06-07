@@ -2,11 +2,12 @@
 import { createSigningPayload, getRegistry, methods } from '@substrate/txwrapper';
 import { createMetadata } from '@substrate/txwrapper/lib/util';
 import { 
+  BondInputs,
+  DECIMALS,
   getChainData,
   getSenderData,
-  TxConstruction, 
-  BondInputs, 
-  DECIMALS 
+  logChainData,
+  TxConstruction,
 } from '../util/util';
 
 function checkAvailableBalance(balance: number, bond: number, decimals: number) {
@@ -23,9 +24,7 @@ export async function constructBondTransaction(userInputs: BondInputs): Promise<
   const chainData = await getChainData(userInputs.sidecarHost);
   const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
 
-	console.log(`\nNetwork Version: ${chainData.specVersion}`);
-	console.log(`Transaction Version: ${chainData.transactionVersion}`);
-
+  logChainData(chainData);
   checkAvailableBalance(senderData.freeBalance, userInputs.value, DECIMALS);
 
   const registry = getRegistry(userInputs.chainName, userInputs.specName, chainData.specVersion);
