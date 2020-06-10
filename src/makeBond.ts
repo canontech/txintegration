@@ -17,8 +17,6 @@ const inputs: BondInputs = {
   payee: 'Staked',
   tip: 0,
   eraPeriod: 64,
-  chainName: 'Polkadot',
-  specName: 'polkadot',
   sidecarHost: 'http://127.0.0.1:8080/',
 };
 

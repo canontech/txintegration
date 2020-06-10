@@ -27,7 +27,7 @@ export async function constructBondExtra(userInputs: BondExtraInputs): Promise<T
   logChainData(chainData);
   checkAvailableBalance(senderData.spendableBalance, userInputs.maxAdditional, DECIMALS);
 
-  const registry = getRegistry(userInputs.chainName, userInputs.specName, chainData.specVersion);
+  const registry = getRegistry(chainData.chainName, chainData.specName, chainData.specVersion);
   registry.setMetadata(createMetadata(registry, chainData.metadataRpc));
 
   const unsigned = methods.staking.bondExtra(

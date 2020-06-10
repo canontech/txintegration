@@ -11,20 +11,14 @@ import {
   WESTEND_SS58_FORMAT,
 } from '@substrate/txwrapper';
 import { createMetadata } from '@substrate/txwrapper/lib/util/metadata';
-import { RegistryInfo, signWith, createKeyring } from './util/util';
+import { signWith, createKeyring } from './util/util';
 import * as readline from 'readline';
 // Import a secret key URI from `key.ts`, which should be a string. Obviously you will need to
 // create your own.
-import { signingKey, curve, senderAddress } from './key';
+import { signingKey, curve, senderAddress, registryInputs } from './key';
 // You will need the metadata in this context. Take it from Sidecar's `tx/artifacts` endpoint.
 // This file contains some metadata for known runtimes.
-import { polkadotMetadata1, kusamaMetadata1062 } from './metadata';
-
-const registryInputs: RegistryInfo = {
-  chainName: 'Polkadot',
-  specName: 'polkadot',
-  specVersion: 1,
-};
+import { polkadotMetadata6, kusamaMetadata1062 } from './metadata';
 
 function promptPayload(): Promise<string> {
   let rl = readline.createInterface({
@@ -59,7 +53,7 @@ async function main(): Promise<void> {
     }
     case 'polkadot': {
       SS58_FORMAT = POLKADOT_SS58_FORMAT;
-      registry.setMetadata(createMetadata(registry, polkadotMetadata1));
+      registry.setMetadata(createMetadata(registry, polkadotMetadata6));
       break;
     }
     case 'westend': {

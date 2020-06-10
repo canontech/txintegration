@@ -15,8 +15,6 @@ const inputs: BondExtraInputs = {
 	maxAdditional: 1 * DECIMALS,
   tip: 0,
   eraPeriod: 128,
-  chainName: 'Kusama',
-  specName: 'kusama',
   sidecarHost: 'http://127.0.0.1:8080/',
 };
 

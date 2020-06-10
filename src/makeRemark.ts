@@ -15,8 +15,6 @@ const inputs: RemarkInputs = {
 	remark: 'hello',
   tip: 0,
   eraPeriod: 128,
-  chainName: 'Polkadot',
-  specName: 'polkadot',
   sidecarHost: 'http://127.0.0.1:8080/',
 };
 

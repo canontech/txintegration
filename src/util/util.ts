@@ -8,7 +8,7 @@ import axios from 'axios';
 
 /* Useful types */
 
-type ChainName = 'Polkadot' | 'Kusama' | 'Westend';
+type ChainName = 'Polkadot' | 'Polkadot CC1' | 'Kusama' | 'Westend';
 type SpecName = 'polkadot' | 'kusama' | 'westend';
 type Agreement = 'Regular' | 'Saft';
 type Payee = 'Staked' | 'Stash' | 'Controller';
@@ -26,10 +26,6 @@ interface BaseUserInputs {
   tip: number;
   // Number of blocks for which this transaction is valid.
   eraPeriod: number;
-  // Chain name.
-  chainName: ChainName;
-  // Chain spec.
-  specName: SpecName;
   // Host that is running sidecar.
   sidecarHost: string;
   // Override the chain's nonce.
@@ -95,8 +91,8 @@ interface ChainData {
   blockNumber: string;
   blockHash: string;
   genesisHash: string;
-  chainName: string;
-  specName: string;
+  chainName: ChainName;
+  specName: SpecName;
 	specVersion: number;
 	transactionVersion: number;
   metadataRpc: string;
@@ -118,8 +114,8 @@ interface ArtifactsResponse {
   };
   // Chain data
   genesisHash: string;
-  chainName: string;
-  specName: string;
+  chainName: ChainName;
+  specName: SpecName;
 	specVersion: string;
 	txVersion: string;
   metadata: string;

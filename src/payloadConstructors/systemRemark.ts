@@ -15,7 +15,7 @@ export async function constructRemarkTx(userInputs: RemarkInputs): Promise<TxCon
 
 	logChainData(chainData);
 
-  const registry = getRegistry(userInputs.chainName, userInputs.specName, chainData.specVersion);
+  const registry = getRegistry(chainData.chainName, chainData.specName, chainData.specVersion);
   registry.setMetadata(createMetadata(registry, chainData.metadataRpc));
 
   const unsigned = methods.system.remark(

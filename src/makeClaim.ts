@@ -23,15 +23,13 @@ const inputs: ClaimInputs = {
 	ethereumAddress: '0x79e21d47fffd0db6f3e00d8cc9f241c9a91556d5',
   tip: 0,
   eraPeriod: 64,
-  chainName: 'Polkadot',
-  specName: 'polkadot',
   sidecarHost: 'http://127.0.0.1:8080/',
 };
 
 async function main(): Promise<void> {
 	const chainData = await getChainData(inputs.sidecarHost);
 	const senderData = await getSenderData(inputs.sidecarHost, inputs.senderAddress);
-  const registry = getRegistry(inputs.chainName, inputs.specName, chainData.specVersion);
+  const registry = getRegistry(chainData.chainName, chainData.specName, chainData.specVersion);
   
 	// Get the Claims type.
   const agreementType = await getClaimType(inputs.sidecarHost, inputs.ethereumAddress);

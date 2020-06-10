@@ -19,8 +19,6 @@ const inputs: TransferInputs = {
   transferValue: 1 * DECIMALS,
   tip: 0,
   eraPeriod: 64,
-  chainName: 'Polkadot',
-  specName: 'polkadot',
   sidecarHost: 'http://127.0.0.1:8080/',
   nonce: 1,
 };

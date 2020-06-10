@@ -14,8 +14,6 @@ const inputs: AttestInputs = {
   agreement: 'Regular',
   tip: 0,
   eraPeriod: 64,
-  chainName: 'Polkadot',
-  specName: 'polkadot',
   sidecarHost: 'http://127.0.0.1:8080/',
 };
 
