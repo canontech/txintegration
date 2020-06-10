@@ -12,18 +12,18 @@ a Substrate-based chain.
 ⚠️ ⚠️ ⚠️
 
 The current version of Polkadot
-<a href="https://github.com/paritytech/polkadot/blob/v0.8.1/runtime/polkadot/src/lib.rs#L106L131">restricts</a>
-many transactions, including balance transfers, so `yarn start` will fail. Try using `yarn bond`
-instead.
+<a href="https://github.com/paritytech/polkadot/blob/v0.8.6/runtime/polkadot/src/lib.rs#L107L134">restricts</a>
+many transactions, including balance transfers, so `yarn start` will fail. </br> Try making a 
+remark on-chain with `yarn ts-node src/makeRemark.ts` instead.
 </p>
 
 ## Instructions
 
 Tested on:
 
-- Polkadot v0.8.2
-- Sidecar v0.7.0
-- Txwrapper v3.1.2
+- Polkadot v0.8.6
+- Sidecar v0.8.0
+- Txwrapper v3.1.4
 
 ### Start a Node
 
@@ -57,8 +57,6 @@ const inputs: TransferInputs = {
   transferValue: 1 * DECIMALS, // DOTs
   tip: 0 * DECIMALS, // DOTs
   eraPeriod: 64, // Blocks
-  chainName: 'Polkadot', // 'Polkadot', 'Kusama', or 'Westend'
-  specName: 'polkadot', // 'polkadot', 'kusama', or 'westend'
   sidecarHost: 'http://127.0.0.1:8080/', // Sidecar
 };
 ```
@@ -66,7 +64,10 @@ const inputs: TransferInputs = {
 Run `yarn start` and you will get:
 
 ```bash
-Network Version: 0
+Chain Name: Polkadot CC1
+Spec Name:  polkadot
+Network Version: 6
+Transaction Version: 0
 
 Transaction Details:
   Sending Account:   15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5
@@ -89,18 +90,11 @@ device. A signing script is provided to use for testing.
 In `sign.ts`, enter the sending account and network version from the last step. You will also need
 the metadata from the first part, but this only changes on runtime upgrades. This repo contains a
 file with metadata for well known runtimes, like Polkadot, with the name
-`<specName>Metadata<version>`, e.g. `polkadotMetadata1`.
+`<specName>Metadata<version>`, e.g. `polkadotMetadata6`.
 
 ```ts
 // Make sure this matches the chain's metadata from the previous step.
-import { polkadotMetadata1 } from './metadata';
-
-// Make sure these match the chain you are using.
-const registryInputs: RegistryInfo = {
-  chainName: 'Polkadot',
-  specName: 'polkadot',
-  specVersion: 1, // Network Version from previous step
-};
+import { polkadotMetadata6 } from './metadata';
 ```
 
 Create a new file called `key.ts` that exports a signing key and type. An example for 'Alice' is
@@ -108,6 +102,15 @@ provided. In here you can put your signing key. It can be a 12 word phrase or se
 the case of a dev chain, just `//Alice`:
 
 ```ts
+import { RegistryInfo } from './util/util';
+
+// Make sure these match the chain you are using. They are printed to the console above.
+const registryInputs: RegistryInfo = {
+  chainName: 'Polkadot',
+  specName: 'polkadot',
+  specVersion: 6,
+};
+
 // Key type. Must be one of 'sr25519', 'ed25519', or 'ecdsa'.
 export const curve = 'sr25519';
 // The actual signing key. Can include `//hard-derivation`, `/soft-derivation`, or `///password`.
