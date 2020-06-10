@@ -13,8 +13,8 @@ a Substrate-based chain.
 
 The current version of Polkadot
 <a href="https://github.com/paritytech/polkadot/blob/v0.8.6/runtime/polkadot/src/lib.rs#L107L134">restricts</a>
-many transactions, including balance transfers, so `yarn start` will fail. </br> Try making a 
-remark on-chain with `yarn ts-node src/makeRemark.ts` instead.
+many transactions, including balance transfers, so `yarn start` will fail. Try making a remark
+on-chain with `yarn ts-node src/makeRemark.ts` instead.
 </p>
 
 ## Instructions
