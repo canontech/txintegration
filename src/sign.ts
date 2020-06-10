@@ -18,7 +18,7 @@ import * as readline from 'readline';
 import { signingKey, curve, senderAddress, registryInputs } from './key';
 // You will need the metadata in this context. Take it from Sidecar's `tx/artifacts` endpoint.
 // This file contains some metadata for known runtimes.
-import { polkadotMetadata6, kusamaMetadata1062 } from './metadata';
+import { polkadotMetadata, kusamaMetadata } from './metadata';
 
 function promptPayload(): Promise<string> {
   let rl = readline.createInterface({
@@ -48,12 +48,12 @@ async function main(): Promise<void> {
   switch (registryInputs.specName) {
     case 'kusama': {
       SS58_FORMAT = KUSAMA_SS58_FORMAT;
-      registry.setMetadata(createMetadata(registry, kusamaMetadata1062));
+      registry.setMetadata(createMetadata(registry, kusamaMetadata));
       break;
     }
     case 'polkadot': {
       SS58_FORMAT = POLKADOT_SS58_FORMAT;
-      registry.setMetadata(createMetadata(registry, polkadotMetadata6));
+      registry.setMetadata(createMetadata(registry, polkadotMetadata));
       break;
     }
     case 'westend': {
