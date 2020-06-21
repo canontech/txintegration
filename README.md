@@ -21,9 +21,9 @@ on-chain with `yarn ts-node src/makeRemark.ts` instead.
 
 Tested on:
 
-- Polkadot v0.8.6
-- Sidecar v0.8.0
-- Txwrapper v3.1.4
+- Polkadot v0.8.10
+- Sidecar v0.9.2
+- Txwrapper v3.2.0
 
 ### Start a Node
 
@@ -66,7 +66,7 @@ Run `yarn start` and you will get:
 ```bash
 Chain Name: Polkadot CC1
 Spec Name:  polkadot
-Network Version: 6
+Network Version: 11
 Transaction Version: 0
 
 Transaction Details:
@@ -90,11 +90,11 @@ device. A signing script is provided to use for testing.
 In `sign.ts`, enter the sending account and network version from the last step. You will also need
 the metadata from the first part, but this only changes on runtime upgrades. This repo contains a
 file with metadata for well known runtimes, like Polkadot, with the name
-`<specName>Metadata<version>`, e.g. `polkadotMetadata6`.
+`<specName>Metadata`, e.g. `polkadotMetadata`.
 
 ```ts
 // Make sure this matches the chain's metadata from the previous step.
-import { polkadotMetadata6 } from './metadata';
+import { polkadotMetadata } from './metadata';
 ```
 
 Create a new file called `key.ts` that exports a signing key and type. An example for 'Alice' is
@@ -108,7 +108,7 @@ import { RegistryInfo } from './util/util';
 const registryInputs: RegistryInfo = {
   chainName: 'Polkadot',
   specName: 'polkadot',
-  specVersion: 6,
+  specVersion: 11,
 };
 
 // Key type. Must be one of 'sr25519', 'ed25519', or 'ecdsa'.
