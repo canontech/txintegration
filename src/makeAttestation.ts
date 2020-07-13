@@ -13,7 +13,7 @@ const inputs: AttestInputs = {
   senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
   agreement: 'Regular',
   tip: 0,
-  eraPeriod: 64,
+  eraPeriod: 256,
   sidecarHost: 'http://127.0.0.1:8080/',
 };
 

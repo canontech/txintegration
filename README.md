@@ -21,9 +21,9 @@ on-chain with `yarn ts-node src/makeRemark.ts` instead.
 
 Tested on:
 
-- Polkadot v0.8.10
-- Sidecar v0.9.2
-- Txwrapper v3.2.0
+- Polkadot v0.8.14
+- Sidecar v0.11.2
+- Txwrapper v3.4.0
 
 ### Start a Node
 
@@ -66,8 +66,8 @@ Run `yarn start` and you will get:
 ```bash
 Chain Name: Polkadot CC1
 Spec Name:  polkadot
-Network Version: 11
-Transaction Version: 0
+Network Version: 14
+Transaction Version: 2
 
 Transaction Details:
   Sending Account:   15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5
@@ -108,7 +108,7 @@ import { RegistryInfo } from './util/util';
 const registryInputs: RegistryInfo = {
   chainName: 'Polkadot',
   specName: 'polkadot',
-  specVersion: 11,
+  specVersion: 14,
 };
 
 // Key type. Must be one of 'sr25519', 'ed25519', or 'ecdsa'.
