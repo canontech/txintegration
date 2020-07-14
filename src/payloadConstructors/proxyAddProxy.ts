@@ -15,7 +15,7 @@ export async function constructAddProxyTransaction(userInputs: AddProxyInputs): 
 
   logChainData(chainData);
 
-  const registry = getRegistry("Polkadot", chainData.specName, chainData.specVersion);
+  const registry = getRegistry(chainData.chainName, chainData.specName, chainData.specVersion);
   registry.setMetadata(createMetadata(registry, chainData.metadataRpc));
 
   const unsigned = methods.proxy.addProxy(
