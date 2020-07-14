@@ -25,7 +25,7 @@
     memoizee "^0.4.14"
     rxjs "^6.6.0"
 
-"@polkadot/api@1.24.1", "@polkadot/api@^1.21.1", "@polkadot/api@^1.24.1":
+"@polkadot/api@1.24.1", "@polkadot/api@^1.24.1":
   version "1.24.1"
   resolved "https://registry.yarnpkg.com/@polkadot/api/-/api-1.24.1.tgz#8f2bc69b63fde2683e6104da25a547c8090f3d9f"
   integrity sha512-ZVNtpoEQ7io48O0Ky81Fdqtqv/Avt36r9DS9A4x4IaGgyFSUStW/q1GuiGYDUd5P6k96B1HiKi8MF+9qodxm9g==
@@ -152,12 +152,12 @@
   resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto/-/wasm-crypto-1.2.1.tgz#2189702447acd28d763886359576c87562241767"
   integrity sha512-nckIoZBV4nBZdeKwFwH5t7skS7L7GO5EFUl5B1F6uCjUfdNpDz3DtqbYQHcLdCZNmG4TDLg6w/1J+rkl2SiUZw==
 
-"@substrate/txwrapper@3.4.0":
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/@substrate/txwrapper/-/txwrapper-3.4.0.tgz#449a555a0e40881a8594e80d10a83faeb9e586c5"
-  integrity sha512-zSQ8nYpSt70urHQQIC8snojuIhZwtv1EJU5z4AVthUAHVrDLXLNu/nWa4Bw/bQfmiP4jfJHz+olKJrCkxfHUxA==
+"@substrate/txwrapper@3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@substrate/txwrapper/-/txwrapper-3.5.0.tgz#35394c5db1bf710a780a20626989fe134f09a44e"
+  integrity sha512-sNZtkXgDPnclDGaq+mUhUj1wJ8iVAB/5Fv4x8SAAEtJVCvImf4HQDmaD7RAZpLc42HY1xHmJN7d4gz6KRvjU2A==
   dependencies:
-    "@polkadot/api" "^1.21.1"
+    "@polkadot/api" "^1.24.1"
     "@types/memoizee" "^0.4.3"
     acorn ">=7.1.1"
 

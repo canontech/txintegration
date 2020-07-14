@@ -68,6 +68,13 @@ export interface RemarkInputs extends BaseUserInputs {
   remark: string;
 }
 
+export interface AddProxyInputs extends BaseUserInputs {
+  // The account to set as proxy.
+  proxy: string;
+  // The permissions for this proxy account.
+  proxyType: string;
+}
+
 /* Interfaces for Sidecar responses */
 
 // Information to return from unsigned transaction construction. Needed for the signing environment
