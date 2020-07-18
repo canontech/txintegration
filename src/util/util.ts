@@ -63,6 +63,11 @@ export interface BondExtraInputs extends BaseUserInputs {
   maxAdditional: number;
 }
 
+export interface SetControllerInputs extends BaseUserInputs {
+  // The SS-58 encoded controller address.
+  controller: string;
+}
+
 export interface RemarkInputs extends BaseUserInputs {
   // The remark to put on chain.
   remark: string;

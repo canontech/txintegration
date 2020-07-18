@@ -117,7 +117,7 @@
     memoizee "^0.4.14"
     rxjs "^6.6.0"
 
-"@polkadot/util-crypto@2.18.1", "@polkadot/util-crypto@^2.17.1", "@polkadot/util-crypto@^2.18.1":
+"@polkadot/util-crypto@2.18.1", "@polkadot/util-crypto@^2.18.1":
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-2.18.1.tgz#c4c36cd49c303f551f878a573f516479c94aeafe"
   integrity sha512-RqCIv+WKLStJXhZcE+pT3V/xQvt7V74laqhLyLKIsVXPpeuKDiTxt0E5EB+gkuW1eTC4A03kitULcNA5w4JtFw==
@@ -152,10 +152,10 @@
   resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto/-/wasm-crypto-1.2.1.tgz#2189702447acd28d763886359576c87562241767"
   integrity sha512-nckIoZBV4nBZdeKwFwH5t7skS7L7GO5EFUl5B1F6uCjUfdNpDz3DtqbYQHcLdCZNmG4TDLg6w/1J+rkl2SiUZw==
 
-"@substrate/txwrapper@3.5.0":
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/@substrate/txwrapper/-/txwrapper-3.5.0.tgz#35394c5db1bf710a780a20626989fe134f09a44e"
-  integrity sha512-sNZtkXgDPnclDGaq+mUhUj1wJ8iVAB/5Fv4x8SAAEtJVCvImf4HQDmaD7RAZpLc42HY1xHmJN7d4gz6KRvjU2A==
+"@substrate/txwrapper@3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@substrate/txwrapper/-/txwrapper-3.5.1.tgz#d6eae9d172b186d3ca038dab3767a5c5e6856ebc"
+  integrity sha512-bA1sVn3HRiT+yOGRXd3UWLLbzmpDRqky66NF528T5eW1UK7KgAfQ6fjGfL6P5awpf4VaGPafxHEV+MoLzKqggw==
   dependencies:
     "@polkadot/api" "^1.24.1"
     "@types/memoizee" "^0.4.3"
