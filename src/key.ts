@@ -1,9 +1,9 @@
 import { RegistryInfo } from './util/util';
 
 export const registryInputs: RegistryInfo = {
-  chainName: 'Polkadot CC1',
+  chainName: 'Polkadot',
   specName: 'polkadot',
-	specVersion: 15,
+	specVersion: 18,
 }
 
 export const curve = 'sr25519';

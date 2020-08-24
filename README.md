@@ -8,22 +8,15 @@ a Substrate-based chain.
 > Note: This will work on any Substrate-based chain, but for now is only set up to work on Polkadot
 > or a development chain using Polkadot's SS58 address encoding.
 
-<p align="center">
-⚠️ ⚠️ ⚠️
-
-The current version of Polkadot
-<a href="https://github.com/paritytech/polkadot/blob/v0.8.6/runtime/polkadot/src/lib.rs#L107L134">restricts</a>
-many transactions, including balance transfers, so `yarn start` will fail. Try making a remark
-on-chain with `yarn ts-node src/makeRemark.ts` instead.
-</p>
+> Note: This repo has not yet been updated for Polkadot's redenomination.
 
 ## Instructions
 
 Tested on:
 
-- Polkadot v0.8.14
-- Sidecar v0.11.2
-- Txwrapper v3.4.0
+- Polkadot v0.8.22
+- Sidecar v0.13.0
+- Txwrapper v3.5.0
 
 ### Start a Node
 
