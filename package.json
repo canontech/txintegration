@@ -16,12 +16,13 @@
     "lint": "tsc --noEmit && eslint . --ext ts"
   },
   "dependencies": {
-    "@polkadot/api": "1.24.1",
-    "@polkadot/util-crypto": "2.18.1",
-    "@substrate/txwrapper": "3.5.1",
-    "axios": "^0.19.2",
-    "ts-node": "^8.10.1",
-    "typescript": "^3.8.3"
+    "@polkadot/api": "2.0.1",
+    "@polkadot/util-crypto": "3.5.1",
+    "@substrate/txwrapper": "3.9.0",
+    "axios": "^0.20.0",
+    "node-fetch": "^2.6.1",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
   },
   "devDependencies": {
     "readline": "^1.3.0"
