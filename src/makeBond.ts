@@ -4,7 +4,7 @@ import { constructBondTransaction } from './payloadConstructors/stakingBond';
 import {
   BondInputs,
   createAndSubmitTransaction,
-  DECIMALS,
+  getChainDecimals,
   promptSignature,
   TxConstruction,
 } from './util/util';
@@ -13,7 +13,7 @@ import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsigne
 const inputs: BondInputs = {
 	senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
 	controller: '13xGBRvbBR9st4c5CVADqXntUYHbHWCPAyMcEK45P5HFAGEZ',
-	value: 7 * DECIMALS,
+	value: 7 * getChainDecimals('polkadot'),
   payee: 'Staked',
   tip: 0,
   eraPeriod: 64,

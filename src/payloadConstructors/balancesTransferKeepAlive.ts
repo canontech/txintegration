@@ -1,8 +1,8 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
 import { createSigningPayload, getRegistry, methods } from '@substrate/txwrapper';
 import {
-  DECIMALS,
   getChainData,
+  getChainDecimals,
   getSenderData,
   logChainData,
   TransferInputs,
@@ -22,10 +22,12 @@ function checkAvailableBalance(balance: number, transfer: number, decimals: numb
 
 export async function constructTransfer(userInputs: TransferInputs): Promise<TxConstruction> {
   const chainData = await getChainData(userInputs.sidecarHost);
+  const specName = chainData.specName;
+  const decimals = getChainDecimals(specName);
   const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
 
 	logChainData(chainData);
-  checkAvailableBalance(senderData.spendableBalance, userInputs.transferValue, DECIMALS);
+  checkAvailableBalance(senderData.spendableBalance, userInputs.transferValue, decimals);
 
   const registry = getRegistry(chainData.chainName, chainData.specName, chainData.specVersion);
   registry.setMetadata(createMetadata(registry, chainData.metadataRpc));

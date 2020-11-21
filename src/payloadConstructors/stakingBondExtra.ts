@@ -3,8 +3,8 @@ import { createSigningPayload, getRegistry, methods } from '@substrate/txwrapper
 import { createMetadata } from '@substrate/txwrapper/lib/util';
 import { 
   BondExtraInputs,
-  DECIMALS,
   getChainData,
+  getChainDecimals,
   getSenderData,
   logChainData,
   TxConstruction,
@@ -22,10 +22,12 @@ function checkAvailableBalance(balance: number, bond: number, decimals: number) 
 
 export async function constructBondExtra(userInputs: BondExtraInputs): Promise<TxConstruction> {
   const chainData = await getChainData(userInputs.sidecarHost);
+  const specName = chainData.specName;
+  const decimals = getChainDecimals(specName);
   const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
 
   logChainData(chainData);
-  checkAvailableBalance(senderData.spendableBalance, userInputs.maxAdditional, DECIMALS);
+  checkAvailableBalance(senderData.spendableBalance, userInputs.maxAdditional, decimals);
 
   const registry = getRegistry(chainData.chainName, chainData.specName, chainData.specVersion);
   registry.setMetadata(createMetadata(registry, chainData.metadataRpc));
