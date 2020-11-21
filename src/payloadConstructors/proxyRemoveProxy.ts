@@ -2,39 +2,27 @@
 import { createSigningPayload, getRegistry, methods } from '@substrate/txwrapper';
 import { createMetadata } from '@substrate/txwrapper/lib/util';
 import { 
-  BondExtraInputs,
   getChainData,
-  getChainDecimals,
   getSenderData,
   logChainData,
+  RemoveProxyInputs,
   TxConstruction,
 } from '../util/util';
 
-function checkAvailableBalance(balance: number, bond: number, decimals: number) {
-  if (balance < bond) {
-    console.log(
-      `Error: Sender only has ${balance / decimals} tokens available. ` +
-        `Cannot bond ${bond / decimals} tokens.`,
-    );
-    process.exit(1);
-  }
-}
-
-export async function constructBondExtra(userInputs: BondExtraInputs): Promise<TxConstruction> {
+export async function constructRemoveProxyTransaction(userInputs: RemoveProxyInputs): Promise<TxConstruction> {
   const chainData = await getChainData(userInputs.sidecarHost);
-  const specName = chainData.specName;
-  const decimals = getChainDecimals(specName);
   const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
 
   logChainData(chainData);
-  checkAvailableBalance(senderData.spendableBalance, userInputs.maxAdditional, decimals);
 
   const registry = getRegistry(chainData.chainName, chainData.specName, chainData.specVersion);
   registry.setMetadata(createMetadata(registry, chainData.metadataRpc));
 
-  const unsigned = methods.staking.bondExtra(
+  const unsigned = methods.proxy.addProxy(
     {
-			maxAdditional: userInputs.maxAdditional,
+			delegate: userInputs.delegate,
+      proxyType: userInputs.proxyType,
+      delay: userInputs.delay,
     },
     {
       address: userInputs.senderAddress,

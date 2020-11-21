@@ -1,7 +1,7 @@
 // Useful functions and types.
 import { TypeRegistry } from '@polkadot/types';
 import { Keyring } from '@polkadot/api';
-import { TRANSACTION_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
+import { EXTRINSIC_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
 import { KeyringPair, UnsignedTransaction, createSignedTx, getTxHash } from '@substrate/txwrapper';
 import * as readline from 'readline';
 import axios from 'axios';
@@ -75,9 +75,20 @@ export interface RemarkInputs extends BaseUserInputs {
 
 export interface AddProxyInputs extends BaseUserInputs {
   // The account to set as proxy.
-  proxy: string;
+  delegate: string;
   // The permissions for this proxy account.
   proxyType: string;
+  // The number of blocks delay for this proxy.
+  delay: number | string;
+}
+
+export interface RemoveProxyInputs extends BaseUserInputs {
+  // The account to set as proxy.
+  delegate: string;
+  // The permissions for this proxy account.
+  proxyType: string;
+  // The number of blocks delay for this proxy.
+  delay: number | string;
 }
 
 /* Interfaces for Sidecar responses */
@@ -153,11 +164,24 @@ interface ClaimsResponse{
 	type: Agreement;
 }
 
+/* Util */
+
+export function getChainDecimals(chain: string): number {
+  let decimals: number;
+  if (chain == 'polkadot') {
+    decimals = 10_000_000_000;
+  }
+  else if (chain == 'kusama') {
+    decimals = 1_000_000_000_000;
+  }
+  return decimals
+}
+
 /* Sidecar interaction */
 
 // Get information about the chain.
 export async function getChainData(sidecarHost: string): Promise<ChainData> {
-  const endpoint = `${sidecarHost}tx/artifacts`;
+  const endpoint = `${sidecarHost}transaction/material`;
   const artifacts: ArtifactsResponse = await sidecarGet(endpoint);
   return {
     blockNumber: artifacts.at.height,
@@ -180,7 +204,7 @@ export function logChainData(chainData: ChainData) {
 
 // Get information about the sending address.
 export async function getSenderData(sidecarHost: string, address: string): Promise<AddressData> {
-  const endpoint = `${sidecarHost}balance/${address}`;
+  const endpoint = `${sidecarHost}accounts/${address}/balance-info`;
   const addressData: AddressResponse = await sidecarGet(endpoint);
   const spendable =
     parseInt(addressData.free) -
@@ -258,7 +282,7 @@ export function signWith(
 ): string {
   const { signature } = registry
     .createType('ExtrinsicPayload', signingPayload, {
-      version: TRANSACTION_VERSION,
+      version: EXTRINSIC_VERSION,
     })
     .sign(pair);
 

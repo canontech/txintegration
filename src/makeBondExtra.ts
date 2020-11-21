@@ -4,7 +4,7 @@ import { constructBondExtra } from './payloadConstructors/stakingBondExtra';
 import {
   BondExtraInputs,
   createAndSubmitTransaction,
-  DECIMALS,
+  getChainDecimals,
   promptSignature,
   TxConstruction,
 } from './util/util';
@@ -12,7 +12,7 @@ import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsigne
 
 const inputs: BondExtraInputs = {
 	senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
-	maxAdditional: 1 * DECIMALS,
+	maxAdditional: 1 * getChainDecimals('kusama'),
   tip: 0,
   eraPeriod: 128,
   sidecarHost: 'http://127.0.0.1:8080/',

@@ -5,18 +5,16 @@ This is a guide to using
 [TxWrapper](https://github.com/paritytech/txwrapper) to construct, sign, and submit a transaction to
 a Substrate-based chain.
 
-> Note: This will work on any Substrate-based chain, but for now is only set up to work on Polkadot
-> or a development chain using Polkadot's SS58 address encoding.
-
-> Note: This repo has not yet been updated for Polkadot's redenomination.
+> Note: This will work on any Substrate-based chain, but for now is only set up to work on Polkadot,
+> Kusama, or a development chain using Polkadot's SS58 address encoding.
 
 ## Instructions
 
 Tested on:
 
-- Polkadot v0.8.22
-- Sidecar v0.13.0
-- Txwrapper v3.5.0
+- Polkadot v0.8.26
+- Sidecar v2.0.0
+- Txwrapper v3.10.0
 
 ### Start a Node
 
@@ -47,8 +45,8 @@ In `index.ts` you will need to enter the transaction parameters:
 const inputs: TransferInputs = {
   senderAddress: '15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5', //Alice
   recipientAddress: '14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3', //Bob
-  transferValue: 1 * DECIMALS, // DOTs
-  tip: 0 * DECIMALS, // DOTs
+  transferValue: 1 * getChainDecimals('specName'), // DOTs
+  tip: 0 * getChainDecimals('specName'), // DOTs
   eraPeriod: 64, // Blocks
   sidecarHost: 'http://127.0.0.1:8080/', // Sidecar
 };

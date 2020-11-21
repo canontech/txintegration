@@ -20,8 +20,9 @@ export async function constructAddProxyTransaction(userInputs: AddProxyInputs): 
 
   const unsigned = methods.proxy.addProxy(
     {
-			proxy: userInputs.proxy,
+			delegate: userInputs.delegate,
       proxyType: userInputs.proxyType,
+      delay: userInputs.delay,
     },
     {
       address: userInputs.senderAddress,

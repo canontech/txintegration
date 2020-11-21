@@ -1,22 +1,21 @@
 // Bond some tokens.
 import { decode } from '@substrate/txwrapper';
-import { constructBondTransaction } from './payloadConstructors/stakingBond';
+import { constructRemoveProxyTransaction } from './payloadConstructors/proxyRemoveProxy';
 import {
-  BondInputs,
   createAndSubmitTransaction,
-  getChainDecimals,
   promptSignature,
+  RemoveProxyInputs,
   TxConstruction,
 } from './util/util';
 import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
 
-const inputs: BondInputs = {
+const inputs: RemoveProxyInputs = {
 	senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
-	controller: '13xGBRvbBR9st4c5CVADqXntUYHbHWCPAyMcEK45P5HFAGEZ',
-	value: 7 * getChainDecimals('polkadot'),
-  payee: 'Staked',
+	delegate: '13xGBRvbBR9st4c5CVADqXntUYHbHWCPAyMcEK45P5HFAGEZ',
+  proxyType: 'Governance',
+  delay: 0,
   tip: 0,
-  eraPeriod: 64,
+  eraPeriod: 256,
   sidecarHost: 'http://127.0.0.1:8080/',
 };
 
@@ -24,9 +23,8 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
   console.log(
     `\nTransaction Details:` +
       `\n  Sending Account: ${decoded.address}` +
-      `\n  Controller:      ${decoded.method.args.controller}` +
-			`\n  Value: ${decoded.method.args.value}` +
-			`\n  Payee: ${decoded.method.args.payee}` +
+      `\n  Proxy:      ${decoded.method.args.proxy}` +
+			`\n  Type: ${decoded.method.args.proxyType}` +
       `\n  Tip: ${decoded.tip}` +
       `\n  Era Period: ${decoded.eraPeriod}`,
   );
@@ -34,7 +32,7 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
 
 async function main(): Promise<void> {
   // Construct the unsigned transaction.
-  const construction: TxConstruction = await constructBondTransaction(inputs);
+  const construction: TxConstruction = await constructRemoveProxyTransaction(inputs);
 
   // Verify transaction details.
   const decodedUnsigned = decode(construction.unsigned, {
