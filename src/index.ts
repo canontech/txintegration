@@ -3,7 +3,7 @@ import { decode } from '@substrate/txwrapper';
 import { constructTransfer } from './payloadConstructors/balancesTransferKeepAlive';
 import {
   createAndSubmitTransaction,
-  DECIMALS,
+  getChainDecimals,
   promptSignature,
   TransferInputs,
   TxConstruction,
@@ -13,7 +13,7 @@ import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsigne
 const inputs: TransferInputs = {
   senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
   recipientAddress: '14inmGQGBE1ptjTcFaDBjewnGKfNanGEYKv1szbguZ1xsk9n', // Test 2
-  transferValue: 1 * DECIMALS,
+  transferValue: 1 * getChainDecimals('kusama'),
   tip: 0,
   eraPeriod: 64,
   sidecarHost: 'http://127.0.0.1:8080/',

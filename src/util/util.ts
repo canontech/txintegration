@@ -14,9 +14,6 @@ type Agreement = 'Regular' | 'Saft';
 type Payee = 'Staked' | 'Stash' | 'Controller';
 type Curve = 'sr25519' | 'ed25519' | 'ecdsa';
 
-// Chain decimals.
-export const DECIMALS = 1_000_000_000_000;
-
 /* User Interfaces */
 
 interface BaseUserInputs {
