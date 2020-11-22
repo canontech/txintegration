@@ -24,7 +24,7 @@
     memoizee "^0.4.14"
     rxjs "^6.6.3"
 
-"@polkadot/api@2.5.1", "@polkadot/api@2.7.1":
+"@polkadot/api@2.7.1", "@polkadot/api@^2.0.1":
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/@polkadot/api/-/api-2.7.1.tgz#3eb0ae7eecd342a68a68ed6cf082d6c73d0b6281"
   integrity sha512-xgaLsv/qRTjRfSvFBgm9h9+gXK5pYn2iqlWPndvYSM/IaUZWAQPVWL1uGnrEbEFjHvpi6Fe28wsw+QCM8rBxew==
@@ -200,13 +200,15 @@
     "@types/websocket" "^1.0.1"
     websocket "^1.0.32"
 
-"@substrate/txwrapper@3.10.2":
-  version "3.10.2"
-  resolved "https://registry.yarnpkg.com/@substrate/txwrapper/-/txwrapper-3.10.2.tgz#f9abacc87b31d4b686242889fbded1cb0aaf6619"
-  integrity sha512-6vxsz/13dX/Cx5AFK/3HW2I/FofWcxG6tpJt2o6/wQXjlPeoONMWt94cROa4lBDgIntnnHV7vWbeb1ZT2piENg==
+"@substrate/txwrapper@3.9.0":
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/@substrate/txwrapper/-/txwrapper-3.9.0.tgz#222bd008ddfbe494776bf708fee995b7e1d4b761"
+  integrity sha512-nMYP442IIX1JV6lAAlNZme/QTy2uCgjYwWSAwmOTNOFBaXK4zHeFz177yngs0V5OiCPByiVAbfNrzsWERFoxpw==
   dependencies:
-    "@polkadot/api" "2.5.1"
+    "@polkadot/api" "^2.0.1"
     "@types/memoizee" "^0.4.3"
+    acorn ">=7.4.0"
+    dot-prop "^5.3.0"
 
 "@types/bn.js@^4.11.6":
   version "4.11.6"
@@ -239,6 +241,11 @@
   integrity sha512-f5WLMpezwVxCLm1xQe/kdPpQIOmL0TXYx2O15VYfYzc7hTIdxiOoOvez+McSIw3b7z/1zGovew9YSL7+h4h7/Q==
   dependencies:
     "@types/node" "*"
+
+acorn@>=7.4.0:
+  version "8.0.4"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.0.4.tgz#7a3ae4191466a6984eee0fe3407a4f3aa9db8354"
+  integrity sha512-XNP0PqF1XD19ZlLKvB7cMmnZswW4C/03pRHgirB30uSJTaS3A3V1/P4sS3HPvFmjoriPCJQs+JDSbm4bL1TxGQ==
 
 arg@^4.1.0:
   version "4.1.3"
@@ -356,6 +363,13 @@ diff@^4.0.1:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/diff/-/diff-4.0.2.tgz#60f3aecb89d5fae520c11aa19efc2bb982aade7d"
   integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
+
+dot-prop@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-5.3.0.tgz#90ccce708cd9cd82cc4dc8c3ddd9abdd55b20e88"
+  integrity sha512-QM8q3zDe58hqUqjraQOmzZ1LIH9SWQJTlEKCH4kJ2oQvLZk7RbQXvtDM2XEq3fwkV9CCvvH4LA0AV+ogFsBM2Q==
+  dependencies:
+    is-obj "^2.0.0"
 
 elliptic@^6.5.3:
   version "6.5.3"
@@ -475,6 +489,11 @@ ip-regex@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/ip-regex/-/ip-regex-4.2.0.tgz#a03f5eb661d9a154e3973a03de8b23dd0ad6892e"
   integrity sha512-n5cDDeTWWRwK1EBoWwRti+8nP4NbytBBY0pldmnIkq6Z55KNFmWofh4rl9dPZpj+U/nVq7gweR3ylrvMt4YZ5A==
+
+is-obj@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/is-obj/-/is-obj-2.0.0.tgz#473fb05d973705e3fd9620545018ca8e22ef4982"
+  integrity sha512-drqDG3cbczxxEJRoOXcOjtdp1J/lyp1mNn0xaznRs8+muBhgQcrnbspox5X5fOw0HnMnbfDzvnEMEtqDEJEo8w==
 
 is-promise@^2.1:
   version "2.2.2"
