@@ -24,7 +24,7 @@
     memoizee "^0.4.14"
     rxjs "^6.6.3"
 
-"@polkadot/api@2.5.1", "@polkadot/api@2.7.1":
+"@polkadot/api@2.7.1":
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/@polkadot/api/-/api-2.7.1.tgz#3eb0ae7eecd342a68a68ed6cf082d6c73d0b6281"
   integrity sha512-xgaLsv/qRTjRfSvFBgm9h9+gXK5pYn2iqlWPndvYSM/IaUZWAQPVWL1uGnrEbEFjHvpi6Fe28wsw+QCM8rBxew==
@@ -200,12 +200,12 @@
     "@types/websocket" "^1.0.1"
     websocket "^1.0.32"
 
-"@substrate/txwrapper@3.10.2":
-  version "3.10.2"
-  resolved "https://registry.yarnpkg.com/@substrate/txwrapper/-/txwrapper-3.10.2.tgz#f9abacc87b31d4b686242889fbded1cb0aaf6619"
-  integrity sha512-6vxsz/13dX/Cx5AFK/3HW2I/FofWcxG6tpJt2o6/wQXjlPeoONMWt94cROa4lBDgIntnnHV7vWbeb1ZT2piENg==
+"@substrate/txwrapper@3.10.3":
+  version "3.10.3"
+  resolved "https://registry.yarnpkg.com/@substrate/txwrapper/-/txwrapper-3.10.3.tgz#4cd900e4496d48fd156cc477143e1e576a73ff7e"
+  integrity sha512-HwqXJyba6BR9QD2IbLnw7flG1rujf9j1kQ/bUbiBCqimVDdPE2ZLLz97YJBwhp7NZOtLTVXJREFFgOxvMmL5hw==
   dependencies:
-    "@polkadot/api" "2.5.1"
+    "@polkadot/api" "2.7.1"
     "@types/memoizee" "^0.4.3"
 
 "@types/bn.js@^4.11.6":
