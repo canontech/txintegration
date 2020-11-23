@@ -22,9 +22,10 @@ const inputs: AddProxyInputs = {
 function logUnsignedInfo(decoded: DecodedUnsignedTx) {
   console.log(
     `\nTransaction Details:` +
-      `\n  Sending Account: ${decoded.address}` +
-      `\n  Proxy:      ${decoded.method.args.proxy}` +
+      `\n  Sender: ${decoded.address}` +
+      `\n  Proxy:  ${decoded.method.args.delegate}` +
 			`\n  Type: ${decoded.method.args.proxyType}` +
+			`\n  Delay: ${decoded.method.args.delay}` +
       `\n  Tip: ${decoded.tip}` +
       `\n  Era Period: ${decoded.eraPeriod}`,
   );

@@ -18,7 +18,7 @@ export async function constructRemoveProxyTransaction(userInputs: RemoveProxyInp
   const registry = getRegistry(chainData.chainName, chainData.specName, chainData.specVersion);
   registry.setMetadata(createMetadata(registry, chainData.metadataRpc));
 
-  const unsigned = methods.proxy.addProxy(
+  const unsigned = methods.proxy.removeProxy(
     {
 			delegate: userInputs.delegate,
       proxyType: userInputs.proxyType,
