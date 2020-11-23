@@ -221,7 +221,7 @@ export async function getClaimType(sidecarHost: string, address: string): Promis
 }
 
 export async function submitTransaction(sidecarHost: string, encodedTx: string): Promise<any> {
-  const endpoint = `${sidecarHost}tx/`;
+  const endpoint = `${sidecarHost}transaction/`;
   const submission = await sidecarPost(endpoint, encodedTx);
   return submission;
 }
