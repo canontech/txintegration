@@ -35,7 +35,7 @@ export async function constructTransfer(userInputs: TransferInputs): Promise<TxC
   const unsigned = methods.balances.transferKeepAlive(
     {
       value: userInputs.transferValue,
-      dest: userInputs.recipientAddress,
+      dest: userInputs.recipientAddress.id,
     },
     {
       address: userInputs.senderAddress,

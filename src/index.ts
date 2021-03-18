@@ -12,10 +12,10 @@ import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsigne
 
 const inputs: TransferInputs = {
   senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
-  recipientAddress: '14inmGQGBE1ptjTcFaDBjewnGKfNanGEYKv1szbguZ1xsk9n', // Test 2
-  transferValue: 1 * getChainDecimals('kusama'),
+  recipientAddress: { id: '14inmGQGBE1ptjTcFaDBjewnGKfNanGEYKv1szbguZ1xsk9n' }, // Test 2
+  transferValue: 1 * getChainDecimals('polkadot'),
   tip: 0,
-  eraPeriod: 64,
+  eraPeriod: 128,
   sidecarHost: 'http://127.0.0.1:8080/',
 };
 
@@ -23,7 +23,7 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
   console.log(
     `\nTransaction Details:` +
       `\n  Sending Account:   ${decoded.address}` +
-      `\n  Receiving Account: ${decoded.method.args.dest}` +
+      `\n  Receiving Account: ${JSON.stringify(decoded.method.args.dest, null, 2)}` +
       `\n  Amount: ${decoded.method.args.value}` +
       `\n  Tip:    ${decoded.tip}` +
       `\n  Era Period: ${decoded.eraPeriod}`,

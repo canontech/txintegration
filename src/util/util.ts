@@ -31,7 +31,7 @@ interface BaseUserInputs {
 
 export interface TransferInputs extends BaseUserInputs {
   // Address receiving the transfer.
-  recipientAddress: string;
+  recipientAddress: { id: string };
   // Number of tokens to transfer.
   transferValue: number;
 }
