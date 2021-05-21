@@ -12,9 +12,9 @@ a Substrate-based chain.
 
 Tested on:
 
-- Polkadot v0.8.29
-- Sidecar v4.0.0
-- Txwrapper v3.10.12
+- Polkadot v0.9.2
+- Sidecar v6.2.0
+- Txwrapper v5.0.0
 
 ### Start a Node
 
