@@ -3,14 +3,7 @@
 // This is the only part of this repo that imports Polkadot JS functions directly. TxWrapper is
 // meant to provide tools to create signing payloads. You can sign the payload however you like.
 import { cryptoWaitReady } from '@polkadot/util-crypto';
-import {
-  deriveAddress,
-  getRegistry,
-  KUSAMA_SS58_FORMAT,
-  POLKADOT_SS58_FORMAT,
-  WESTEND_SS58_FORMAT,
-} from '@substrate/txwrapper-polkadot';
-import { createMetadata } from '@substrate/txwrapper-polkadot/lib/util/metadata';
+import { deriveAddress, getRegistry } from '@substrate/txwrapper-polkadot';
 import { signWith, createKeyring } from './util/util';
 import * as readline from 'readline';
 // Import a secret key URI from `key.ts`, which should be a string. Obviously you will need to
@@ -38,26 +31,21 @@ async function main(): Promise<void> {
   // Wait for the promise to resolve async WASM
   await cryptoWaitReady();
 
-  const registry = getRegistry(
-    registryInputs.chainName,
-    registryInputs.specName,
-    registryInputs.specVersion,
-  );
-
   let SS58_FORMAT: number;
+  let md;
   switch (registryInputs.specName) {
     case 'kusama': {
-      SS58_FORMAT = KUSAMA_SS58_FORMAT;
-      registry.setMetadata(createMetadata(registry, kusamaMetadata));
+      SS58_FORMAT = 2;
+      md = kusamaMetadata;
       break;
     }
     case 'polkadot': {
-      SS58_FORMAT = POLKADOT_SS58_FORMAT;
-      registry.setMetadata(createMetadata(registry, polkadotMetadata));
+      SS58_FORMAT = 0;
+      md = polkadotMetadata
       break;
     }
     case 'westend': {
-      SS58_FORMAT = WESTEND_SS58_FORMAT;
+      SS58_FORMAT = 42;
       console.warn(`TODO: Need metadata for Westend. Likely to get BadProof error.`)
       break;
     }
@@ -67,6 +55,13 @@ async function main(): Promise<void> {
       break;
     }
   }
+
+  const registry = getRegistry({ 
+    specName: registryInputs.specName,
+    chainName: registryInputs.chainName,
+    specVersion: registryInputs.specVersion,
+    metadataRpc: md,
+  });
 
   const signingPair = createKeyring(signingKey, curve);
   const signingAddress = deriveAddress(signingPair.publicKey, SS58_FORMAT);

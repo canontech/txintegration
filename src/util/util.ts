@@ -10,7 +10,6 @@ import axios from 'axios';
 
 type ChainName = 'Polkadot' | 'Polkadot CC1' | 'Kusama' | 'Westend';
 type SpecName = 'polkadot' | 'kusama' | 'westend';
-type Agreement = 'Regular' | 'Saft';
 type Payee = 'Staked' | 'Stash' | 'Controller';
 type Curve = 'sr25519' | 'ed25519' | 'ecdsa';
 
@@ -34,16 +33,6 @@ export interface TransferInputs extends BaseUserInputs {
   recipientAddress: { id: string };
   // Number of tokens to transfer.
   transferValue: number;
-}
-
-export interface AttestInputs extends BaseUserInputs {
-  // Type of agreement that the attester agreed to in the pre-sale. 'Regular' or 'Saft'.
-  agreement: Agreement;
-}
-
-export interface ClaimInputs extends BaseUserInputs {
-  // The Ethereum address with the claim.
-  ethereumAddress: string;
 }
 
 export interface BondInputs extends BaseUserInputs {
@@ -157,10 +146,6 @@ interface AddressResponse {
   locks: [];
 }
 
-interface ClaimsResponse{
-	type: Agreement;
-}
-
 /* Util */
 
 export function getChainDecimals(chain: string): number {
@@ -211,13 +196,6 @@ export async function getSenderData(sidecarHost: string, address: string): Promi
     spendableBalance: spendable,
     nonce: parseInt(addressData.nonce),
   };
-}
-
-// Get information about the sending address.
-export async function getClaimType(sidecarHost: string, address: string): Promise<Agreement> {
-  const endpoint = `${sidecarHost}claims/${address}`;
-  const claimsType: ClaimsResponse = await sidecarGet(endpoint);
-  return claimsType.type;
 }
 
 export async function submitTransaction(sidecarHost: string, encodedTx: string): Promise<any> {
