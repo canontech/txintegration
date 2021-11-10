@@ -1,11 +1,5 @@
 // Connect to Sidecar and construct a `claims.attest` transaction.
-import {
-	createSigningPayload,
-	getRegistry,
-	methods,
-	getPolkadotStatement
-} from '@substrate/txwrapper-polkadot';
-import { createMetadata } from '@substrate/txwrapper-polkadot/lib/util';
+import { construct getRegistry, methods } from '@substrate/txwrapper-polkadot';
 import {
   AttestInputs,
   getChainData,
@@ -16,6 +10,7 @@ import {
 
 export async function constructAttestation(userInputs: AttestInputs): Promise<TxConstruction> {
 	const chainData = await getChainData(userInputs.sidecarHost);
+  const { specName, chainName, specVersion, metadataRpc } = chainData;
 	const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
 	const attestation = getPolkadotStatement(userInputs.agreement);
 
@@ -23,8 +18,7 @@ export async function constructAttestation(userInputs: AttestInputs): Promise<Tx
 
 	logChainData(chainData);
 
-  const registry = getRegistry(chainData.chainName, chainData.specName, chainData.specVersion);
-  registry.setMetadata(createMetadata(registry, chainData.metadataRpc));
+  const registry = getRegistry({ specName, chainName, specVersion, metadataRpc });
 
   const unsigned = methods.claims.attest(
     {
@@ -49,7 +43,7 @@ export async function constructAttestation(userInputs: AttestInputs): Promise<Tx
   );
 
   // Construct the signing payload from an unsigned transaction.
-  const signingPayload: string = createSigningPayload(unsigned, { registry });
+  const signingPayload: string = construct.signingPayload(unsigned, { registry });
 
   return {
     unsigned: unsigned,

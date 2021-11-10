@@ -8,12 +8,12 @@ import {
   TransferInputs,
   TxConstruction,
 } from './util/util';
-import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/decode/decodeUnsignedTx';
+import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
 
 const inputs: TransferInputs = {
-  senderAddress: '',
-  recipientAddress: { id: '' },
-  transferValue: 1 * getChainDecimals('polkadot'),
+  senderAddress: 'DPs2tExwULx8tRc2N7ECrWTzrPhbdVBApLVDiugkusaVH8Q',
+  recipientAddress: { id: 'EAZbMxUvCqL7kXcUZeG5B6R3tjgmEpWsm53kPejVz2zJGjq' },
+  transferValue: 1 * getChainDecimals('kusama'),
   tip: 0,
   eraPeriod: 256,
   sidecarHost: 'http://127.0.0.1:8080/',

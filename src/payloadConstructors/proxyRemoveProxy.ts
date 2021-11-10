@@ -1,6 +1,5 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
-import { createSigningPayload, getRegistry, methods } from '@substrate/txwrapper-polkadot';
-import { createMetadata } from '@substrate/txwrapper-polkadot/lib/util';
+import { construct, getRegistry, methods } from '@substrate/txwrapper-polkadot';
 import { 
   getChainData,
   getSenderData,
@@ -11,12 +10,12 @@ import {
 
 export async function constructRemoveProxyTransaction(userInputs: RemoveProxyInputs): Promise<TxConstruction> {
   const chainData = await getChainData(userInputs.sidecarHost);
+  const { specName, chainName, specVersion, metadataRpc } = chainData;
   const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
 
   logChainData(chainData);
 
-  const registry = getRegistry(chainData.chainName, chainData.specName, chainData.specVersion);
-  registry.setMetadata(createMetadata(registry, chainData.metadataRpc));
+  const registry = getRegistry({ specName, chainName, specVersion, metadataRpc });
 
   const unsigned = methods.proxy.removeProxy(
     {
@@ -43,7 +42,7 @@ export async function constructRemoveProxyTransaction(userInputs: RemoveProxyInp
   );
 
   // Construct the signing payload from an unsigned transaction.
-  const signingPayload: string = createSigningPayload(unsigned, { registry });
+  const signingPayload: string = construct.signingPayload(unsigned, { registry });
 
   return {
     unsigned: unsigned,

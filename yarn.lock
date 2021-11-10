@@ -222,28 +222,28 @@
     "@types/websocket" "^1.0.4"
     websocket "^1.0.34"
 
-"@substrate/txwrapper-polkadot-core@^1.2.20":
+"@substrate/txwrapper-core@^1.2.20":
   version "1.2.20"
-  resolved "https://registry.yarnpkg.com/@substrate/txwrapper-polkadot-core/-/txwrapper-polkadot-core-1.2.20.tgz#fe590580ef6d4fcf501071999713a1209d66fd9b"
+  resolved "https://registry.yarnpkg.com/@substrate/txwrapper-core/-/txwrapper-core-1.2.20.tgz#fe590580ef6d4fcf501071999713a1209d66fd9b"
   integrity sha512-OxEVTfv4Liy0LR/DR79RlEX1g9MDYdAgcdrGTfDFROygfAeSQpzK9i+HkKhWPM+jsi55PgHieVP6BRs/ByTU2w==
   dependencies:
     "@polkadot/api" "^6.7.1"
     memoizee "0.4.15"
 
-"@substrate/txwrapper-polkadot-polkadot@1.2.20":
+"@substrate/txwrapper-polkadot@1.2.20":
   version "1.2.20"
-  resolved "https://registry.yarnpkg.com/@substrate/txwrapper-polkadot-polkadot/-/txwrapper-polkadot-polkadot-1.2.20.tgz#4019fa363270592cc8cdc0f6a8a0e143850d1f77"
+  resolved "https://registry.yarnpkg.com/@substrate/txwrapper-polkadot/-/txwrapper-polkadot-1.2.20.tgz#4019fa363270592cc8cdc0f6a8a0e143850d1f77"
   integrity sha512-6W0+fAxpvb/MR9eyX70nnABbYrWLMAUb3JCXQ5b28NRSPZuJD+ky4mLeZifsdz4fb2xCLe9zXzRVJGONHSIMRQ==
   dependencies:
-    "@substrate/txwrapper-polkadot-core" "^1.2.20"
-    "@substrate/txwrapper-polkadot-substrate" "^1.2.20"
+    "@substrate/txwrapper-core" "^1.2.20"
+    "@substrate/txwrapper-substrate" "^1.2.20"
 
-"@substrate/txwrapper-polkadot-substrate@^1.2.20":
+"@substrate/txwrapper-substrate@^1.2.20":
   version "1.2.20"
-  resolved "https://registry.yarnpkg.com/@substrate/txwrapper-polkadot-substrate/-/txwrapper-polkadot-substrate-1.2.20.tgz#d27bb4c4fa40e261dd78b9eeaa08b7740af6e9ed"
+  resolved "https://registry.yarnpkg.com/@substrate/txwrapper-substrate/-/txwrapper-substrate-1.2.20.tgz#d27bb4c4fa40e261dd78b9eeaa08b7740af6e9ed"
   integrity sha512-KbBT4aFTb478OJzyAnlWYIpf9g52U5jcfG/BcPyM8alW8YwRSUKBK9wj1ONKgDi+TvHesb1CRv9agHD0vwX1oQ==
   dependencies:
-    "@substrate/txwrapper-polkadot-core" "^1.2.20"
+    "@substrate/txwrapper-core" "^1.2.20"
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.8"

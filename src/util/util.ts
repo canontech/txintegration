@@ -2,7 +2,7 @@
 import { TypeRegistry } from '@polkadot/types';
 import { Keyring } from '@polkadot/api';
 import { EXTRINSIC_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
-import { KeyringPair, UnsignedTransaction, createSignedTx, getTxHash } from '@substrate/txwrapper-polkadot';
+import { construct, KeyringPair, UnsignedTransaction } from '@substrate/txwrapper-polkadot';
 import * as readline from 'readline';
 import axios from 'axios';
 
@@ -228,18 +228,18 @@ export async function submitTransaction(sidecarHost: string, encodedTx: string):
 
 export async function createAndSubmitTransaction(
   construction: TxConstruction,
-  signature: string,
+  signature: `0x$string`,
   sidecarHost: string,
 ) {
   // Construct a signed transaction.
-  const tx = createSignedTx(construction.unsigned, signature, {
+  const tx = construct.signedTx(construction.unsigned, signature, {
     metadataRpc: construction.metadata,
     registry: construction.registry,
   });
   console.log(`\nEncoded Transaction: ${tx}`);
 
   // Log the expected hash.
-  const expectedTxHash = getTxHash(tx);
+  const expectedTxHash = construct.txHash(tx);
   console.log(`\nExpected Tx Hash: ${expectedTxHash}`);
 
   // Submit the transaction. Should return the actual hash if accepted by the node.
@@ -250,7 +250,7 @@ export async function createAndSubmitTransaction(
 /* Signing utilities */
 
 // Ask the user to supply a signature and wait for the response.
-export function promptSignature(): Promise<string> {
+export function promptSignature(): Promise<any> {
   let rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
