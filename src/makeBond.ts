@@ -11,8 +11,8 @@ import {
 import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/decode/decodeUnsignedTx';
 
 const inputs: BondInputs = {
-	senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
-	controller: '13xGBRvbBR9st4c5CVADqXntUYHbHWCPAyMcEK45P5HFAGEZ',
+	senderAddress: '',
+	controller: '',
 	value: 7 * getChainDecimals('polkadot'),
   payee: 'Staked',
   tip: 0,

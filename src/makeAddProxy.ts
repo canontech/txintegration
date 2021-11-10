@@ -10,8 +10,8 @@ import {
 import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/decode/decodeUnsignedTx';
 
 const inputs: AddProxyInputs = {
-	senderAddress: '147yVh3qkxXsywrXASnjQ3BxP6S6EvhvC1GYtUMWEUZunrsx', // Test 1
-	delegate: '15uQGaX9w2bbH8zcfR32cRN22xgfwwCR17bDftK2YeKPUyGk',
+	senderAddress: '',
+	delegate: '',
   proxyType: 'NonTransfer',
   delay: 0,
   tip: 0,

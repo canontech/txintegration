@@ -19,8 +19,8 @@ import {
 
 // User Inputs. Will claim indicator DOTs on `ethereumAddress` to `senderAddress`.
 const inputs: ClaimInputs = {
-  senderAddress: '13xGBRvbBR9st4c5CVADqXntUYHbHWCPAyMcEK45P5HFAGEZ',
-	ethereumAddress: '0x79e21d47fffd0db6f3e00d8cc9f241c9a91556d5',
+  senderAddress: '',
+	ethereumAddress: '',
   tip: 0,
   eraPeriod: 64,
   sidecarHost: 'http://127.0.0.1:8080/',

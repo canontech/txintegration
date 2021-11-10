@@ -11,7 +11,7 @@ import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/decode/deco
 import { constructRemarkTx } from './payloadConstructors/systemRemark';
 
 const inputs: RemarkInputs = {
-	senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs',
+	senderAddress: '',
 	remark: 'hello',
   tip: 0,
   eraPeriod: 128,

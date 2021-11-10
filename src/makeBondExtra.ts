@@ -11,7 +11,7 @@ import {
 import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/decode/decodeUnsignedTx';
 
 const inputs: BondExtraInputs = {
-	senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
+	senderAddress: '',
 	maxAdditional: 1 * getChainDecimals('kusama'),
   tip: 0,
   eraPeriod: 128,
