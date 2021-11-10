@@ -2,7 +2,7 @@
 
 This is a guide to using
 [Substrate API Sidecar](https://github.com/paritytech/substrate-api-sidecar) and
-[TxWrapper](https://github.com/paritytech/txwrapper) to construct, sign, and submit a transaction to
+[TxWrapper](https://github.com/paritytech/txwrapper-polkadot) to construct, sign, and submit a transaction to
 a Substrate-based chain.
 
 > Note: This will work on any Substrate-based chain, but for now is only set up to work on Polkadot,

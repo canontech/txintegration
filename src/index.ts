@@ -1,5 +1,5 @@
 // Construct and submit a `balance.transferKeepAlive` transaction.
-import { decode } from '@substrate/txwrapper';
+import { decode } from '@substrate/txwrapper-polkadot';
 import { constructTransfer } from './payloadConstructors/balancesTransferKeepAlive';
 import {
   createAndSubmitTransaction,
@@ -8,14 +8,14 @@ import {
   TransferInputs,
   TxConstruction,
 } from './util/util';
-import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
+import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/decode/decodeUnsignedTx';
 
 const inputs: TransferInputs = {
-  senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
-  recipientAddress: { id: '14inmGQGBE1ptjTcFaDBjewnGKfNanGEYKv1szbguZ1xsk9n' }, // Test 2
+  senderAddress: '',
+  recipientAddress: { id: '' },
   transferValue: 1 * getChainDecimals('polkadot'),
   tip: 0,
-  eraPeriod: 128,
+  eraPeriod: 256,
   sidecarHost: 'http://127.0.0.1:8080/',
 };
 

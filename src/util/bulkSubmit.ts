@@ -1,6 +1,6 @@
 // A script that signs inline (and is therefore not secure) a bunch of transactions. Useful for
 // testing.
-import { createSignedTx } from '@substrate/txwrapper';
+import { createSignedTx } from '@substrate/txwrapper-polkadot';
 import { constructTransfer } from '../payloadConstructors/balancesTransferKeepAlive';
 import {
   createKeyring,

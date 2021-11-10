@@ -7,7 +7,7 @@ import {
 	getRegistry,
 	getEthereumPayload,
 	getPolkadotStatement
-} from '@substrate/txwrapper';
+} from '@substrate/txwrapper-polkadot';
 import {
   ClaimInputs,
   getChainData,

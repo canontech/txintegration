@@ -1,5 +1,5 @@
 // Make an attestation to claim some pre-claimed DOT tokens.
-import { decode } from '@substrate/txwrapper';
+import { decode } from '@substrate/txwrapper-polkadot';
 import { constructAttestation } from './payloadConstructors/claimsAttest';
 import {
   AttestInputs,
@@ -7,7 +7,7 @@ import {
   promptSignature,
   TxConstruction
 } from './util/util';
-import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
+import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/decode/decodeUnsignedTx';
 
 const inputs: AttestInputs = {
   senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1

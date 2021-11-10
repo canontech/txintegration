@@ -1,13 +1,13 @@
 // Make a remark on chain. This is a no-op and only includes a string in the transaction. Good for
 // testing as the transaction fee is quite low (if your message is not too verbose).
-import { decode } from '@substrate/txwrapper';
+import { decode } from '@substrate/txwrapper-polkadot';
 import {
   createAndSubmitTransaction,
   promptSignature,
   RemarkInputs,
   TxConstruction,
 } from './util/util';
-import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
+import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/decode/decodeUnsignedTx';
 import { constructRemarkTx } from './payloadConstructors/systemRemark';
 
 const inputs: RemarkInputs = {

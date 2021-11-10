@@ -4,8 +4,8 @@ import {
 	getRegistry,
 	methods,
 	getPolkadotStatement
-} from '@substrate/txwrapper';
-import { createMetadata } from '@substrate/txwrapper/lib/util';
+} from '@substrate/txwrapper-polkadot';
+import { createMetadata } from '@substrate/txwrapper-polkadot/lib/util';
 import {
   AttestInputs,
   getChainData,

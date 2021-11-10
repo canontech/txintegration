@@ -2,7 +2,7 @@
 import { TypeRegistry } from '@polkadot/types';
 import { Keyring } from '@polkadot/api';
 import { EXTRINSIC_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
-import { KeyringPair, UnsignedTransaction, createSignedTx, getTxHash } from '@substrate/txwrapper';
+import { KeyringPair, UnsignedTransaction, createSignedTx, getTxHash } from '@substrate/txwrapper-polkadot';
 import * as readline from 'readline';
 import axios from 'axios';
 

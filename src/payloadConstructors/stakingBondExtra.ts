@@ -1,6 +1,6 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
-import { createSigningPayload, getRegistry, methods } from '@substrate/txwrapper';
-import { createMetadata } from '@substrate/txwrapper/lib/util';
+import { createSigningPayload, getRegistry, methods } from '@substrate/txwrapper-polkadot';
+import { createMetadata } from '@substrate/txwrapper-polkadot/lib/util';
 import { 
   BondExtraInputs,
   getChainData,

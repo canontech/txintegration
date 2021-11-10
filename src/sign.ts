@@ -9,8 +9,8 @@ import {
   KUSAMA_SS58_FORMAT,
   POLKADOT_SS58_FORMAT,
   WESTEND_SS58_FORMAT,
-} from '@substrate/txwrapper';
-import { createMetadata } from '@substrate/txwrapper/lib/util/metadata';
+} from '@substrate/txwrapper-polkadot';
+import { createMetadata } from '@substrate/txwrapper-polkadot/lib/util/metadata';
 import { signWith, createKeyring } from './util/util';
 import * as readline from 'readline';
 // Import a secret key URI from `key.ts`, which should be a string. Obviously you will need to

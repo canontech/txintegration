@@ -1,5 +1,5 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
-import { createSigningPayload, getRegistry, methods } from '@substrate/txwrapper';
+import { createSigningPayload, getRegistry, methods } from '@substrate/txwrapper-polkadot';
 import {
   getChainData,
   getChainDecimals,
@@ -8,7 +8,7 @@ import {
   TransferInputs,
   TxConstruction,
 } from '../util/util';
-import { createMetadata } from '@substrate/txwrapper/lib/util';
+import { createMetadata } from '@substrate/txwrapper-polkadot/lib/util';
 
 function checkAvailableBalance(balance: number, transfer: number, decimals: number) {
   if (balance < transfer) {
