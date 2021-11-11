@@ -1,5 +1,5 @@
 // Bond some tokens.
-import { decode } from '@substrate/txwrapper';
+import { decode } from '@substrate/txwrapper-polkadot';
 import { constructAddProxyTransaction } from './payloadConstructors/proxyAddProxy';
 import {
   AddProxyInputs,
@@ -7,12 +7,12 @@ import {
   promptSignature,
   TxConstruction,
 } from './util/util';
-import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
+import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
 
 const inputs: AddProxyInputs = {
-	senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
-	delegate: '13xGBRvbBR9st4c5CVADqXntUYHbHWCPAyMcEK45P5HFAGEZ',
-  proxyType: 'Governance',
+	senderAddress: '',
+	delegate: '',
+  proxyType: 'NonTransfer',
   delay: 0,
   tip: 0,
   eraPeriod: 256,

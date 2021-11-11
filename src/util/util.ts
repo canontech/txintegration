@@ -2,7 +2,7 @@
 import { TypeRegistry } from '@polkadot/types';
 import { Keyring } from '@polkadot/api';
 import { EXTRINSIC_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
-import { KeyringPair, UnsignedTransaction, createSignedTx, getTxHash } from '@substrate/txwrapper';
+import { construct, KeyringPair, UnsignedTransaction } from '@substrate/txwrapper-polkadot';
 import * as readline from 'readline';
 import axios from 'axios';
 
@@ -10,7 +10,6 @@ import axios from 'axios';
 
 type ChainName = 'Polkadot' | 'Polkadot CC1' | 'Kusama' | 'Westend';
 type SpecName = 'polkadot' | 'kusama' | 'westend';
-type Agreement = 'Regular' | 'Saft';
 type Payee = 'Staked' | 'Stash' | 'Controller';
 type Curve = 'sr25519' | 'ed25519' | 'ecdsa';
 
@@ -34,16 +33,6 @@ export interface TransferInputs extends BaseUserInputs {
   recipientAddress: { id: string };
   // Number of tokens to transfer.
   transferValue: number;
-}
-
-export interface AttestInputs extends BaseUserInputs {
-  // Type of agreement that the attester agreed to in the pre-sale. 'Regular' or 'Saft'.
-  agreement: Agreement;
-}
-
-export interface ClaimInputs extends BaseUserInputs {
-  // The Ethereum address with the claim.
-  ethereumAddress: string;
 }
 
 export interface BondInputs extends BaseUserInputs {
@@ -157,10 +146,6 @@ interface AddressResponse {
   locks: [];
 }
 
-interface ClaimsResponse{
-	type: Agreement;
-}
-
 /* Util */
 
 export function getChainDecimals(chain: string): number {
@@ -213,13 +198,6 @@ export async function getSenderData(sidecarHost: string, address: string): Promi
   };
 }
 
-// Get information about the sending address.
-export async function getClaimType(sidecarHost: string, address: string): Promise<Agreement> {
-  const endpoint = `${sidecarHost}claims/${address}`;
-  const claimsType: ClaimsResponse = await sidecarGet(endpoint);
-  return claimsType.type;
-}
-
 export async function submitTransaction(sidecarHost: string, encodedTx: string): Promise<any> {
   const endpoint = `${sidecarHost}transaction/`;
   const submission = await sidecarPost(endpoint, encodedTx);
@@ -228,18 +206,18 @@ export async function submitTransaction(sidecarHost: string, encodedTx: string):
 
 export async function createAndSubmitTransaction(
   construction: TxConstruction,
-  signature: string,
+  signature: `0x$string`,
   sidecarHost: string,
 ) {
   // Construct a signed transaction.
-  const tx = createSignedTx(construction.unsigned, signature, {
+  const tx = construct.signedTx(construction.unsigned, signature, {
     metadataRpc: construction.metadata,
     registry: construction.registry,
   });
   console.log(`\nEncoded Transaction: ${tx}`);
 
   // Log the expected hash.
-  const expectedTxHash = getTxHash(tx);
+  const expectedTxHash = construct.txHash(tx);
   console.log(`\nExpected Tx Hash: ${expectedTxHash}`);
 
   // Submit the transaction. Should return the actual hash if accepted by the node.
@@ -250,7 +228,7 @@ export async function createAndSubmitTransaction(
 /* Signing utilities */
 
 // Ask the user to supply a signature and wait for the response.
-export function promptSignature(): Promise<string> {
+export function promptSignature(): Promise<any> {
   let rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,

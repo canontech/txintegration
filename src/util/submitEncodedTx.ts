@@ -1,5 +1,5 @@
 //
-import { getTxHash } from '@substrate/txwrapper';
+import { getTxHash } from '@substrate/txwrapper-polkadot';
 import { submitTransaction } from './util';
 
 const tx = '';

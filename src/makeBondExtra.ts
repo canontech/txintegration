@@ -1,5 +1,5 @@
 // Bond some tokens.
-import { decode } from '@substrate/txwrapper';
+import { decode } from '@substrate/txwrapper-polkadot';
 import { constructBondExtra } from './payloadConstructors/stakingBondExtra';
 import {
   BondExtraInputs,
@@ -8,10 +8,10 @@ import {
   promptSignature,
   TxConstruction,
 } from './util/util';
-import { DecodedUnsignedTx } from '@substrate/txwrapper/lib/decode/decodeUnsignedTx';
+import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/decode/decodeUnsignedTx';
 
 const inputs: BondExtraInputs = {
-	senderAddress: '12v6hFUh4mKXq3XexwzwtRqXUNi6YLbGpGiumfGZhdvK6ahs', // Test 1
+	senderAddress: '',
 	maxAdditional: 1 * getChainDecimals('kusama'),
   tip: 0,
   eraPeriod: 128,

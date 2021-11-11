@@ -1,6 +1,5 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
-import { createSigningPayload, getRegistry, methods } from '@substrate/txwrapper';
-import { createMetadata } from '@substrate/txwrapper/lib/util';
+import { construct, getRegistry, methods } from '@substrate/txwrapper-polkadot';
 import { 
   BondInputs,
   getChainData,
@@ -22,15 +21,14 @@ function checkAvailableBalance(balance: number, bond: number, decimals: number) 
 
 export async function constructBondTransaction(userInputs: BondInputs): Promise<TxConstruction> {
   const chainData = await getChainData(userInputs.sidecarHost);
-  const specName = chainData.specName;
+  const { specName, chainName, specVersion, metadataRpc } = chainData;
   const decimals = getChainDecimals(specName);
   const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
 
   logChainData(chainData);
   checkAvailableBalance(senderData.freeBalance, userInputs.value, decimals);
 
-  const registry = getRegistry(chainData.chainName, chainData.specName, chainData.specVersion);
-  registry.setMetadata(createMetadata(registry, chainData.metadataRpc));
+  const registry = getRegistry({ specName, chainName, specVersion, metadataRpc });
 
   const unsigned = methods.staking.bond(
     {
@@ -57,7 +55,7 @@ export async function constructBondTransaction(userInputs: BondInputs): Promise<
   );
 
   // Construct the signing payload from an unsigned transaction.
-  const signingPayload: string = createSigningPayload(unsigned, { registry });
+  const signingPayload: string = construct.signingPayload(unsigned, { registry });
 
   return {
     unsigned: unsigned,
