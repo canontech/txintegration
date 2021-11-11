@@ -2,7 +2,7 @@
 import { TypeRegistry } from '@polkadot/types';
 import { Keyring } from '@polkadot/api';
 import { EXTRINSIC_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
-import { construct, KeyringPair, UnsignedTransaction } from '@substrate/txwrapper-polkadot';
+import { construct, getRegistry, KeyringPair, UnsignedTransaction } from '@substrate/txwrapper-polkadot';
 import * as readline from 'readline';
 import axios from 'axios';
 
@@ -157,6 +157,61 @@ export function getChainDecimals(chain: string): number {
     decimals = 1_000_000_000_000;
   }
   return decimals
+}
+
+/* Construction */
+
+interface BaseTxInfo {
+  address: string;
+  blockHash: string;
+  blockNumber: number;
+  eraPeriod: number;
+  genesisHash: string;
+  metadataRpc: string;
+  nonce: number;
+  specVersion: number;
+  transactionVersion: number;
+  tip: number;
+}
+
+interface OptionsWithMeta {
+  metadataRpc: string;
+  registry: TypeRegistry;
+}
+
+interface BaseTxInfoWithMeta {
+  baseTxInfo: BaseTxInfo;
+  optionsWithMeta: OptionsWithMeta;
+}
+
+export async function prepareBaseTxInfo(userInputs): Promise<BaseTxInfoWithMeta> {
+  const chainData = await getChainData(userInputs.sidecarHost);
+  const { specName, chainName, specVersion, metadataRpc } = chainData;
+  const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
+
+	logChainData(chainData);
+
+  const registry = getRegistry({ specName, chainName, specVersion, metadataRpc });
+
+  const baseTxInfo = {
+      address: userInputs.senderAddress,
+      blockHash: chainData.blockHash,
+      blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toBn().toNumber(),
+      eraPeriod: userInputs.eraPeriod,
+      genesisHash: chainData.genesisHash,
+      metadataRpc: chainData.metadataRpc,
+      nonce: userInputs.nonce || senderData.nonce,
+			specVersion: chainData.specVersion,
+			transactionVersion: chainData.transactionVersion,
+      tip: userInputs.tip,
+    };
+  
+    const optionsWithMeta = {
+      metadataRpc: chainData.metadataRpc,
+      registry,
+    };
+
+    return { baseTxInfo, optionsWithMeta }
 }
 
 /* Sidecar interaction */
