@@ -7,7 +7,10 @@ import {
 } from '../util/util';
 
 export async function constructAddProxyTransaction(userInputs: AddProxyInputs): Promise<TxConstruction> {
-  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(userInputs)
+  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
+    userInputs,
+    { check: false, amount: 0 }
+  );
 
   const unsigned = methods.proxy.addProxy(
     {

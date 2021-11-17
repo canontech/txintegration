@@ -184,12 +184,25 @@ interface BaseTxInfoWithMeta {
   optionsWithMeta: OptionsWithMeta;
 }
 
-export async function prepareBaseTxInfo(userInputs): Promise<BaseTxInfoWithMeta> {
+interface BalanceCheck {
+  check: boolean;
+  amount: number;
+}
+
+export async function prepareBaseTxInfo(
+  userInputs: any,
+  checkBalance: BalanceCheck
+): Promise<BaseTxInfoWithMeta> {
   const chainData = await getChainData(userInputs.sidecarHost);
   const { specName, chainName, specVersion, metadataRpc } = chainData;
   const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
 
 	logChainData(chainData);
+
+  if (checkBalance.check) {
+    const decimals = getChainDecimals(specName);
+    checkAvailableBalance(senderData.spendableBalance, checkBalance.amount, decimals);
+  }
 
   const registry = getRegistry({ specName, chainName, specVersion, metadataRpc });
 
@@ -214,10 +227,20 @@ export async function prepareBaseTxInfo(userInputs): Promise<BaseTxInfoWithMeta>
     return { baseTxInfo, optionsWithMeta }
 }
 
+function checkAvailableBalance(balance: number, amount: number, decimals: number) {
+  if (balance < amount) {
+    console.log(
+      `Error: Sender only has ${balance / decimals} spendable tokens. ` +
+        `Cannot transact with ${amount / decimals} tokens.`,
+    );
+    process.exit(1);
+  }
+}
+
 /* Sidecar interaction */
 
 // Get information about the chain.
-export async function getChainData(sidecarHost: string): Promise<ChainData> {
+async function getChainData(sidecarHost: string): Promise<ChainData> {
   const endpoint = `${sidecarHost}transaction/material`;
   const artifacts: ArtifactsResponse = await sidecarGet(endpoint);
   return {

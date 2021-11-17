@@ -1,24 +1,16 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
-import { construct, getRegistry, methods } from '@substrate/txwrapper-polkadot';
+import { construct, methods } from '@substrate/txwrapper-polkadot';
 import { 
   BondInputs,
   prepareBaseTxInfo,
   TxConstruction,
 } from '../util/util';
 
-// function checkAvailableBalance(balance: number, bond: number, decimals: number) {
-//   if (balance < bond) {
-//     console.log(
-//       `Error: Sender only has ${balance / decimals} tokens available. ` +
-//         `Cannot bond ${bond / decimals} tokens.`,
-//     );
-//     process.exit(1);
-//   }
-// }
-
 export async function constructBondTransaction(userInputs: BondInputs): Promise<TxConstruction> {
-  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(userInputs)
-  // checkAvailableBalance(senderData.freeBalance, userInputs.value, decimals);
+  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
+    userInputs,
+    { check: true, amount: userInputs.value }
+  );
 
   const unsigned = methods.staking.bond(
     {

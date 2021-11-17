@@ -6,19 +6,11 @@ import {
   TxConstruction,
 } from '../util/util';
 
-// function checkAvailableBalance(balance: number, bond: number, decimals: number) {
-//   if (balance < bond) {
-//     console.log(
-//       `Error: Sender only has ${balance / decimals} tokens available. ` +
-//         `Cannot bond ${bond / decimals} tokens.`,
-//     );
-//     process.exit(1);
-//   }
-// }
-
 export async function constructBondExtra(userInputs: BondExtraInputs): Promise<TxConstruction> {
-  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(userInputs)
-  // checkAvailableBalance(senderData.spendableBalance, userInputs.maxAdditional, decimals);
+  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
+    userInputs,
+    { check: true, amount: userInputs.maxAdditional }
+  );
 
   const unsigned = methods.staking.bondExtra(
     {

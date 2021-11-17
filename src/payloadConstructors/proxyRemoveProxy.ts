@@ -7,7 +7,10 @@ import {
 } from '../util/util';
 
 export async function constructRemoveProxyTransaction(userInputs: RemoveProxyInputs): Promise<TxConstruction> {
-  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(userInputs)
+  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
+    userInputs,
+    { check: false, amount: 0 }
+  );
 
   const unsigned = methods.proxy.removeProxy(
     {

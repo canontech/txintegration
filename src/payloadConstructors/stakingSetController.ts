@@ -9,7 +9,10 @@ import {
 export async function constructSetControllerTransaction(
   userInputs: SetControllerInputs
 ): Promise<TxConstruction> {
-  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(userInputs)
+  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
+    userInputs,
+    { check: false, amount: 0 }
+  );
 
   const unsigned = methods.staking.setController(
     {
