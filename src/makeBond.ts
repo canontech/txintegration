@@ -8,7 +8,7 @@ import {
   promptSignature,
   TxConstruction,
 } from './util/util';
-import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/decode/decodeUnsignedTx';
+import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
 
 const inputs: BondInputs = {
 	senderAddress: '',

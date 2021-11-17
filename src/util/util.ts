@@ -2,7 +2,7 @@
 import { TypeRegistry } from '@polkadot/types';
 import { Keyring } from '@polkadot/api';
 import { EXTRINSIC_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
-import { construct, KeyringPair, UnsignedTransaction } from '@substrate/txwrapper-polkadot';
+import { construct, getRegistry, KeyringPair, UnsignedTransaction } from '@substrate/txwrapper-polkadot';
 import * as readline from 'readline';
 import axios from 'axios';
 
@@ -159,10 +159,88 @@ export function getChainDecimals(chain: string): number {
   return decimals
 }
 
+/* Construction */
+
+interface BaseTxInfo {
+  address: string;
+  blockHash: string;
+  blockNumber: number;
+  eraPeriod: number;
+  genesisHash: string;
+  metadataRpc: string;
+  nonce: number;
+  specVersion: number;
+  transactionVersion: number;
+  tip: number;
+}
+
+interface OptionsWithMeta {
+  metadataRpc: string;
+  registry: TypeRegistry;
+}
+
+interface BaseTxInfoWithMeta {
+  baseTxInfo: BaseTxInfo;
+  optionsWithMeta: OptionsWithMeta;
+}
+
+interface BalanceCheck {
+  check: boolean;
+  amount: number;
+}
+
+export async function prepareBaseTxInfo(
+  userInputs: any,
+  checkBalance: BalanceCheck
+): Promise<BaseTxInfoWithMeta> {
+  const chainData = await getChainData(userInputs.sidecarHost);
+  const { specName, chainName, specVersion, metadataRpc } = chainData;
+  const senderData = await getSenderData(userInputs.sidecarHost, userInputs.senderAddress);
+
+	logChainData(chainData);
+
+  if (checkBalance.check) {
+    const decimals = getChainDecimals(specName);
+    checkAvailableBalance(senderData.spendableBalance, checkBalance.amount, decimals);
+  }
+
+  const registry = getRegistry({ specName, chainName, specVersion, metadataRpc });
+
+  const baseTxInfo = {
+      address: userInputs.senderAddress,
+      blockHash: chainData.blockHash,
+      blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toBn().toNumber(),
+      eraPeriod: userInputs.eraPeriod,
+      genesisHash: chainData.genesisHash,
+      metadataRpc: chainData.metadataRpc,
+      nonce: userInputs.nonce || senderData.nonce,
+			specVersion: chainData.specVersion,
+			transactionVersion: chainData.transactionVersion,
+      tip: userInputs.tip,
+    };
+  
+    const optionsWithMeta = {
+      metadataRpc: chainData.metadataRpc,
+      registry,
+    };
+
+    return { baseTxInfo, optionsWithMeta }
+}
+
+function checkAvailableBalance(balance: number, amount: number, decimals: number) {
+  if (balance < amount) {
+    console.log(
+      `Error: Sender only has ${balance / decimals} spendable tokens. ` +
+        `Cannot transact with ${amount / decimals} tokens.`,
+    );
+    process.exit(1);
+  }
+}
+
 /* Sidecar interaction */
 
 // Get information about the chain.
-export async function getChainData(sidecarHost: string): Promise<ChainData> {
+async function getChainData(sidecarHost: string): Promise<ChainData> {
   const endpoint = `${sidecarHost}transaction/material`;
   const artifacts: ArtifactsResponse = await sidecarGet(endpoint);
   return {

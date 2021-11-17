@@ -7,7 +7,7 @@ import {
   RemarkInputs,
   TxConstruction,
 } from './util/util';
-import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/decode/decodeUnsignedTx';
+import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
 import { constructRemarkTx } from './payloadConstructors/systemRemark';
 
 const inputs: RemarkInputs = {
