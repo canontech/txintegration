@@ -1,14 +1,12 @@
 // Make a remark on chain. This is a no-op and only includes a string in the transaction. Good for
 // testing as the transaction fee is quite low (if your message is not too verbose).
-import { decode } from '@substrate/txwrapper-polkadot';
+import { constructRemarkTx } from './payloadConstructors/systemRemark';
 import {
   createAndSubmitTransaction,
   promptSignature,
   RemarkInputs,
   TxConstruction,
 } from './util/util';
-import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
-import { constructRemarkTx } from './payloadConstructors/systemRemark';
 
 const inputs: RemarkInputs = {
 	senderAddress: '',
@@ -18,25 +16,9 @@ const inputs: RemarkInputs = {
   sidecarHost: 'http://127.0.0.1:8080/',
 };
 
-function logUnsignedInfo(decoded: DecodedUnsignedTx) {
-  console.log(
-    `\nTransaction Details:` +
-      `\n  Sending Account: ${decoded.address}` +
-      `\n  Tip: ${decoded.tip}` +
-      `\n  Era Period: ${decoded.eraPeriod}`,
-  );
-}
-
 async function main(): Promise<void> {
   // Construct the unsigned transaction.
   const construction: TxConstruction = await constructRemarkTx(inputs);
-
-  // Verify transaction details.
-  const decodedUnsigned = decode(construction.unsigned, {
-    metadataRpc: construction.metadata,
-    registry: construction.registry,
-  });
-  logUnsignedInfo(decodedUnsigned);
 
   // Log the signing payload to sign offline.
   console.log(`\nSigning Payload: ${construction.payload}`);

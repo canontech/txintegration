@@ -1,0 +1,38 @@
+{
+	"baseInputs": {
+		"network": "kusama",
+		"sender": "",
+		"tip": 0,
+		"eraPeriod": 256,
+		"sidecarHost": "http://127.0.0.1:8080/"
+	},
+
+	"balances_transferKeepAlive": {
+		"recipientAddress": { "id" : "" },
+		"value": ""
+	},
+	"proxy_addProxy": {
+		"delegate": "",
+		"proxyType": "",
+		"delay": 0
+	},
+	"proxy_removeProxy": {
+		"delegate": "",
+		"proxyType": "",
+		"delay": 0
+	},
+	"staking_bond": {
+		"controller": "",
+		"value": 0,
+		"payee": ""
+	},
+	"staking_bondExtra": {
+		"maxAdditional": 0
+	},
+	"staking_setController": {
+		"controller": ""
+	},
+	"system_remark": {
+		"remark": ""
+	}
+}
