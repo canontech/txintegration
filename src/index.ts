@@ -5,13 +5,16 @@ import { doBalancesTransfer } from './payloadConstructors/balancesTransfer'
 interface Call {
 	pallet: string;
 	method: string;
-	args: any;
+	args: Object;
 }
 
 async function main(): Promise<void> {
 
-	const transactionDetails = JSON.parse(readFileSync('transaction.json').toString())
+	const transactionDetails = JSON.parse(readFileSync('transaction.json').toString());
 
+	// The user-provided JSON should have two fields:
+	//   1. `baseInputs`: All the common stuff like network, era, etc.
+	//   2. `transactions`: An array of `Call`s to construct and broadcast.
 	const baseInputs: BaseUserInputs = transactionDetails.baseInputs;
 	const transactions: [Call] = transactionDetails.transactions;
 
@@ -23,8 +26,8 @@ async function main(): Promise<void> {
 			case 'balances': {
 				if (method == 'transfer'){
 					const inputs: TransferInputs = {
-						recipientAddress: { id: transactionDetails.balances.recipientAddress.id },
-						transferValue: transactionDetails.balances.value,
+						recipientAddress: { id: transaction.args.recipientAddress.id },
+						transferValue: transaction.args.balances.value,
 						...baseInputs
 					}
 					await doBalancesTransfer(inputs);
