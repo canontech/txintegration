@@ -1,7 +1,6 @@
 import { readFileSync } from 'fs';
 import { BaseUserInputs, TransferInputs } from './util/util';
 import { doBalancesTransfer } from './payloadConstructors/balancesTransfer'
-import { isAssertionExpression } from 'typescript';
 
 interface Call {
 	pallet: string;
