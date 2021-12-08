@@ -2,7 +2,9 @@
 import { construct, decode, methods } from '@substrate/txwrapper-polkadot';
 import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
 import {
+  createAndSubmitTransaction,
   prepareBaseTxInfo,
+  promptSignature,
   TransferInputs,
   TxConstruction,
 } from '../util/util';
@@ -18,13 +20,13 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
   );
 }
 
-export async function constructTransfer(userInputs: TransferInputs): Promise<TxConstruction> {
+async function constructTransfer(userInputs: TransferInputs): Promise<TxConstruction> {
   const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
     userInputs,
     { check: true, amount: userInputs.transferValue }
   );
 
-  const unsigned = methods.balances.transferKeepAlive(
+  const unsigned = methods.balances.transfer(
     {
       value: userInputs.transferValue,
       dest: userInputs.recipientAddress.id,
@@ -49,4 +51,18 @@ export async function constructTransfer(userInputs: TransferInputs): Promise<TxC
     registry: optionsWithMeta.registry,
     metadata: optionsWithMeta.metadataRpc,
   };
+}
+
+export async function doBalancesTransfer(inputs: TransferInputs): Promise<void> {
+  // Construct the unsigned transaction.
+  const construction: TxConstruction = await constructTransfer(inputs);
+
+  // Log the signing payload to sign offline.
+  console.log(`\nSigning Payload: ${construction.payload}`);
+
+  // Wait for the signature.
+  const signature = await promptSignature();
+
+  // Construct a signed transaction and broadcast it.
+  await createAndSubmitTransaction(construction, signature, inputs.sidecarHost);
 }
