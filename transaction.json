@@ -1,7 +1,6 @@
 {
 	"baseInputs": {
-		"network": "kusama",
-		"sender": "",
+		"senderAddress": "",
 		"tip": 0,
 		"eraPeriod": 256,
 		"sidecarHost": "http://127.0.0.1:8080/"
