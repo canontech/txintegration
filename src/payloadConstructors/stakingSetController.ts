@@ -52,7 +52,6 @@ export async function doStakingSetController(userInputs: SetControllerInputs): P
   await createAndSubmitTransaction(
     {
       unsigned: unsigned,
-      payload: signingPayload,
       registry: optionsWithMeta.registry,
       metadata: optionsWithMeta.metadataRpc,
     },

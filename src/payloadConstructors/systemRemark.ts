@@ -51,7 +51,6 @@ export async function doSystemRemark(userInputs: RemarkInputs): Promise<void> {
   await createAndSubmitTransaction(
     {
       unsigned: unsigned,
-      payload: signingPayload,
       registry: optionsWithMeta.registry,
       metadata: optionsWithMeta.metadataRpc,
     },
