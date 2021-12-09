@@ -1,10 +1,11 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
 import { construct, decode, methods } from '@substrate/txwrapper-polkadot';
 import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
-import { 
+import {
+  createAndSubmitTransaction,
   prepareBaseTxInfo,
+  promptSignature,
   SetControllerInputs,
-  TxConstruction,
 } from '../util/util';
 
 function logUnsignedInfo(decoded: DecodedUnsignedTx) {
@@ -17,9 +18,7 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
   );
 }
 
-export async function constructSetControllerTransaction(
-  userInputs: SetControllerInputs
-): Promise<TxConstruction> {
+export async function doStakingSetController(userInputs: SetControllerInputs): Promise<void> {
   const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
     userInputs,
     { check: false, amount: 0 }
@@ -43,10 +42,21 @@ export async function constructSetControllerTransaction(
   // Construct the signing payload from an unsigned transaction.
   const signingPayload: string = construct.signingPayload(unsigned, optionsWithMeta);
 
-  return {
-    unsigned: unsigned,
-    payload: signingPayload,
-    registry: optionsWithMeta.registry,
-    metadata: optionsWithMeta.metadataRpc,
-  };
+  // Log the signing payload to sign offline.
+  console.log(`\nSigning Payload: ${signingPayload}`);
+
+  // Wait for the signature.
+  const signature = await promptSignature();
+
+  // Construct a signed transaction and broadcast it.
+  await createAndSubmitTransaction(
+    {
+      unsigned: unsigned,
+      payload: signingPayload,
+      registry: optionsWithMeta.registry,
+      metadata: optionsWithMeta.metadataRpc,
+    },
+    signature,
+    userInputs.sidecarHost
+  );
 }
