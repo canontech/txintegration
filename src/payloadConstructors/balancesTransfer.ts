@@ -6,7 +6,6 @@ import {
   prepareBaseTxInfo,
   promptSignature,
   TransferInputs,
-  TxConstruction,
 } from '../util/util';
 
 function logUnsignedInfo(decoded: DecodedUnsignedTx) {
@@ -20,7 +19,7 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
   );
 }
 
-async function constructTransfer(userInputs: TransferInputs): Promise<TxConstruction> {
+export async function doBalancesTransfer(userInputs: TransferInputs): Promise<void> {
   const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
     userInputs,
     { check: true, amount: userInputs.transferValue }
@@ -45,24 +44,21 @@ async function constructTransfer(userInputs: TransferInputs): Promise<TxConstruc
   // Construct the signing payload from an unsigned transaction.
   const signingPayload: string = construct.signingPayload(unsigned, optionsWithMeta);
 
-  return {
-    unsigned: unsigned,
-    payload: signingPayload,
-    registry: optionsWithMeta.registry,
-    metadata: optionsWithMeta.metadataRpc,
-  };
-}
-
-export async function doBalancesTransfer(inputs: TransferInputs): Promise<void> {
-  // Construct the unsigned transaction.
-  const construction: TxConstruction = await constructTransfer(inputs);
-
   // Log the signing payload to sign offline.
-  console.log(`\nSigning Payload: ${construction.payload}`);
+  console.log(`\nSigning Payload: ${signingPayload}`);
 
   // Wait for the signature.
   const signature = await promptSignature();
 
   // Construct a signed transaction and broadcast it.
-  await createAndSubmitTransaction(construction, signature, inputs.sidecarHost);
+  await createAndSubmitTransaction(
+    {
+      unsigned: unsigned,
+      payload: signingPayload,
+      registry: optionsWithMeta.registry,
+      metadata: optionsWithMeta.metadataRpc,
+    },
+    signature,
+    userInputs.sidecarHost
+  );
 }

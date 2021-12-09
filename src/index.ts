@@ -16,7 +16,7 @@ async function main(): Promise<void> {
 	//   1. `baseInputs`: All the common stuff like network, era, etc.
 	//   2. `transactions`: An array of `Call`s to construct and broadcast.
 	const baseInputs: BaseUserInputs = transactionDetails.baseInputs;
-	const transactions: [Call] = transactionDetails.transactions;
+	const transactions: Call[] = transactionDetails.transactions;
 
 	for (const transaction of transactions){
 		const pallet = transaction.pallet;
