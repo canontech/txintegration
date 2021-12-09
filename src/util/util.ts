@@ -81,9 +81,8 @@ export interface RemoveProxyInputs extends BaseUserInputs {
 
 // Information to return from unsigned transaction construction. Needed for the signing environment
 // and for decoding.
-export interface TxConstruction {
+interface TxConstruction {
   unsigned: UnsignedTransaction;
-  payload: string;
   registry: TypeRegistry;
   metadata: string;
 }

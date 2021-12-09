@@ -56,7 +56,6 @@ export async function doProxyAddProxy(userInputs: AddProxyInputs): Promise<void>
   await createAndSubmitTransaction(
     {
       unsigned: unsigned,
-      payload: signingPayload,
       registry: optionsWithMeta.registry,
       metadata: optionsWithMeta.metadataRpc,
     },

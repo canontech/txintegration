@@ -52,7 +52,6 @@ export async function doStakingBondExtra(userInputs: BondExtraInputs): Promise<v
   await createAndSubmitTransaction(
     {
       unsigned: unsigned,
-      payload: signingPayload,
       registry: optionsWithMeta.registry,
       metadata: optionsWithMeta.metadataRpc,
     },

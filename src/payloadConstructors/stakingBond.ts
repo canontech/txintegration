@@ -56,7 +56,6 @@ export async function doStakingBond(userInputs: BondInputs): Promise<void> {
   await createAndSubmitTransaction(
     {
       unsigned: unsigned,
-      payload: signingPayload,
       registry: optionsWithMeta.registry,
       metadata: optionsWithMeta.metadataRpc,
     },

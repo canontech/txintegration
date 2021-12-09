@@ -55,7 +55,6 @@ export async function doProxyRemoveProxy(userInputs: RemoveProxyInputs): Promise
   await createAndSubmitTransaction(
     {
       unsigned: unsigned,
-      payload: signingPayload,
       registry: optionsWithMeta.registry,
       metadata: optionsWithMeta.metadataRpc,
     },

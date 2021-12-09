@@ -54,7 +54,6 @@ export async function doBalancesTransfer(userInputs: TransferInputs): Promise<vo
   await createAndSubmitTransaction(
     {
       unsigned: unsigned,
-      payload: signingPayload,
       registry: optionsWithMeta.registry,
       metadata: optionsWithMeta.metadataRpc,
     },
