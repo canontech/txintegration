@@ -1,12 +1,26 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
-import { construct, methods } from '@substrate/txwrapper-polkadot';
+import { construct, decode, methods } from '@substrate/txwrapper-polkadot';
+import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
 import { 
   AddProxyInputs,
+  createAndSubmitTransaction,
   prepareBaseTxInfo,
-  TxConstruction,
+  promptSignature,
 } from '../util/util';
 
-export async function constructAddProxyTransaction(userInputs: AddProxyInputs): Promise<TxConstruction> {
+function logUnsignedInfo(decoded: DecodedUnsignedTx) {
+  console.log(
+    `\nTransaction Details:` +
+      `\n  Sender: ${decoded.address}` +
+      `\n  Proxy:  ${decoded.method.args.delegate}` +
+			`\n  Type: ${decoded.method.args.proxyType}` +
+			`\n  Delay: ${decoded.method.args.delay}` +
+      `\n  Tip: ${decoded.tip}` +
+      `\n  Era Period: ${decoded.eraPeriod}`,
+  );
+}
+
+export async function doProxyAddProxy(userInputs: AddProxyInputs): Promise<void> {
   const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
     userInputs,
     { check: false, amount: 0 }
@@ -22,13 +36,31 @@ export async function constructAddProxyTransaction(userInputs: AddProxyInputs): 
     optionsWithMeta,
   );
 
+  // Verify transaction details.
+  const decodedUnsigned = decode(unsigned, {
+    metadataRpc: optionsWithMeta.metadataRpc,
+    registry: optionsWithMeta.registry,
+  });
+  logUnsignedInfo(decodedUnsigned);
+
   // Construct the signing payload from an unsigned transaction.
   const signingPayload: string = construct.signingPayload(unsigned, optionsWithMeta);
 
-  return {
-    unsigned: unsigned,
-    payload: signingPayload,
-    registry: optionsWithMeta.registry,
-    metadata: optionsWithMeta.metadataRpc,
-  };
+  // Log the signing payload to sign offline.
+  console.log(`\nSigning Payload: ${signingPayload}`);
+
+  // Wait for the signature.
+  const signature = await promptSignature();
+
+  // Construct a signed transaction and broadcast it.
+  await createAndSubmitTransaction(
+    {
+      unsigned: unsigned,
+      payload: signingPayload,
+      registry: optionsWithMeta.registry,
+      metadata: optionsWithMeta.metadataRpc,
+    },
+    signature,
+    userInputs.sidecarHost
+  );
 }

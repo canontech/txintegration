@@ -15,7 +15,7 @@ type Curve = 'sr25519' | 'ed25519' | 'ecdsa';
 
 /* User Interfaces */
 
-interface BaseUserInputs {
+export interface BaseUserInputs {
   // Address sending the transaction.
   senderAddress: string;
   // Tip for block producer.

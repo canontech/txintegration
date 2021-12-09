@@ -1,54 +1,116 @@
-// Construct and submit a `balance.transferKeepAlive` transaction.
-import { decode } from '@substrate/txwrapper-polkadot';
-import { constructTransfer } from './payloadConstructors/balancesTransferKeepAlive';
+import { readFileSync } from 'fs';
 import {
-  createAndSubmitTransaction,
-  getChainDecimals,
-  promptSignature,
-  TransferInputs,
-  TxConstruction,
+	AddProxyInputs,
+	BaseUserInputs,
+	BondExtraInputs,
+	BondInputs,
+	RemarkInputs,
+	RemoveProxyInputs,
+	SetControllerInputs,
+	TransferInputs
 } from './util/util';
-import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
+import { doBalancesTransfer } from './payloadConstructors/balancesTransfer';
+import { doProxyAddProxy } from './payloadConstructors/proxyAddProxy';
+import { doProxyRemoveProxy } from './payloadConstructors/proxyRemoveProxy';
+import { doStakingBond } from './payloadConstructors/stakingBond';
+import { doStakingBondExtra } from './payloadConstructors/stakingBondExtra';
+import { doStakingSetController } from './payloadConstructors/stakingSetController';
+import { doSystemRemark } from './payloadConstructors/systemRemark';
 
-const inputs: TransferInputs = {
-  senderAddress: 'DPs2tExwULx8tRc2N7ECrWTzrPhbdVBApLVDiugkusaVH8Q',
-  recipientAddress: { id: 'EAZbMxUvCqL7kXcUZeG5B6R3tjgmEpWsm53kPejVz2zJGjq' },
-  transferValue: 1 * getChainDecimals('kusama'),
-  tip: 0,
-  eraPeriod: 256,
-  sidecarHost: 'http://127.0.0.1:8080/',
-};
-
-function logUnsignedInfo(decoded: DecodedUnsignedTx) {
-  console.log(
-    `\nTransaction Details:` +
-      `\n  Sending Account:   ${decoded.address}` +
-      `\n  Receiving Account: ${JSON.stringify(decoded.method.args.dest, null, 2)}` +
-      `\n  Amount: ${decoded.method.args.value}` +
-      `\n  Tip:    ${decoded.tip}` +
-      `\n  Era Period: ${decoded.eraPeriod}`,
-  );
+interface Call {
+	pallet: string;
+	method: string;
+	args: any;
 }
 
 async function main(): Promise<void> {
-  // Construct the unsigned transaction.
-  const construction: TxConstruction = await constructTransfer(inputs);
 
-  // Verify transaction details.
-  const decodedUnsigned = decode(construction.unsigned, {
-    metadataRpc: construction.metadata,
-    registry: construction.registry,
-  });
-  logUnsignedInfo(decodedUnsigned);
+	const transactionDetails = JSON.parse(readFileSync('transaction.json').toString());
 
-  // Log the signing payload to sign offline.
-  console.log(`\nSigning Payload: ${construction.payload}`);
+	// The user-provided JSON should have two fields:
+	//   1. `baseInputs`: All the common stuff like network, era, etc.
+	//   2. `transactions`: An array of `Call`s to construct and broadcast.
+	const baseInputs: BaseUserInputs = transactionDetails.baseInputs;
+	const transactions: Call[] = transactionDetails.transactions;
 
-  // Wait for the signature.
-  const signature = await promptSignature();
+	for (const transaction of transactions){
+		const pallet = transaction.pallet;
+		const method = transaction.method;
 
-  // Construct a signed transaction and broadcast it.
-  await createAndSubmitTransaction(construction, signature, inputs.sidecarHost);
+		switch (pallet) {
+			case 'balances': {
+				if (method == 'transfer'){
+					const inputs: TransferInputs = {
+						recipientAddress: { id: transaction.args.recipientAddress.id },
+						transferValue: transaction.args.value,
+						...baseInputs
+					}
+					await doBalancesTransfer(inputs);
+				}
+				break;
+			}
+
+			case 'proxy': {
+				if (method == 'addProxy'){
+					const inputs: AddProxyInputs = {
+						delegate: transaction.args.delegate,
+						proxyType: transaction.args.proxyType,
+						delay: transaction.args.delay,
+						...baseInputs
+					}
+					await doProxyAddProxy(inputs);
+				}
+				else if (method == 'removeProxy'){
+					const inputs: RemoveProxyInputs = {
+						delegate: transaction.args.delegate,
+						proxyType: transaction.args.proxyType,
+						delay: transaction.args.delay,
+						...baseInputs
+					}
+					await doProxyRemoveProxy(inputs);
+				}
+				break;
+			}
+
+			case 'staking': {
+				if (method == 'bond'){
+					const inputs: BondInputs = {
+						controller: transaction.args.controller,
+						value: transaction.args.value,
+						payee: transaction.args.payee,
+						...baseInputs
+					}
+					await doStakingBond(inputs);
+				}
+				else if (method == 'bondExtra'){
+					const inputs: BondExtraInputs = {
+						maxAdditional: transaction.args.maxAdditional,
+						...baseInputs
+					}
+					await doStakingBondExtra(inputs);
+				}
+				else if (method == 'setController'){
+					const inputs: SetControllerInputs = {
+						controller: transaction.args.controller,
+						...baseInputs
+					}
+					await doStakingSetController(inputs);
+				}
+				break;
+			}
+
+			case 'system': {
+				if (method == 'remark'){
+					const inputs: RemarkInputs = {
+						remark: transaction.args.remark,
+						...baseInputs
+					}
+					await doSystemRemark(inputs);
+				}
+				break;
+			}
+		}
+	}
 }
 
 main().catch((error) => {

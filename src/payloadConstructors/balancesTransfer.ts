@@ -1,36 +1,34 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
 import { construct, decode, methods } from '@substrate/txwrapper-polkadot';
 import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
-import { 
-  BondInputs,
+import {
   createAndSubmitTransaction,
   prepareBaseTxInfo,
   promptSignature,
+  TransferInputs,
 } from '../util/util';
 
 function logUnsignedInfo(decoded: DecodedUnsignedTx) {
   console.log(
     `\nTransaction Details:` +
-      `\n  Sending Account: ${decoded.address}` +
-      `\n  Controller:      ${decoded.method.args.controller}` +
-			`\n  Value: ${decoded.method.args.value}` +
-			`\n  Payee: ${decoded.method.args.payee}` +
-      `\n  Tip: ${decoded.tip}` +
+      `\n  Sending Account:   ${decoded.address}` +
+      `\n  Receiving Account: ${JSON.stringify(decoded.method.args.dest, null, 2)}` +
+      `\n  Amount: ${decoded.method.args.value}` +
+      `\n  Tip:    ${decoded.tip}` +
       `\n  Era Period: ${decoded.eraPeriod}`,
   );
 }
 
-export async function doStakingBond(userInputs: BondInputs): Promise<void> {
+export async function doBalancesTransfer(userInputs: TransferInputs): Promise<void> {
   const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
     userInputs,
-    { check: true, amount: userInputs.value }
+    { check: true, amount: userInputs.transferValue }
   );
 
-  const unsigned = methods.staking.bond(
+  const unsigned = methods.balances.transfer(
     {
-			controller: userInputs.controller,
-      value: userInputs.value,
-      payee: userInputs.payee,
+      value: userInputs.transferValue,
+      dest: userInputs.recipientAddress.id,
     },
     baseTxInfo,
     optionsWithMeta,

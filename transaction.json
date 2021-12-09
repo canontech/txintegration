@@ -1,0 +1,19 @@
+{
+	"baseInputs": {
+		"senderAddress": "",
+		"tip": 0,
+		"eraPeriod": 256,
+		"sidecarHost": "http://127.0.0.1:8080/"
+	},
+
+	"transactions": [
+		{
+			"pallet": "balances",
+			"method": "transfer",
+			"args": {
+					"recipientAddress": { "id" : "" },
+					"value": ""
+			}
+		}
+	]
+}
