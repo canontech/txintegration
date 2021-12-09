@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
-import { BaseUserInputs, TransferInputs } from './util/util';
-import { doBalancesTransfer } from './payloadConstructors/balancesTransfer'
+import { BaseUserInputs, RemarkInputs, TransferInputs } from './util/util';
+import { doBalancesTransfer } from './payloadConstructors/balancesTransfer';
+import { doSystemRemark } from './payloadConstructors/systemRemark';
 
 interface Call {
 	pallet: string;
@@ -34,6 +35,16 @@ async function main(): Promise<void> {
 				}
 				break;
 			}
+		case 'system': {
+			if (method == 'remark'){
+				const inputs: RemarkInputs = {
+					remark: transaction.args.remark,
+					...baseInputs
+				}
+				await doSystemRemark(inputs);
+			}
+			break;
+		}
 		}
 	}
 }

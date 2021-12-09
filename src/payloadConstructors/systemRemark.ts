@@ -2,9 +2,10 @@
 import { construct, decode, methods } from '@substrate/txwrapper-polkadot';
 import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
 import { 
+  createAndSubmitTransaction,
   prepareBaseTxInfo,
+  promptSignature,
 	RemarkInputs,
-  TxConstruction,
 } from '../util/util';
 
 function logUnsignedInfo(decoded: DecodedUnsignedTx) {
@@ -16,7 +17,7 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
   );
 }
 
-export async function constructRemarkTx(userInputs: RemarkInputs): Promise<TxConstruction> {
+export async function doSystemRemark(userInputs: RemarkInputs): Promise<void> {
   const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
     userInputs,
     { check: false, amount: 0 }
@@ -40,10 +41,21 @@ export async function constructRemarkTx(userInputs: RemarkInputs): Promise<TxCon
   // Construct the signing payload from an unsigned transaction.
   const signingPayload: string = construct.signingPayload(unsigned, optionsWithMeta);
 
-  return {
-    unsigned: unsigned,
-    payload: signingPayload,
-    registry: optionsWithMeta.registry,
-    metadata: optionsWithMeta.metadataRpc,
-  };
+  // Log the signing payload to sign offline.
+  console.log(`\nSigning Payload: ${signingPayload}`);
+
+  // Wait for the signature.
+  const signature = await promptSignature();
+
+  // Construct a signed transaction and broadcast it.
+  await createAndSubmitTransaction(
+    {
+      unsigned: unsigned,
+      payload: signingPayload,
+      registry: optionsWithMeta.registry,
+      metadata: optionsWithMeta.metadataRpc,
+    },
+    signature,
+    userInputs.sidecarHost
+  );
 }
