@@ -1,37 +1,37 @@
 // Add a proxy.
-import { constructAddProxyTransaction } from './payloadConstructors/proxyAddProxy';
-import {
-  AddProxyInputs,
-  createAndSubmitTransaction,
-  promptSignature,
-  TxConstruction,
-} from './util/util';
+// import { constructAddProxyTransaction } from './payloadConstructors/proxyAddProxy';
+// import {
+//   AddProxyInputs,
+//   createAndSubmitTransaction,
+//   promptSignature,
+//   TxConstruction,
+// } from './util/util';
 
-const inputs: AddProxyInputs = {
-	senderAddress: '',
-	delegate: '',
-  proxyType: 'NonTransfer',
-  delay: 0,
-  tip: 0,
-  eraPeriod: 256,
-  sidecarHost: 'http://127.0.0.1:8080/',
-};
+// const inputs: AddProxyInputs = {
+// 	senderAddress: '',
+// 	delegate: '',
+//   proxyType: 'NonTransfer',
+//   delay: 0,
+//   tip: 0,
+//   eraPeriod: 256,
+//   sidecarHost: 'http://127.0.0.1:8080/',
+// };
 
-async function main(): Promise<void> {
-  // Construct the unsigned transaction.
-  const construction: TxConstruction = await constructAddProxyTransaction(inputs);
+// async function main(): Promise<void> {
+//   // Construct the unsigned transaction.
+//   const construction: TxConstruction = await constructAddProxyTransaction(inputs);
 
-  // Log the signing payload to sign offline.
-  console.log(`\nSigning Payload: ${construction.payload}`);
+//   // Log the signing payload to sign offline.
+//   console.log(`\nSigning Payload: ${construction.payload}`);
 
-  // Wait for the signature.
-  const signature = await promptSignature();
+//   // Wait for the signature.
+//   const signature = await promptSignature();
 
-  // Construct a signed transaction and broadcast it.
-  await createAndSubmitTransaction(construction, signature, inputs.sidecarHost);
-}
+//   // Construct a signed transaction and broadcast it.
+//   await createAndSubmitTransaction(construction, signature, inputs.sidecarHost);
+// }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+// main().catch((error) => {
+//   console.error(error);
+//   process.exit(1);
+// });

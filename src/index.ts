@@ -1,6 +1,14 @@
 import { readFileSync } from 'fs';
-import { BaseUserInputs, RemarkInputs, TransferInputs } from './util/util';
+import {
+	AddProxyInputs,
+	BaseUserInputs,
+	RemarkInputs,
+	RemoveProxyInputs,
+	TransferInputs
+} from './util/util';
 import { doBalancesTransfer } from './payloadConstructors/balancesTransfer';
+import { doProxyAddProxy } from './payloadConstructors/proxyAddProxy';
+import { doProxyRemoveProxy } from './payloadConstructors/proxyRemoveProxy';
 import { doSystemRemark } from './payloadConstructors/systemRemark';
 
 interface Call {
@@ -35,16 +43,39 @@ async function main(): Promise<void> {
 				}
 				break;
 			}
-		case 'system': {
-			if (method == 'remark'){
-				const inputs: RemarkInputs = {
-					remark: transaction.args.remark,
-					...baseInputs
+
+			case 'proxy': {
+				if (method == 'addProxy'){
+					const inputs: AddProxyInputs = {
+						delegate: transaction.args.delegate,
+						proxyType: transaction.args.proxyType,
+						delay: transaction.args.delay,
+						...baseInputs
+					}
+					await doProxyAddProxy(inputs);
 				}
-				await doSystemRemark(inputs);
+				else if (method == 'removeProxy'){
+					const inputs: RemoveProxyInputs = {
+						delegate: transaction.args.delegate,
+						proxyType: transaction.args.proxyType,
+						delay: transaction.args.delay,
+						...baseInputs
+					}
+					await doProxyRemoveProxy(inputs);
+				}
+				break;
 			}
-			break;
-		}
+
+			case 'system': {
+				if (method == 'remark'){
+					const inputs: RemarkInputs = {
+						remark: transaction.args.remark,
+						...baseInputs
+					}
+					await doSystemRemark(inputs);
+				}
+				break;
+			}
 		}
 	}
 }
