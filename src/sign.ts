@@ -2,16 +2,49 @@
 //
 // This is the only part of this repo that imports Polkadot JS functions directly. TxWrapper is
 // meant to provide tools to create signing payloads. You can sign the payload however you like.
+import { readFileSync } from 'fs';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { deriveAddress, getRegistry } from '@substrate/txwrapper-polkadot';
 import { signWith, createKeyring } from './util/util';
 import * as readline from 'readline';
-// Import a secret key URI from `key.ts`, which should be a string. Obviously you will need to
-// create your own.
-import { signingKey, curve, senderAddress, registryInputs } from './key';
 // You will need the metadata in this context. Take it from Sidecar's `tx/artifacts` endpoint.
 // This file contains some metadata for known runtimes.
 import { polkadotMetadata, kusamaMetadata } from './metadata';
+
+type ChainName = 'Polkadot' | 'Polkadot CC1' | 'Kusama' | 'Westend';
+type SpecName = 'polkadot' | 'kusama' | 'westend';
+type Curve = 'sr25519' | 'ed25519' | 'ecdsa';
+
+interface SigningInfo {
+  specName: SpecName;
+  chainName: ChainName;
+  specVersion: number;
+  curve: Curve;
+  signingKey: string;
+  senderAddress: string;
+}
+
+function getSigningInfo(): SigningInfo {
+  const signingInfo = JSON.parse(readFileSync('key.json').toString());
+
+  let chainName: ChainName;
+  if (signingInfo.specName === 'polkadot'){ chainName = 'Polkadot'; }
+  else if (signingInfo.specName === 'kusama'){ chainName = 'Kusama'; }
+  else if (signingInfo.specName === 'westend'){ chainName = 'Westend'; }
+  else { console.warn(`Error, registry for ${signingInfo.specName} not supported.`); }
+
+  let key: string = signingInfo.signingKey;
+  if (signingInfo.password != ""){ key = `${signingInfo.signingKey}///${signingInfo.password}`; }
+
+  return {
+    specName: signingInfo.specName,
+    chainName: chainName,
+    specVersion: signingInfo.specVersion,
+    curve: signingInfo.curve,
+    signingKey: key,
+    senderAddress: signingInfo.senderAddress,
+  }
+}
 
 function promptPayload(): Promise<string> {
   let rl = readline.createInterface({
@@ -31,9 +64,11 @@ async function main(): Promise<void> {
   // Wait for the promise to resolve async WASM
   await cryptoWaitReady();
 
+  const signingInfo: SigningInfo = getSigningInfo();
+
   let SS58_FORMAT: number;
   let md;
-  switch (registryInputs.specName) {
+  switch (signingInfo.specName) {
     case 'kusama': {
       SS58_FORMAT = 2;
       md = kusamaMetadata;
@@ -57,20 +92,20 @@ async function main(): Promise<void> {
   }
 
   const registry = getRegistry({ 
-    specName: registryInputs.specName,
-    chainName: registryInputs.chainName,
-    specVersion: registryInputs.specVersion,
+    specName: signingInfo.specName,
+    chainName: signingInfo.chainName,
+    specVersion: signingInfo.specVersion,
     metadataRpc: md,
   });
 
-  const signingPair = createKeyring(signingKey, curve);
+  const signingPair = createKeyring(signingInfo.signingKey, signingInfo.curve);
   const signingAddress = deriveAddress(signingPair.publicKey, SS58_FORMAT);
 
-  if (senderAddress != signingAddress) {
+  if (signingInfo.senderAddress != signingAddress) {
     console.log(
       `Sending and signing key mismatch!\n` +
       `  Keypair Address:     ${signingAddress}\n` +
-      `  Transaction Address: ${senderAddress}`,
+      `  Transaction Address: ${signingInfo.senderAddress}`,
     );
     process.exit(1);
   }
