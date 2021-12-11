@@ -8,10 +8,6 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "sign": "./node_modules/ts-node/dist/bin.js src/sign.ts",
-    "bulk": "./node_modules/ts-node/dist/bin.js src/util/bulkSubmit.ts",
-    "sync": "./node_modules/ts-node/dist/bin.js src/util/chainSync.ts",
-    "attest": "./node_modules/ts-node/dist/bin.js src/makeAttestation.ts",
-    "bond": "./node_modules/ts-node/dist/bin.js src/makeBond.ts",
     "build": "rimraf lib/ && tsc -p tsconfig.build.json",
     "lint": "tsc --noEmit && eslint . --ext ts"
   },

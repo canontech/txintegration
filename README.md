@@ -2,8 +2,8 @@
 
 This is a guide to using
 [Substrate API Sidecar](https://github.com/paritytech/substrate-api-sidecar) and
-[TxWrapper](https://github.com/paritytech/txwrapper-polkadot) to construct, sign, and submit a transaction to
-a Substrate-based chain.
+[TxWrapper](https://github.com/paritytech/txwrapper-core/blob/main/packages/txwrapper-polkadot/README.md)
+to construct, sign, and submit a transaction to a Substrate-based chain.
 
 > Note: This will work on any Substrate-based chain, but for now is only set up to work on Polkadot,
 > Kusama, or a development chain using Polkadot's SS58 address encoding.
@@ -12,8 +12,8 @@ a Substrate-based chain.
 
 Tested on:
 
-- Polkadot v0.9.12
-- Sidecar v11.1.0
+- Polkadot v0.9.13
+- Sidecar v11.3.3
 - Txwrapper Core v1.2.20
 
 ### Start a Node
@@ -25,32 +25,22 @@ Start a Polkadot node. Can be local development node (`--dev`) or connect to mai
 
 ### Set up Sidecar
 
-Clone the sidecar repo and start with `yarn; yarn start;`. It will connect to `localhost` by default
-and start an http server on port 8080.
+Clone the sidecar repo and start with `yarn; yarn build; yarn start;`. It will connect to
+`localhost` by default and start an http server on port 8080.
 
 ### Run
 
 The main function will:
 
-1. Connect to the sidecar and collect all the necessary information to construct a transaction.
-1. Create a signing payload for a balance transfer.
+1. Connect to the Sidecar and collect all the necessary information to construct a transaction.
+1. Create a signing payload for the transaction(s) specified in `transaction.json`.
 1. Wait for you to sign the payload.
 1. Submit the transaction.
 
 #### Construction
 
-In `index.ts` you will need to enter the transaction parameters:
-
-```ts
-const inputs: TransferInputs = {
-  senderAddress: '15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5', //Alice
-  recipientAddress: '14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3', //Bob
-  transferValue: 1 * getChainDecimals('specName'), // DOTs
-  tip: 0 * getChainDecimals('specName'), // DOTs
-  eraPeriod: 64, // Blocks
-  sidecarHost: 'http://127.0.0.1:8080/', // Sidecar
-};
-```
+You will need to create a `transaction.json` file. An example is provided. This is where you enter
+the base info (like IP/port for Sidecar) and an array of transactions you want to construct.
 
 Run `yarn start` and you will get:
 
@@ -78,42 +68,18 @@ This will wait for you to sign the payload.
 You can sign the payload in any way you like. Ideally, you should do this on a secure, offline
 device. A signing script is provided to use for testing.
 
-In `sign.ts`, enter the sending account and network version from the last step. You will also need
-the metadata from the first part, but this only changes on runtime upgrades. This repo contains a
-file with metadata for well known runtimes, like Polkadot, with the name
+You also need the metadata from the first part, but this only changes on runtime upgrades. This
+repo contains a file with metadata for well known runtimes, like Polkadot, with the name
 `<specName>Metadata`, e.g. `polkadotMetadata`.
 
-```ts
-// Make sure this matches the chain's metadata from the previous step.
-import { polkadotMetadata } from './metadata';
-```
-
-Create a new file called `key.ts` that exports a signing key and type. An example for 'Alice' is
-provided. In here you can put your signing key. It can be a 12 word phrase or secret seed. Or, in
+Create a new file called `key.json` (there is an example provided) that exports a signing key and
+type. In here you can put your signing key. It can be a 12 word phrase or secret seed. Or, in
 the case of a dev chain, just `//Alice`:
 
-```ts
-import { RegistryInfo } from './util/util';
-
-// Make sure these match the chain you are using. They are printed to the console above.
-const registryInputs: RegistryInfo = {
-  chainName: 'Polkadot',
-  specName: 'polkadot',
-  specVersion: 14,
-};
-
-// Key type. Must be one of 'sr25519', 'ed25519', or 'ecdsa'.
-export const curve = 'sr25519';
-// The actual signing key. Can include `//hard-derivation`, `/soft-derivation`, or `///password`.
-export const signingKey = '//Alice';
-// Address that corresponds to the signing key.
-export const senderAddress = '15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5';
-```
-
-Run `yarn ts-node src/sign.ts` and enter the signing payload from the last step to get a signature:
+Run `yarn sign` and enter the signing payload from the last step to get a signature:
 
 ```bash
-$ yarn ts-node src/sign.ts
+$ yarn sign
 
 Payload: <enter the signing payload here>
 
@@ -124,9 +90,3 @@ Signature: 0x014679aaf0589f456f57875837c3c3f9747dee901304e05fe9511eece5bfd68c1e7
 
 Paste this signature into the terminal that is waiting, press enter, and it will submit the
 transaction to your node.
-
-### Other Functions
-
-This repo also provides similar setups for making claims attestations, making remarks, and bonding
-tokens. They follow similar patterns like modifying a user inputs section at the top and then
-waiting for a signature.
