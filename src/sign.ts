@@ -26,12 +26,22 @@ interface SigningInfo {
 
 function getSigningInfo(): SigningInfo {
   const signingInfo = JSON.parse(readFileSync('key.json').toString());
+
+  let chainName: ChainName;
+  if (signingInfo.specName === 'polkadot'){ chainName = 'Polkadot'; }
+  else if (signingInfo.specName === 'kusama'){ chainName = 'Kusama'; }
+  else if (signingInfo.specName === 'westend'){ chainName = 'Westend'; }
+  else { console.warn(`Error, registry for ${signingInfo.specName} not supported.`); }
+
+  let key: string = signingInfo.signingKey;
+  if (signingInfo.password != ""){ key = `${signingInfo.signingKey}///${signingInfo.password}`; }
+
   return {
     specName: signingInfo.specName,
-    chainName: signingInfo.chainName,
+    chainName: chainName,
     specVersion: signingInfo.specVersion,
     curve: signingInfo.curve,
-    signingKey: signingInfo.signingKey,
+    signingKey: key,
     senderAddress: signingInfo.senderAddress,
   }
 }

@@ -1,8 +1,8 @@
 {
-	"chainName": "Polkadot",
 	"specName": "polkadot",
 	"specVersion": "9122",
 	"curve": "sr25519",
 	"signingKey": "//Alice",
+	"password": "",
 	"senderAddress": "15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5"
 }
