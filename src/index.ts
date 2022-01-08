@@ -8,7 +8,7 @@ import {
 	RemoveProxyInputs,
 	SetControllerInputs,
 	TransferInputs
-} from './util/util';
+} from './util/inputTypes';
 import { doBalancesTransfer } from './payloadConstructors/balancesTransfer';
 import { doProxyAddProxy } from './payloadConstructors/proxyAddProxy';
 import { doProxyRemoveProxy } from './payloadConstructors/proxyRemoveProxy';

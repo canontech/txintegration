@@ -1,12 +1,8 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
 import { construct, decode, methods } from '@substrate/txwrapper-polkadot';
 import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
-import { 
-  BondExtraInputs,
-  createAndSubmitTransaction,
-  prepareBaseTxInfo,
-  promptSignature,
-} from '../util/util';
+import { createAndSubmitTransaction, prepareBaseTxInfo } from '../util/construction';
+import { BondExtraInputs } from '../util/inputTypes';
 
 function logUnsignedInfo(decoded: DecodedUnsignedTx) {
   console.log(
@@ -45,9 +41,6 @@ export async function doStakingBondExtra(userInputs: BondExtraInputs): Promise<v
   // Log the signing payload to sign offline.
   console.log(`\nSigning Payload: ${signingPayload}`);
 
-  // Wait for the signature.
-  const signature = await promptSignature();
-
   // Construct a signed transaction and broadcast it.
   await createAndSubmitTransaction(
     {
@@ -55,7 +48,6 @@ export async function doStakingBondExtra(userInputs: BondExtraInputs): Promise<v
       registry: optionsWithMeta.registry,
       metadata: optionsWithMeta.metadataRpc,
     },
-    signature,
     userInputs.sidecarHost
   );
 }

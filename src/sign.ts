@@ -5,15 +5,11 @@
 import { readFileSync } from 'fs';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { deriveAddress, getRegistry } from '@substrate/txwrapper-polkadot';
-import { signWith, createKeyring } from './util/util';
-import * as readline from 'readline';
+import { signWith, createKeyring, promptUser } from './util/signing';
+import { ChainName, Curve, SpecName } from './util/types';
 // You will need the metadata in this context. Take it from Sidecar's `tx/artifacts` endpoint.
 // This file contains some metadata for known runtimes.
 import { polkadotMetadata, kusamaMetadata } from './metadata';
-
-type ChainName = 'Polkadot' | 'Polkadot CC1' | 'Kusama' | 'Westend';
-type SpecName = 'polkadot' | 'kusama' | 'westend';
-type Curve = 'sr25519' | 'ed25519' | 'ecdsa';
 
 interface SigningInfo {
   specName: SpecName;
@@ -44,20 +40,6 @@ function getSigningInfo(): SigningInfo {
     signingKey: key,
     senderAddress: signingInfo.senderAddress,
   }
-}
-
-function promptPayload(): Promise<string> {
-  let rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-
-  return new Promise((resolve) => {
-    rl.question('\nPayload: ', (answer) => {
-      resolve(answer);
-      rl.close();
-    });
-  });
 }
 
 async function main(): Promise<void> {
@@ -110,7 +92,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const signingPayload = await promptPayload();
+  const signingPayload = await promptUser('Payload');
 
   const signature = signWith(registry, signingPair, signingPayload);
   console.log(`\nSignature: ${signature}\n`);
