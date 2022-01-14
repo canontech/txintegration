@@ -1,4 +1,4 @@
-import { AddressData, ChainData, ChainName, SpecName } from './types'
+import { AddressData, ChainData, ChainName, Metadata, SpecName } from './types'
 import axios from 'axios';
 
 /* Types */
@@ -16,7 +16,7 @@ interface ArtifactsResponse {
   specName: SpecName;
 	specVersion: string;
 	txVersion: string;
-  metadata: string;
+  metadata: Metadata;
 }
 
 // Response from `/balance` endpoint on sidecar.

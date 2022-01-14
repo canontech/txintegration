@@ -2,7 +2,7 @@
 import { TypeRegistry } from '@polkadot/types';
 import { construct, getRegistry } from '@substrate/txwrapper-polkadot';
 import { getChainData, getSenderData, submitTransaction } from './nodeInteraction'
-import { AddressData, ChainData, TxConstruction } from './types'
+import { AddressData, ChainData, Metadata, TxConstruction } from './types'
 import { promptUser } from './signing';
 
 /* Types */
@@ -15,7 +15,7 @@ interface BaseTxInfo {
   blockNumber: number;
   eraPeriod: number;
   genesisHash: string;
-  metadataRpc: string;
+  metadataRpc: Metadata;
   nonce: number;
   specVersion: number;
   transactionVersion: number;
@@ -23,7 +23,7 @@ interface BaseTxInfo {
 }
 
 interface OptionsWithMeta {
-  metadataRpc: string;
+  metadataRpc: Metadata;
   registry: TypeRegistry;
 }
 
