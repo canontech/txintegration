@@ -5,6 +5,9 @@
   "main": "src/index.ts",
   "author": "joepetrowski <joe@parity.io>",
   "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
   "scripts": {
     "start": "ts-node src/index.ts",
     "sign": "./node_modules/ts-node/dist/bin.js src/sign.ts",
