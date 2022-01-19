@@ -7,7 +7,7 @@ import { promptUser } from './signing';
 
 /* Types */
 
-type Signature = `0x$string`;
+type Signature = `0x${string}`;
 
 interface BaseTxInfo {
   address: string;
