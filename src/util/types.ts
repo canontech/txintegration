@@ -4,7 +4,7 @@ import { TypeRegistry } from '@polkadot/types';
 export type ChainName = 'Polkadot' | 'Polkadot CC1' | 'Kusama' | 'Westend';
 export type SpecName = 'polkadot' | 'kusama' | 'westend';
 export type Curve = 'sr25519' | 'ed25519' | 'ecdsa';
-export type Metadata = `0x$string` | `0x${string}`;
+export type Metadata = `0x${string}`;
 
 // Information about the chain that we need to construct a transaction.
 export interface ChainData {

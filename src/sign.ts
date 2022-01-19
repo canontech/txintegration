@@ -6,7 +6,7 @@ import { readFileSync } from 'fs';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { deriveAddress, getRegistry } from '@substrate/txwrapper-polkadot';
 import { signWith, createKeyring, promptUser } from './util/signing';
-import { ChainName, Curve, SpecName } from './util/types';
+import { ChainName, Curve, Metadata, SpecName } from './util/types';
 // You will need the metadata in this context. Take it from Sidecar's `tx/artifacts` endpoint.
 // This file contains some metadata for known runtimes.
 import { polkadotMetadata, kusamaMetadata } from './metadata';
@@ -49,7 +49,7 @@ async function main(): Promise<void> {
   const signingInfo: SigningInfo = getSigningInfo();
 
   let SS58_FORMAT: number;
-  let md;
+  let md: Metadata;
   switch (signingInfo.specName) {
     case 'kusama': {
       SS58_FORMAT = 2;
@@ -67,8 +67,8 @@ async function main(): Promise<void> {
       break;
     }
     default: {
-      console.warn(`Unrecognized chain spec! Using dev chain SS58 format of 42.`);
       SS58_FORMAT = 42;
+      console.warn(`Unrecognized chain spec! Using dev chain SS58 format of 42.`);
       break;
     }
   }
