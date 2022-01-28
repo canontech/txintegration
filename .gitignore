@@ -1,5 +1,17 @@
-node_modules
+# Ignore node_modules
+/node_modules
+
+# Ignore any potential error logged produced by yarn
 yarn-error.log
+
+# Ignore any typescript key file
 src/key.ts
+
+# Ignore transaction file
 transaction.json
+
+# Ignore local keys
 key.json
+
+# Ignore the generated build
+/lib

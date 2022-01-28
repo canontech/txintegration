@@ -27,7 +27,7 @@ function getSigningInfo(): SigningInfo {
   if (signingInfo.specName === 'polkadot'){ chainName = 'Polkadot'; }
   else if (signingInfo.specName === 'kusama'){ chainName = 'Kusama'; }
   else if (signingInfo.specName === 'westend'){ chainName = 'Westend'; }
-  else { console.warn(`Error, registry for ${signingInfo.specName} not supported.`); }
+  else { throw Error(`Error, registry for ${signingInfo.specName} not supported.`); }
 
   let key: string = signingInfo.signingKey;
   if (signingInfo.password != ""){ key = `${signingInfo.signingKey}///${signingInfo.password}`; }
@@ -63,13 +63,11 @@ async function main(): Promise<void> {
     }
     case 'westend': {
       SS58_FORMAT = 42;
-      console.warn(`TODO: Need metadata for Westend. Likely to get BadProof error.`)
-      break;
+      throw Error(`TODO: Need metadata for Westend. Likely to get BadProof error.`);
     }
     default: {
       SS58_FORMAT = 42;
-      console.warn(`Unrecognized chain spec! Using dev chain SS58 format of 42.`);
-      break;
+      throw Error(`TODO: (Needs Metadata): Unrecognized chain spec! Using dev chain SS58 format of 42.`);
     }
   }
 

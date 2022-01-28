@@ -1,0 +1,12 @@
+{
+    "extends": "@substrate/dev/config/tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "outDir": "lib",
+        "rootDirs": [
+            "./src",
+        ],
+        "suppressImplicitAnyIndexErrors": true,
+        "resolveJsonModule": true,
+    },
+}
