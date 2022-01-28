@@ -15,3 +15,8 @@ key.json
 
 # Ignore the generated build
 /lib
+
+# Yarn ignores
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
