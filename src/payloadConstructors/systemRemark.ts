@@ -1,6 +1,7 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
 import { construct, decode, methods } from '@substrate/txwrapper-polkadot';
 import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
+
 import { createAndSubmitTransaction, prepareBaseTxInfo } from '../util/construction';
 import { RemarkInputs } from '../util/inputTypes';
 
@@ -14,14 +15,14 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
 }
 
 export async function doSystemRemark(userInputs: RemarkInputs): Promise<void> {
-  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
-    userInputs,
-    { check: false, amount: 0 }
-  );
+  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(userInputs, {
+    check: false,
+    amount: 0,
+  });
 
   const unsigned = methods.system.remark(
     {
-			remark: userInputs.remark,
+      remark: userInputs.remark,
     },
     baseTxInfo,
     optionsWithMeta,
@@ -47,6 +48,6 @@ export async function doSystemRemark(userInputs: RemarkInputs): Promise<void> {
       registry: optionsWithMeta.registry,
       metadata: optionsWithMeta.metadataRpc,
     },
-    userInputs.sidecarHost
+    userInputs.sidecarHost,
   );
 }

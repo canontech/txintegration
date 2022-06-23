@@ -1,6 +1,7 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
 import { construct, decode, methods } from '@substrate/txwrapper-polkadot';
 import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
+
 import { createAndSubmitTransaction, prepareBaseTxInfo } from '../util/construction';
 import { BondInputs } from '../util/inputTypes';
 
@@ -9,22 +10,22 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
     `\nTransaction Details:` +
       `\n  Sending Account: ${decoded.address}` +
       `\n  Controller:      ${decoded.method.args.controller}` +
-			`\n  Value: ${decoded.method.args.value}` +
-			`\n  Payee: ${decoded.method.args.payee}` +
+      `\n  Value: ${decoded.method.args.value}` +
+      `\n  Payee: ${decoded.method.args.payee}` +
       `\n  Tip: ${decoded.tip}` +
       `\n  Era Period: ${decoded.eraPeriod}`,
   );
 }
 
 export async function doStakingBond(userInputs: BondInputs): Promise<void> {
-  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
-    userInputs,
-    { check: true, amount: userInputs.value }
-  );
+  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(userInputs, {
+    check: true,
+    amount: userInputs.value,
+  });
 
   const unsigned = methods.staking.bond(
     {
-			controller: userInputs.controller,
+      controller: userInputs.controller,
       value: userInputs.value,
       payee: userInputs.payee,
     },
@@ -52,6 +53,6 @@ export async function doStakingBond(userInputs: BondInputs): Promise<void> {
       registry: optionsWithMeta.registry,
       metadata: optionsWithMeta.metadataRpc,
     },
-    userInputs.sidecarHost
+    userInputs.sidecarHost,
   );
 }

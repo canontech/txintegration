@@ -1,6 +1,7 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
 import { construct, decode, methods } from '@substrate/txwrapper-polkadot';
 import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
+
 import { createAndSubmitTransaction, prepareBaseTxInfo } from '../util/construction';
 import { RemoveProxyInputs } from '../util/inputTypes';
 
@@ -9,21 +10,21 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
     `\nTransaction Details:` +
       `\n  Sender: ${decoded.address}` +
       `\n  Proxy:  ${decoded.method.args.delegate}` +
-			`\n  Type: ${decoded.method.args.proxyType}` +
+      `\n  Type: ${decoded.method.args.proxyType}` +
       `\n  Tip: ${decoded.tip}` +
       `\n  Era Period: ${decoded.eraPeriod}`,
   );
 }
 
 export async function doProxyRemoveProxy(userInputs: RemoveProxyInputs): Promise<void> {
-  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
-    userInputs,
-    { check: false, amount: 0 }
-  );
+  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(userInputs, {
+    check: false,
+    amount: 0,
+  });
 
   const unsigned = methods.proxy.removeProxy(
     {
-			delegate: userInputs.delegate,
+      delegate: userInputs.delegate,
       proxyType: userInputs.proxyType,
       delay: userInputs.delay,
     },
@@ -51,6 +52,6 @@ export async function doProxyRemoveProxy(userInputs: RemoveProxyInputs): Promise
       registry: optionsWithMeta.registry,
       metadata: optionsWithMeta.metadataRpc,
     },
-    userInputs.sidecarHost
+    userInputs.sidecarHost,
   );
 }

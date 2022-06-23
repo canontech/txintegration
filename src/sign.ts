@@ -2,14 +2,15 @@
 //
 // This is the only part of this repo that imports Polkadot JS functions directly. TxWrapper is
 // meant to provide tools to create signing payloads. You can sign the payload however you like.
-import { readFileSync } from 'fs';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { deriveAddress, getRegistry } from '@substrate/txwrapper-polkadot';
-import { signWith, createKeyring, promptUser } from './util/signing';
-import { ChainName, Curve, Metadata, SpecName } from './util/types';
+import { readFileSync } from 'fs';
+
 // You will need the metadata in this context. Take it from Sidecar's `tx/artifacts` endpoint.
 // This file contains some metadata for known runtimes.
-import { polkadotMetadata, kusamaMetadata } from './metadata';
+import { kusamaMetadata, polkadotMetadata } from './metadata';
+import { createKeyring, promptUser, signWith } from './util/signing';
+import { ChainName, Curve, Metadata, SpecName } from './util/types';
 
 interface SigningInfo {
   specName: SpecName;
@@ -24,13 +25,20 @@ function getSigningInfo(): SigningInfo {
   const signingInfo = JSON.parse(readFileSync('key.json').toString());
 
   let chainName: ChainName;
-  if (signingInfo.specName === 'polkadot'){ chainName = 'Polkadot'; }
-  else if (signingInfo.specName === 'kusama'){ chainName = 'Kusama'; }
-  else if (signingInfo.specName === 'westend'){ chainName = 'Westend'; }
-  else { throw Error(`Error, registry for ${signingInfo.specName} not supported.`); }
+  if (signingInfo.specName === 'polkadot') {
+    chainName = 'Polkadot';
+  } else if (signingInfo.specName === 'kusama') {
+    chainName = 'Kusama';
+  } else if (signingInfo.specName === 'westend') {
+    chainName = 'Westend';
+  } else {
+    throw Error(`Error, registry for ${signingInfo.specName} not supported.`);
+  }
 
   let key: string = signingInfo.signingKey;
-  if (signingInfo.password != ""){ key = `${signingInfo.signingKey}///${signingInfo.password}`; }
+  if (signingInfo.password != '') {
+    key = `${signingInfo.signingKey}///${signingInfo.password}`;
+  }
 
   return {
     specName: signingInfo.specName,
@@ -39,7 +47,7 @@ function getSigningInfo(): SigningInfo {
     curve: signingInfo.curve,
     signingKey: key,
     senderAddress: signingInfo.senderAddress,
-  }
+  };
 }
 
 async function main(): Promise<void> {
@@ -58,7 +66,7 @@ async function main(): Promise<void> {
     }
     case 'polkadot': {
       SS58_FORMAT = 0;
-      md = polkadotMetadata
+      md = polkadotMetadata;
       break;
     }
     case 'westend': {
@@ -67,11 +75,13 @@ async function main(): Promise<void> {
     }
     default: {
       SS58_FORMAT = 42;
-      throw Error(`TODO: (Needs Metadata): Unrecognized chain spec! Using dev chain SS58 format of 42.`);
+      throw Error(
+        `TODO: (Needs Metadata): Unrecognized chain spec! Using dev chain SS58 format of 42.`,
+      );
     }
   }
 
-  const registry = getRegistry({ 
+  const registry = getRegistry({
     specName: signingInfo.specName,
     chainName: signingInfo.chainName,
     specVersion: signingInfo.specVersion,
@@ -84,8 +94,8 @@ async function main(): Promise<void> {
   if (signingInfo.senderAddress != signingAddress) {
     console.log(
       `Sending and signing key mismatch!\n` +
-      `  Keypair Address:     ${signingAddress}\n` +
-      `  Transaction Address: ${signingInfo.senderAddress}`,
+        `  Keypair Address:     ${signingAddress}\n` +
+        `  Transaction Address: ${signingInfo.senderAddress}`,
     );
     process.exit(1);
   }

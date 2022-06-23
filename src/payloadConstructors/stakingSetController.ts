@@ -1,6 +1,7 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
 import { construct, decode, methods } from '@substrate/txwrapper-polkadot';
 import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
+
 import { createAndSubmitTransaction, prepareBaseTxInfo } from '../util/construction';
 import { SetControllerInputs } from '../util/inputTypes';
 
@@ -15,14 +16,14 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
 }
 
 export async function doStakingSetController(userInputs: SetControllerInputs): Promise<void> {
-  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
-    userInputs,
-    { check: false, amount: 0 }
-  );
+  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(userInputs, {
+    check: false,
+    amount: 0,
+  });
 
   const unsigned = methods.staking.setController(
     {
-			controller: userInputs.controller,
+      controller: userInputs.controller,
     },
     baseTxInfo,
     optionsWithMeta,
@@ -48,6 +49,6 @@ export async function doStakingSetController(userInputs: SetControllerInputs): P
       registry: optionsWithMeta.registry,
       metadata: optionsWithMeta.metadataRpc,
     },
-    userInputs.sidecarHost
+    userInputs.sidecarHost,
   );
 }

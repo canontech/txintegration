@@ -1,9 +1,10 @@
 // Useful functions and types.
 import { TypeRegistry } from '@polkadot/types';
 import { construct, getRegistry } from '@substrate/txwrapper-polkadot';
-import { getChainData, getSenderData, submitTransaction } from './nodeInteraction'
-import { AddressData, ChainData, Metadata, TxConstruction } from './types'
+
+import { getChainData, getSenderData, submitTransaction } from './nodeInteraction';
 import { promptUser } from './signing';
+import { AddressData, ChainData, Metadata, TxConstruction } from './types';
 
 /* Types */
 
@@ -43,7 +44,7 @@ interface BalanceCheck {
 // to the given transaction.
 export async function prepareBaseTxInfo(
   userInputs: any,
-  checkBalance: BalanceCheck
+  checkBalance: BalanceCheck,
 ): Promise<BaseTxInfoWithMeta> {
   const chainData: ChainData = await getChainData(userInputs.sidecarHost);
   const { specName, chainName, specVersion, metadataRpc } = chainData;
@@ -52,7 +53,7 @@ export async function prepareBaseTxInfo(
     userInputs.senderAddress,
   );
 
-	logChainData(chainData);
+  logChainData(chainData);
 
   if (checkBalance.check) {
     const decimals = getChainDecimals(specName);
@@ -62,24 +63,24 @@ export async function prepareBaseTxInfo(
   const registry = getRegistry({ specName, chainName, specVersion, metadataRpc });
 
   const baseTxInfo = {
-      address: userInputs.senderAddress,
-      blockHash: chainData.blockHash,
-      blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toBn().toNumber(),
-      eraPeriod: userInputs.eraPeriod,
-      genesisHash: chainData.genesisHash,
-      metadataRpc: chainData.metadataRpc,
-      nonce: userInputs.nonce || senderData.nonce,
-			specVersion: chainData.specVersion,
-			transactionVersion: chainData.transactionVersion,
-      tip: userInputs.tip,
-    };
-  
-    const optionsWithMeta = {
-      metadataRpc: chainData.metadataRpc,
-      registry,
-    };
+    address: userInputs.senderAddress,
+    blockHash: chainData.blockHash,
+    blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toBn().toNumber(),
+    eraPeriod: userInputs.eraPeriod,
+    genesisHash: chainData.genesisHash,
+    metadataRpc: chainData.metadataRpc,
+    nonce: userInputs.nonce || senderData.nonce,
+    specVersion: chainData.specVersion,
+    transactionVersion: chainData.transactionVersion,
+    tip: userInputs.tip,
+  };
 
-    return { baseTxInfo, optionsWithMeta }
+  const optionsWithMeta = {
+    metadataRpc: chainData.metadataRpc,
+    registry,
+  };
+
+  return { baseTxInfo, optionsWithMeta };
 }
 
 // Ask the user for a signature to create a signed transaction and broadcast it to a node.
@@ -124,8 +125,8 @@ function checkAvailableBalance(balance: number, amount: number, decimals: number
 function logChainData(chainData: ChainData) {
   console.log(`\nChain Name: ${chainData.chainName}`);
   console.log(`Spec Name:  ${chainData.specName}`);
-	console.log(`Network Version: ${chainData.specVersion}`);
-	console.log(`Transaction Version: ${chainData.transactionVersion}`);
+  console.log(`Network Version: ${chainData.specVersion}`);
+  console.log(`Transaction Version: ${chainData.transactionVersion}`);
 }
 
 // Get the number of decimals used to represent a token on a given `chain`.
@@ -133,15 +134,13 @@ function getChainDecimals(chain: string): number {
   let decimals: number;
   if (chain == 'polkadot') {
     decimals = 10_000_000_000;
-  }
-  else if (chain == 'kusama') {
+  } else if (chain == 'kusama') {
     decimals = 1_000_000_000_000;
-  }
-  else {
-    console.log(`Chain ${chain} unknown, returning units.`)
+  } else {
+    console.log(`Chain ${chain} unknown, returning units.`);
     decimals = 1;
   }
-  return decimals
+  return decimals;
 }
 
 // Return a string as a signature.

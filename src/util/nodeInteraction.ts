@@ -1,5 +1,6 @@
-import { AddressData, ChainData, ChainName, Metadata, SpecName } from './types'
 import axios from 'axios';
+
+import { AddressData, ChainData, ChainName, Metadata, SpecName } from './types';
 
 /* Types */
 
@@ -14,8 +15,8 @@ interface ArtifactsResponse {
   genesisHash: string;
   chainName: ChainName;
   specName: SpecName;
-	specVersion: string;
-	txVersion: string;
+  specVersion: string;
+  txVersion: string;
   metadata: Metadata;
 }
 
@@ -47,8 +48,8 @@ export async function getChainData(sidecarHost: string): Promise<ChainData> {
     genesisHash: artifacts.genesisHash,
     chainName: artifacts.chainName,
     specName: artifacts.specName,
-		specVersion: parseInt(artifacts.specVersion),
-		transactionVersion: parseInt(artifacts.txVersion),
+    specVersion: parseInt(artifacts.specVersion),
+    transactionVersion: parseInt(artifacts.txVersion),
     metadataRpc: artifacts.metadata,
   };
 }

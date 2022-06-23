@@ -1,15 +1,16 @@
 import { Keyring } from '@polkadot/api';
 import { TypeRegistry } from '@polkadot/types';
-import { KeyringPair } from '@substrate/txwrapper-polkadot';
 import { EXTRINSIC_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
-import { Curve } from './types';
+import { KeyringPair } from '@substrate/txwrapper-polkadot';
 import * as readline from 'readline';
+
+import { Curve } from './types';
 
 /* Signing utilities */
 
 // Ask the user to supply something and wait for the response.
 export function promptUser(prompt: string): Promise<string> {
-  let rl = readline.createInterface({
+  const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
   });

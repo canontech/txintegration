@@ -1,5 +1,5 @@
-import { UnsignedTransaction } from '@substrate/txwrapper-polkadot';
 import { TypeRegistry } from '@polkadot/types';
+import { UnsignedTransaction } from '@substrate/txwrapper-polkadot';
 
 export type ChainName = 'Polkadot' | 'Polkadot CC1' | 'Kusama' | 'Westend';
 export type SpecName = 'polkadot' | 'kusama' | 'westend';
@@ -13,8 +13,8 @@ export interface ChainData {
   genesisHash: string;
   chainName: ChainName;
   specName: SpecName;
-	specVersion: number;
-	transactionVersion: number;
+  specVersion: number;
+  transactionVersion: number;
   metadataRpc: Metadata;
 }
 

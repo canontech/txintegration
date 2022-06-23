@@ -1,6 +1,7 @@
 // Connect to a sidecar host and fetch the pertinant info to construct a transaction.
 import { construct, decode, methods } from '@substrate/txwrapper-polkadot';
 import { DecodedUnsignedTx } from '@substrate/txwrapper-polkadot/lib/index';
+
 import { createAndSubmitTransaction, prepareBaseTxInfo } from '../util/construction';
 import { BondExtraInputs } from '../util/inputTypes';
 
@@ -8,21 +9,21 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
   console.log(
     `\nTransaction Details:` +
       `\n  Sending Account: ${decoded.address}` +
-			`\n  Value: ${decoded.method.args.maxAdditional}` +
+      `\n  Value: ${decoded.method.args.maxAdditional}` +
       `\n  Tip: ${decoded.tip}` +
       `\n  Era Period: ${decoded.eraPeriod}`,
   );
 }
 
 export async function doStakingBondExtra(userInputs: BondExtraInputs): Promise<void> {
-  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(
-    userInputs,
-    { check: true, amount: userInputs.maxAdditional }
-  );
+  const { baseTxInfo, optionsWithMeta } = await prepareBaseTxInfo(userInputs, {
+    check: true,
+    amount: userInputs.maxAdditional,
+  });
 
   const unsigned = methods.staking.bondExtra(
     {
-			maxAdditional: userInputs.maxAdditional,
+      maxAdditional: userInputs.maxAdditional,
     },
     baseTxInfo,
     optionsWithMeta,
@@ -48,6 +49,6 @@ export async function doStakingBondExtra(userInputs: BondExtraInputs): Promise<v
       registry: optionsWithMeta.registry,
       metadata: optionsWithMeta.metadataRpc,
     },
-    userInputs.sidecarHost
+    userInputs.sidecarHost,
   );
 }
