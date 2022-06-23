@@ -13,11 +13,6 @@ type ApiResponse<T> = T & {
 
 // Response from `/transaction/material` endpoint on sidecar. Used to create `ChainData`.
 interface MaterialsResponse {
-	// Block for checkpoint
-	at: {
-		height: string;
-		hash: string;
-	};
 	// Chain data
 	genesisHash: string;
 	chainName: ChainName;
@@ -29,11 +24,6 @@ interface MaterialsResponse {
 
 // Response from `/balance` endpoint on sidecar.
 interface AddressResponse {
-	// Data at block
-	at: {
-		height: string;
-		hash: string;
-	};
 	// Address data
 	nonce: string;
 	free: string;
@@ -41,6 +31,13 @@ interface AddressResponse {
 	miscFrozen: string;
 	feeFrozen: string;
 	locks: [];
+}
+
+interface PostResponseData {
+	cause?: string;
+	data: string;
+	error?: string;
+	hash: string;
 }
 
 /* Exported Functions */
@@ -76,7 +73,7 @@ export async function getSenderData(sidecarHost: string, address: string): Promi
 }
 
 // Submit a transaction to Sidecar to be broadcast to the network.
-export async function submitTransaction(sidecarHost: string, encodedTx: string): Promise<any> {
+export async function submitTransaction(sidecarHost: string, encodedTx: string): Promise<unknown> {
 	const endpoint = `${sidecarHost}transaction/`;
 	const submission = await sidecarPost(endpoint, encodedTx);
 	return submission;
@@ -86,13 +83,13 @@ export async function submitTransaction(sidecarHost: string, encodedTx: string):
 
 // Get information from the sidecar.
 async function sidecarGet<T>(url: string): Promise<ApiResponse<T>> {
-	return axios.get(url).then(({ data }) => {
+	return axios.get(url).then(({ data }: { data: ApiResponse<T> }) => {
 		return data;
 	});
 }
 
 // Submit a signed tx using sidecar.
-async function sidecarPost(url: string, tx: string): Promise<any> {
+async function sidecarPost(url: string, tx: string): Promise<unknown | string> {
 	return axios
 		.post(
 			url,
@@ -103,7 +100,7 @@ async function sidecarPost(url: string, tx: string): Promise<any> {
 				},
 			},
 		)
-		.then(({ data }) => data)
+		.then(({ data }: { data: PostResponseData }) => data)
 		.then(({ cause, data, error, hash }) => {
 			if (cause || error) {
 				throw new Error(`${cause}: ${error} (${data})`);
