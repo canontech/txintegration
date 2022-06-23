@@ -73,7 +73,10 @@ export async function getSenderData(sidecarHost: string, address: string): Promi
 }
 
 // Submit a transaction to Sidecar to be broadcast to the network.
-export async function submitTransaction(sidecarHost: string, encodedTx: string): Promise<unknown> {
+export async function submitTransaction(
+	sidecarHost: string,
+	encodedTx: string,
+): Promise<string | void> {
 	const endpoint = `${sidecarHost}transaction/`;
 	const submission = await sidecarPost(endpoint, encodedTx);
 	return submission;
@@ -89,7 +92,7 @@ async function sidecarGet<T>(url: string): Promise<ApiResponse<T>> {
 }
 
 // Submit a signed tx using sidecar.
-async function sidecarPost(url: string, tx: string): Promise<unknown | string> {
+async function sidecarPost(url: string, tx: string): Promise<string> {
 	return axios
 		.post(
 			url,

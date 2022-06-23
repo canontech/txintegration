@@ -104,7 +104,7 @@ export async function createAndSubmitTransaction(
 
 	// Submit the transaction. Should return the actual hash if accepted by the node.
 	const submission = await submitTransaction(sidecarHost, tx);
-	console.log(`\nNode Response: ${submission}`);
+	console.log(`\nNode Response: ${submission || 'Did not receive a response from the node'}`);
 }
 
 /* Private Functions */
