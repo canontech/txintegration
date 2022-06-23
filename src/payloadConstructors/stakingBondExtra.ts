@@ -9,9 +9,9 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
 	console.log(
 		`\nTransaction Details:` +
 			`\n  Sending Account: ${decoded.address}` +
-			`\n  Value: ${decoded.method.args.maxAdditional}` +
-			`\n  Tip: ${decoded.tip}` +
-			`\n  Era Period: ${decoded.eraPeriod}`,
+			`\n  Value: ${decoded.method.args.maxAdditional as number}` +
+			`\n  Tip: ${decoded.tip || 'No tip included.'}` +
+			`\n  Era Period: ${decoded.eraPeriod || 64}`,
 	);
 }
 
