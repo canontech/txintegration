@@ -103,7 +103,9 @@ async function sidecarPost(url: string, tx: string): Promise<unknown | string> {
 		.then(({ data }: { data: PostResponseData }) => data)
 		.then(({ cause, data, error, hash }) => {
 			if (cause || error) {
-				throw new Error(`${cause}: ${error} (${data})`);
+				throw new Error(
+					`${cause || 'Cause not received'}: ${error || 'Error not received'} (${data})`,
+				);
 			}
 
 			return hash;
