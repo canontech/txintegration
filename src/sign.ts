@@ -12,17 +12,24 @@ import { kusamaMetadata, polkadotMetadata } from './metadata';
 import { createKeyring, promptUser, signWith } from './util/signing';
 import { ChainName, Curve, Metadata, SpecName } from './util/types';
 
-interface SigningInfo {
-	specName: SpecName;
-	chainName: ChainName;
+interface BaseSigningInfo {
+	specName: SpecName | string;
 	specVersion: number;
 	curve: Curve;
 	signingKey: string;
 	senderAddress: string;
 }
 
+interface JsonSigningInfo extends BaseSigningInfo {
+	password: string;
+}
+
+interface SigningInfo extends BaseSigningInfo {
+	chainName: ChainName;
+}
+
 function getSigningInfo(): SigningInfo {
-	const signingInfo = JSON.parse(readFileSync('key.json').toString());
+	const signingInfo = JSON.parse(readFileSync('key.json').toString()) as JsonSigningInfo;
 
 	let chainName: ChainName;
 	if (signingInfo.specName === 'polkadot') {
@@ -32,7 +39,9 @@ function getSigningInfo(): SigningInfo {
 	} else if (signingInfo.specName === 'westend') {
 		chainName = 'Westend';
 	} else {
-		throw Error(`Error, registry for ${signingInfo.specName} not supported.`);
+		throw Error(
+			`Error, registry for ${signingInfo.specName || '(specName not supplied)'} not supported.`,
+		);
 	}
 
 	let key: string = signingInfo.signingKey;
