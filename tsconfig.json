@@ -1,4 +1,5 @@
 {
+  "extends": "@substrate/dev/config/tsconfig.json",
   "compilerOptions": {
     "skipLibCheck": true
   }
