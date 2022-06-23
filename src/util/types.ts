@@ -8,34 +8,34 @@ export type Metadata = `0x${string}`;
 
 // Information about the chain that we need to construct a transaction.
 export interface ChainData {
-  blockNumber: string;
-  blockHash: string;
-  genesisHash: string;
-  chainName: ChainName;
-  specName: SpecName;
-  specVersion: number;
-  transactionVersion: number;
-  metadataRpc: Metadata;
+	blockNumber: string;
+	blockHash: string;
+	genesisHash: string;
+	chainName: ChainName;
+	specName: SpecName;
+	specVersion: number;
+	transactionVersion: number;
+	metadataRpc: Metadata;
 }
 
 // Information about the sender's address.
 export interface AddressData {
-  freeBalance: number;
-  spendableBalance: number;
-  nonce: number;
+	freeBalance: number;
+	spendableBalance: number;
+	nonce: number;
 }
 
 // Information to return from unsigned transaction construction. Needed for the signing environment
 // and for decoding.
 export interface TxConstruction {
-  unsigned: UnsignedTransaction;
-  registry: TypeRegistry;
-  metadata: Metadata;
+	unsigned: UnsignedTransaction;
+	registry: TypeRegistry;
+	metadata: Metadata;
 }
 
 // The type registry is somewhat mysterious to me. We just need this a lot.
 export interface RegistryInfo {
-  chainName: ChainName;
-  specName: SpecName;
-  specVersion: number;
+	chainName: ChainName;
+	specName: SpecName;
+	specVersion: number;
 }

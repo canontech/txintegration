@@ -10,37 +10,37 @@ import { Curve } from './types';
 
 // Ask the user to supply something and wait for the response.
 export function promptUser(prompt: string): Promise<string> {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
+	const rl = readline.createInterface({
+		input: process.stdin,
+		output: process.stdout,
+	});
 
-  return new Promise((resolve) => {
-    rl.question(`\n${prompt}: `, (answer) => {
-      resolve(answer);
-      rl.close();
-    });
-  });
+	return new Promise((resolve) => {
+		rl.question(`\n${prompt}: `, (answer) => {
+			resolve(answer);
+			rl.close();
+		});
+	});
 }
 
 // Create a new keyring to sign with.
 export function createKeyring(uri: string, curve: Curve): KeyringPair {
-  const keyring = new Keyring();
-  const signingPair = keyring.addFromUri(uri, { name: 'Alice' }, curve);
-  return signingPair;
+	const keyring = new Keyring();
+	const signingPair = keyring.addFromUri(uri, { name: 'Alice' }, curve);
+	return signingPair;
 }
 
 // Signing function. Only use this on an OFFLINE signing device.
 export function signWith(
-  registry: TypeRegistry,
-  pair: KeyringPair,
-  signingPayload: string,
+	registry: TypeRegistry,
+	pair: KeyringPair,
+	signingPayload: string,
 ): string {
-  const { signature } = registry
-    .createType('ExtrinsicPayload', signingPayload, {
-      version: EXTRINSIC_VERSION,
-    })
-    .sign(pair);
+	const { signature } = registry
+		.createType('ExtrinsicPayload', signingPayload, {
+			version: EXTRINSIC_VERSION,
+		})
+		.sign(pair);
 
-  return signature;
+	return signature;
 }
