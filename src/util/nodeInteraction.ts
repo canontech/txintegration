@@ -4,7 +4,7 @@ import { AddressData, ChainData, ChainName, Metadata, SpecName } from './types';
 
 /* Types */
 
-type ApiResponse<T> = T & {
+type ApiGetResponse<T> = T & {
 	at: {
 		height: string;
 		hash: string;
@@ -85,8 +85,8 @@ export async function submitTransaction(
 /* Basic GET/POST interaction with Sidecar */
 
 // Get information from the sidecar.
-async function sidecarGet<T>(url: string): Promise<ApiResponse<T>> {
-	return axios.get(url).then(({ data }: { data: ApiResponse<T> }) => {
+async function sidecarGet<T>(url: string): Promise<ApiGetResponse<T>> {
+	return axios.get(url).then(({ data }: { data: ApiGetResponse<T> }) => {
 		return data;
 	});
 }
