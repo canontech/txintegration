@@ -1,7 +1,7 @@
 // Useful functions and types.
-import { TypeRegistry } from '@polkadot/types';
-import { construct, getRegistry } from '@substrate/txwrapper-polkadot';
+import { construct, getRegistry, TypeRegistry } from '@substrate/txwrapper-polkadot';
 
+import { BaseUserInputs } from './inputTypes';
 import { getChainData, getSenderData, submitTransaction } from './nodeInteraction';
 import { promptUser } from './signing';
 import { AddressData, ChainData, Metadata, TxConstruction } from './types';
@@ -43,7 +43,7 @@ interface BalanceCheck {
 // Prepare all information needed to construct a transaction _except_ the arguments specific
 // to the given transaction.
 export async function prepareBaseTxInfo(
-	userInputs: any,
+	userInputs: BaseUserInputs,
 	checkBalance: BalanceCheck,
 ): Promise<BaseTxInfoWithMeta> {
 	const chainData: ChainData = await getChainData(userInputs.sidecarHost);
@@ -65,7 +65,7 @@ export async function prepareBaseTxInfo(
 	const baseTxInfo = {
 		address: userInputs.senderAddress,
 		blockHash: chainData.blockHash,
-		blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toBn().toNumber(),
+		blockNumber: registry.createType('BlockNumber', chainData.blockNumber).toNumber(),
 		eraPeriod: userInputs.eraPeriod,
 		genesisHash: chainData.genesisHash,
 		metadataRpc: chainData.metadataRpc,
@@ -104,7 +104,7 @@ export async function createAndSubmitTransaction(
 
 	// Submit the transaction. Should return the actual hash if accepted by the node.
 	const submission = await submitTransaction(sidecarHost, tx);
-	console.log(`\nNode Response: ${submission}`);
+	console.log(`\nNode Response: ${submission || 'Did not receive a response from the node'}`);
 }
 
 /* Private Functions */

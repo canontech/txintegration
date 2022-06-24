@@ -23,17 +23,25 @@ import {
 interface Call {
 	pallet: string;
 	method: string;
+	/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 	args: any;
 }
 
+interface JsonTransactionDetails {
+	baseInputs: BaseUserInputs;
+	transactions: Call[];
+}
+
 async function main(): Promise<void> {
-	const transactionDetails = JSON.parse(readFileSync('transaction.json').toString());
+	const transactionDetails = JSON.parse(
+		readFileSync('transaction.json').toString(),
+	) as JsonTransactionDetails;
 
 	// The user-provided JSON should have two fields:
 	//   1. `baseInputs`: All the common stuff like network, era, etc.
 	//   2. `transactions`: An array of `Call`s to construct and broadcast.
-	const baseInputs: BaseUserInputs = transactionDetails.baseInputs;
-	const transactions: Call[] = transactionDetails.transactions;
+	const baseInputs = transactionDetails.baseInputs;
+	const transactions = transactionDetails.transactions;
 
 	for (const transaction of transactions) {
 		const pallet = transaction.pallet;

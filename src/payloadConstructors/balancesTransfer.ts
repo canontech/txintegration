@@ -10,9 +10,9 @@ function logUnsignedInfo(decoded: DecodedUnsignedTx) {
 		`\nTransaction Details:` +
 			`\n  Sending Account:   ${decoded.address}` +
 			`\n  Receiving Account: ${JSON.stringify(decoded.method.args.dest, null, 2)}` +
-			`\n  Amount: ${decoded.method.args.value}` +
-			`\n  Tip:    ${decoded.tip}` +
-			`\n  Era Period: ${decoded.eraPeriod}`,
+			`\n  Amount: ${decoded.method.args.value as number}` +
+			`\n  Tip:    ${decoded.tip || 'No tip included.'}` +
+			`\n  Era Period: ${decoded.eraPeriod || 64}`,
 	);
 }
 
