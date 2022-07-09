@@ -52,7 +52,7 @@ async function main(): Promise<void> {
 				if (method == 'transfer') {
 					const inputs: TransferInputs = {
 						recipientAddress: { id: transaction.args.recipientAddress.id },
-						transferValue: transaction.args.transferValue,
+						transferValue: transaction.args.value,
 						...baseInputs,
 					};
 					await doBalancesTransfer(inputs);
