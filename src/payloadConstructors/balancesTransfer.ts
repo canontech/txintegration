@@ -22,10 +22,10 @@ export async function doBalancesTransfer(userInputs: TransferInputs): Promise<vo
 		amount: userInputs.transferValue,
 	});
 
-	const unsigned = methods.balances.transfer(
+	const unsigned = methods.balances.transferAllowDeath(
 		{
 			value: userInputs.transferValue,
-			dest: userInputs.recipientAddress.id,
+			dest: { id: userInputs.recipientAddress.id },
 		},
 		baseTxInfo,
 		optionsWithMeta,
