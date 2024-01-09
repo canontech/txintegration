@@ -44,7 +44,7 @@ interface PostResponseData {
 
 // Get information about the chain.
 export async function getChainData(sidecarHost: string): Promise<ChainData> {
-	const endpoint = `${sidecarHost}transaction/material`;
+	const endpoint = `${sidecarHost}transaction/material?noMeta=false&metadata=scale`;
 	const artifacts = await sidecarGet<MaterialsResponse>(endpoint);
 	return {
 		blockNumber: artifacts.at.height,

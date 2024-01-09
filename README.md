@@ -12,9 +12,9 @@ to construct, sign, and submit a transaction to a Substrate-based chain.
 
 Tested on:
 
-- Polkadot v0.9.13
-- Sidecar v11.3.3
-- Txwrapper Core v1.2.20
+- Polkadot v1,000,001
+- Sidecar v17.3.4
+- Txwrapper Polkadot v7.2.0
 
 ### Start a Node
 
@@ -45,10 +45,10 @@ the base info (like IP/port for Sidecar) and an array of transactions you want t
 Run `yarn start` and you will get:
 
 ```bash
-Chain Name: Polkadot CC1
+Chain Name: Polkadot
 Spec Name:  polkadot
-Network Version: 14
-Transaction Version: 2
+Network Version: 1000001
+Transaction Version: 24
 
 Transaction Details:
   Sending Account:   15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5
